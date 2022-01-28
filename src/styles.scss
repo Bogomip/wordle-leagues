@@ -1,1 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --main-green: #6aaa64;
+    --main-darkgreen: #538d4e;
+    --main-yellow: #c9b458;
+    --main-darkyellow: #b59f3b;
+    --main-lightGray: #d8d8d8;
+    --main-gray: #86888a;
+    --main-darkgray: #939598;
+    --black: #212121;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    box-sizing: border-box;
+}
+
+@keyframes opacity0to100 {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes opacity0to80 {
+    0% { opacity: 0; }
+    100% { opacity: .8; }
+}
+
+@keyframes opacity100to0 {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes maxHeightTo0 {
+    100% { max-height: 0; }
+}
+
+@keyframes toBold {
+    100% { font-weight: 700; }
+}

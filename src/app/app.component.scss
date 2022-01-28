@@ -1,0 +1,63 @@
+.layout-left {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    // background-color: var(--main-green);
+}
+
+.layout-right {
+    width: 50%;
+    height: 100%;
+    background-color: var(--main-yellow);
+}
+
+.wordle-logo {
+
+    &__close {
+        overflow: hidden;
+        max-height: 100rem;
+        animation:  maxHeightTo0 1.2s cubic-bezier(0, 0.55, 0.45, 1) 3.2s 1 forwards,
+                    opacity100to0 1s ease-in-out 3.1s 1 forwards;
+    }
+
+    &__word {
+        display: flex;
+        margin-bottom: 1.15rem;
+        height: auto;
+
+        &--1,
+        &--2,
+        &--3,
+        &--4 {
+            opacity: 0;
+        }
+
+        &--wordle {
+            font-weight: 700;
+            text-shadow: 0 .3rem .6rem rgba(white, .6);
+        }
+
+        &--1 { animation: opacity0to80 0.5s ease-in-out .7s 1 forwards }
+        &--2 { animation: opacity0to80 0.5s ease-in-out 1.4s 1 forwards}
+        &--3 { animation: opacity0to80 0.5s ease-in-out 2.1s 1 forwards }
+        &--4 { animation: opacity0to100 0.5s ease-in-out 2.8s 1 forwards }
+
+        &--letter {
+            width: 8rem;
+            height: 8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            box-shadow: 0 .2rem .4rem rgba(black, .5);
+
+            &:not(:last-of-type) {
+                margin-right: 1.15rem;
+            }
+
+            &--green { background-color: var(--main-green); }
+            &--yellow { background-color: var(--main-yellow); }
+            &--gray { background-color: var(--main-gray); }
+        }
+    }
+}
