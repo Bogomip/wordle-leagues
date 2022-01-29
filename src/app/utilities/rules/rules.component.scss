@@ -1,0 +1,24 @@
+.rules {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+
+    &__step {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: large;
+
+        &--arrow {
+            width: 3rem;
+            height: 5rem;
+            background-color: blue;
+            clip-path: polygon(30% 0%, 75% 0%, 75% 50%, 100% 50%, 52.5% 100%, 0% 50%, 30% 50%);
+        }
+
+    }
+}

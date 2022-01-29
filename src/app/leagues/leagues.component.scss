@@ -1,0 +1,193 @@
+.leagues {
+    margin: 3rem 4rem;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__title {
+        margin-bottom: 2rem;
+    }
+
+    &__add {
+
+        &--input {
+            width: 15rem;
+            border-radius: 1rem;
+            padding: .5rem 2rem;
+            margin-right: .5rem;
+            border: .1rem solid rgba(black, .3);
+            box-shadow: 0 .3rem .6rem rgba(black, .5);
+        }
+
+        &--button {
+            width: 15rem;
+            border-radius: 1rem;
+            padding: .5rem 2rem;
+            background-color: var(--main-darkgreen);
+            transition: all .2s;
+            color: var(--eggshell);
+            box-shadow: 0 .3rem .6rem rgba(black, .5);
+
+            &:hover {
+                cursor: pointer;
+                background-color: var(--main-yellow);
+                color: var(--main-green);
+                font-weight: bold;
+                box-shadow: 0 .6rem .9rem rgba(black, .7);
+            }
+
+            &:active {
+                transform: translateY(-.3rem);
+            }
+        }
+
+
+
+    }
+}
+
+.league {
+
+    margin: 3rem auto;
+    padding: 1rem 2rem;
+    border: .2rem soldi rgba(black, .5);
+    box-shadow: 0 .4rem .8rem rgba(black, .5);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__admin-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__control {
+        position: relative;
+        border-radius: 1rem;
+        padding: .5rem 2rem;
+        transition: width .3s, opacity .2s .2s;
+        color: var(--eggshell);
+        box-shadow: 0 .3rem .6rem rgba(black, .5);
+        width: 2rem;
+
+        &--darkyellow { background-color: var(--main-darkyellow); }
+        &--yellow { background-color: var(--main-yellow); }
+        &--green { background-color: var(--main-darkgreen); }
+
+        &--text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 100%;
+            width: 13rem;
+            transform: translateX(-50%) translateY(-50%) scale(0);
+            text-align: center;
+            font-size: 1.4rem;
+            opacity: 0;
+            margin-top: .5rem;
+            transition: transform .2s;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--main-yellow);
+            color: var(--main-green);
+            font-weight: bold;
+            box-shadow: 0 .6rem .9rem rgba(black, .7);
+            width: 13rem;
+
+            .league__control--text {
+                color: black;
+                opacity: 1;
+                transform: translateX(-50%) translateY(-50%) scale(1);
+            }
+
+            img {
+                opacity: 0;
+            }
+        }
+
+        &:active {
+            transform: translateY(-.3rem);
+        }
+
+        &:not(:last-of-type) {
+            margin-right: 1rem;
+        }
+
+    }
+
+    &__user-admin {
+        .league__control--text {
+            margin-top: .2rem;
+        }
+    }
+
+    &__name {
+        padding-bottom: .5rem;
+        border-bottom: .3rem solid var(--main-green);
+    }
+
+    &__table {
+        padding-top: 1rem;
+        font-size: 1.4rem;
+        width: 100%;
+
+        thead {
+            font-weight: bold;
+        }
+
+        tr {
+            font-weight: normal;
+        }
+
+        th, td {
+            text-align: center;
+            padding: .5rem;
+            vertical-align: baseline;
+
+            &:nth-of-type(2) {
+                text-align: left;
+            }
+
+            .league__control {
+                padding: .3rem 1rem;
+
+                img {
+                    width: 1rem;
+                    filter: invert(1);
+
+                }
+            }
+        }
+
+    }
+
+    &__user {
+
+        display: flex;
+        justify-content: space-between;
+
+        &--name {}
+        &--status {
+            display: flex;
+        }
+        &--tag {
+            padding: .2rem .6rem;
+            margin-top: -.2rem;
+            margin-bottom: -.2rem;
+            text-transform: uppercase;
+            font-weight: lighter;
+            font-size: 1.2rem;
+            border: .1rem solid rgba(black, .2);
+            border-radius: .2rem;
+        }
+    }
+}

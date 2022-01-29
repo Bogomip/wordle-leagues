@@ -12,16 +12,28 @@
     --main-gray: #86888a;
     --main-darkgray: #939598;
     --black: #212121;
+    --eggshell: #F0EAD6;
 }
 
 html {
     font-size: 62.5%;
     font-family: 'Open Sans', sans-serif;
+
+    @media screen and (max-width: 1200px) {  font-size: 50%; }
+    @media screen and (max-width: 1000px) {  font-size: 37.5%; }
+    @media screen and (max-width: 800px) {  font-size: 25%; }
 }
 
 body {
     box-sizing: border-box;
 }
+
+p {
+    line-height: 1.9rem;
+    letter-spacing: .15rem;
+    font-size: 1.4rem;
+}
+
 
 @keyframes opacity0to100 {
     0% { opacity: 0; }
