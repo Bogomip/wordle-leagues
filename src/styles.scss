@@ -19,9 +19,9 @@ html {
     font-size: 62.5%;
     font-family: 'Open Sans', sans-serif;
 
-    @media screen and (max-width: 1200px) {  font-size: 50%; }
-    @media screen and (max-width: 1000px) {  font-size: 37.5%; }
-    @media screen and (max-width: 800px) {  font-size: 25%; }
+    @media screen and (max-width: 1300px) { font-size: 50%; }
+    // @media screen and (max-width: 800px) {  font-size: 37.5%; }
+    // @media screen and (max-width: 600px) {  font-size: 25%; }
 }
 
 body {
@@ -34,6 +34,11 @@ p {
     font-size: 1.4rem;
 }
 
+.delete {
+    animation:  opacity100to0 .5s ease-in-out 0s 1 forwards,
+                scaleTo0 .5s ease-in-out 0s 1 forwards,
+                maxHeightTo0 .5s ease-in-out 0s 1 forwards;
+}
 
 @keyframes opacity0to100 {
     0% { opacity: 0; }
@@ -56,4 +61,8 @@ p {
 
 @keyframes toBold {
     100% { font-weight: 700; }
+}
+
+@keyframes scaleTo0 {
+    100% { transform: scale(0); }
 }

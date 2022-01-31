@@ -1,5 +1,6 @@
 .menu {
     position: relative;
+    opacity: 0;
 
     &__link {
 
@@ -32,5 +33,13 @@
             font-weight: bold;
             color: var(--eggshell)
         }
+    }
+
+    &__animation {
+        animation: opacity0to100 1s ease-in-out 4s 1 forwards;
+    }
+
+    &__noanimation {
+        opacity: 1;
     }
 }

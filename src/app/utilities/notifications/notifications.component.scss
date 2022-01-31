@@ -1,0 +1,68 @@
+.notification {
+
+    border: .2rem solid rgba(black, .1);
+    border-radius: 1rem;
+    box-shadow: 0 .3rem .6rem rgba(black, .5);
+    width: 30rem;
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+    background-color: white;
+
+    z-index: 1000000; // always on top
+
+    &__league {
+
+        &--name {
+            padding-bottom: .5rem;
+            border-bottom: .3rem solid var(--main-green);
+            margin-bottom: 1rem;
+        }
+
+        &:not(:last-of-type) {
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__user {
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-height: 3rem;
+
+        &--control, &--score {
+            padding: .3rem .8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &--control {
+        }
+        &--delete {
+            border-radius: .5rem;
+            background-color: var(--main-darkyellow);
+            text-align: center;
+            transition: all .2s;
+            margin-right: 1rem;
+            padding: .1rem .4rem;
+            box-shadow: 0 .1rem .2rem rgba(black, .5);
+
+            &:hover {
+                cursor: pointer;
+                background-color: var(--main-yellow);
+                box-shadow: 0 .2rem .4rem rgba(black, .5);
+                transform: translateY(-.2rem);
+            }
+        }
+        &--name {
+
+        }
+        &--score {
+
+        }
+        &--correct {
+
+        }
+    }
+}

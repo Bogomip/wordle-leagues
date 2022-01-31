@@ -1,4 +1,4 @@
-<nav class="menu">
+<nav class="menu" [class.menu__animation]="menuAnimation" [class.menu__noanimation]="!menuAnimation">
     <a class="menu__link" routerLink="rules/" routerLinkActive="menu__link--active">How it works</a>
     <a class="menu__link" routerLink="leagues/" routerLinkActive="menu__link--active">Leagues</a>
     <a class="menu__link" [routerLink]="[{ outlets: { left: ['signup'] } }]" routerLinkActive="menu__link--active">Signup</a>
