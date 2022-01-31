@@ -11,6 +11,8 @@ import { RulesComponent } from './utilities/rules/rules.component';
 import { CreateComponent } from './leagues/create/create.component';
 import { NotfoundComponent } from './utilities/notfound/notfound.component';
 import { AddResultsComponent } from './user/add-results/add-results.component';
+import { NotificationsComponent } from './utilities/notifications/notifications.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,11 +24,13 @@ import { AddResultsComponent } from './user/add-results/add-results.component';
     RulesComponent,
     CreateComponent,
     NotfoundComponent,
-    AddResultsComponent
+    AddResultsComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

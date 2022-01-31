@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GeneralService } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-menu',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+    menuAnimation: boolean = true;
 
-  ngOnInit(): void {
-  }
+    constructor(private generalService: GeneralService) { }
+
+    ngOnInit(): void {
+        this.menuAnimation = this.generalService.getMenuAnimationStatus();
+    }
 
 }
