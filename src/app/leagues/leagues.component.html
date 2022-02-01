@@ -8,7 +8,10 @@
         </div>
     </div>
 
+
     <div class="league" *ngFor="let league of leagues">
+
+        <app-spinner></app-spinner>
 
         <div class="league__header">
             <h2 class="league__name">{{ league.name }}</h2>
@@ -67,20 +70,20 @@
                 <th>Points</th>
             </thead>
             <tr *ngFor="let user of league.members">
-                <td class="league__user-admin">
-                    <div class="league__control league__control--darkyellow" (click)="removeUserFromLeague(league._id, user._id)">
-                        <div class="league__control--text league__control--small">Delete Member</div>
-                        <img src="../../assets/icons/trash.png" alt="Delete User">
-                    </div>
-                </td>
-                <td class="league__user">
-                    <div class="league__user--profile">
-                        <div class="league__user--name">{{ user.name }}</div>
-                        <img src="../../assets/icons/trophy-gold.png" alt="Previous League Winner" *ngIf="user.tags.pastWinner">
-                        <img src="../../assets/icons/trophy-silver.png" alt="Previous League Runner Up" *ngIf="user.tags.pastRunnerUp">
-                    </div>
-                    <div class="league__user--status">
-                        <div class="league__user--tag" *ngIf="user.tags.admin">Admin</div>
+                    <td class="league__user-admin">
+                        <div class="league__control league__control--darkyellow" (click)="removeUserFromLeague(league._id, user._id)">
+                            <div class="league__control--text league__control--small">Delete Member</div>
+                            <img src="../../assets/icons/trash.png" alt="Delete User">
+                        </div>
+                    </td>
+                    <td class="league__user">
+                        <div class="league__user--profile">
+                            <div class="league__user--name">{{ user.name }}</div>
+                            <img src="../../assets/icons/trophy-gold.png" alt="Previous League Winner" *ngIf="user.tags.pastWinner">
+                            <img src="../../assets/icons/trophy-silver.png" alt="Previous League Runner Up" *ngIf="user.tags.pastRunnerUp">
+                        </div>
+                        <div class="league__user--status">
+                            <div class="league__user--tag" *ngIf="user.tags.admin">Admin</div>
                     </div>
                 </td>
                 <td [class.league__today]="user.today === 1">{{ user.score[1] }}</td>
