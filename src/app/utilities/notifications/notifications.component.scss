@@ -65,4 +65,14 @@
 
         }
     }
+
+    &__error {
+        padding: 1rem 2rem;
+        font-size: 1.4rem;
+        color: red;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }

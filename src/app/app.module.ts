@@ -13,6 +13,7 @@ import { NotfoundComponent } from './utilities/notfound/notfound.component';
 import { AddResultsComponent } from './user/add-results/add-results.component';
 import { NotificationsComponent } from './utilities/notifications/notifications.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SpinnerComponent } from './utilities/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
     CreateComponent,
     NotfoundComponent,
     AddResultsComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

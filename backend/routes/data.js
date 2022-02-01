@@ -29,7 +29,7 @@ router.get('/league/:id', (req, res, next) => {
 /**
  * Gtes all relevant notifications for the user...
  */
-router.get('/notifications/:id', (req, res, next) => {
+router.get('/notifications', (req, res, next) => {
     console.log("get all notifications..." + req.params.id);
 
     res.status(200).json({

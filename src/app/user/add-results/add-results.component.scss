@@ -8,7 +8,12 @@
         margin-bottom: .4rem;
     }
 
-    p { margin-bottom: 2rem;}
+    p { margin-bottom: 1rem;}
+}
+
+img {
+    height: 6rem;
+    margin-bottom: 1rem;
 }
 
 .form {
@@ -29,39 +34,6 @@
     }
 
     &__input {
-
         text-align: right;
-
-        &--textarea {
-            width: 100%;
-            height: 10rem;
-            border-radius: 1rem;
-            padding: .5rem 2rem;
-            margin-right: .5rem;
-            border: .1rem solid rgba(black, .3);
-            box-shadow: 0 .3rem .6rem rgba(black, .5);
-        }
-
-        &--button {
-            border-radius: 1rem;
-            padding: .5rem 2rem;
-            background-color: var(--main-darkgreen);
-            transition: all .2s;
-            color: var(--eggshell);
-            box-shadow: 0 .3rem .6rem rgba(black, .5);
-            margin-right: .5rem;
-
-            &:hover {
-                cursor: pointer;
-                background-color: var(--main-yellow);
-                color: var(--main-green);
-                font-weight: bold;
-                box-shadow: 0 .6rem .9rem rgba(black, .7);
-            }
-
-            &:active {
-                transform: translateY(-.3rem);
-            }
-        }
     }
 }

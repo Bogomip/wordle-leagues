@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from '../user/add-results/user.model';
+import { User } from '../user/user.model';
 import { AuthenticationService } from './authentication.service';
 
 export interface League {

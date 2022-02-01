@@ -1,4 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { User } from 'src/app/user/user.model';
 
 export interface WordleNotification {
     _id: string; name: string; score: number; leaguename: string
@@ -11,6 +15,10 @@ export interface WordleNotification {
 })
 export class NotificationsComponent implements OnInit {
 
+    // user data
+    user: User;
+
+    // notifications and leagues data..
     notifications: WordleNotification[] = [
         { _id: '123', name: 'Rosemary', score: 3, leaguename: 'Pavanders' },
         { _id: '256', name: 'Ken', score: 3, leaguename: 'Pavanders' },
@@ -21,9 +29,45 @@ export class NotificationsComponent implements OnInit {
 
     leagues: string[] = ['Pavanders'];
 
-    constructor() { }
+    // subscriptions...
+    notificationsSubscription: Subscription;
+    loadingNotificationsSubscription: Subscription;
+
+    // loading variables
+    isLoading: boolean = false;
+
+    // error
+    errorMessage: string = '';
+
+    constructor(
+        private auth: AuthenticationService,
+        private http: HttpClient
+    ) { }
 
     ngOnInit(): void {
+        this.auth.user.subscribe((user: User) => {
+            this.user = user;
+        })
+    }
+
+    /**
+     * Retrive notifications from the database.
+     */
+    getNotifications(): void {
+        this.isLoading = true;
+        const userId: string = '12345'; // why does this.user.id not work?
+
+        this.http.get<WordleNotification[]>('http://localhost:3000/api/notifications?id=' + userId).subscribe(
+        {
+            next: (data: WordleNotification[]) => {
+
+                this.isLoading = false;
+            },
+            error: (error: any) => {
+                this.errorMessage = 'Your notifications failed to load... give it a minute then try again by clicking here!';
+                this.isLoading = false;
+            }
+        })
     }
 
     /**
@@ -65,6 +109,14 @@ export class NotificationsComponent implements OnInit {
                 this.leagues = [...this.leagues.filter((league: string) => league !== user.leaguename)];
             }
         }, 1000);
+    }
+
+    /**
+     * If a get fails, this will retry the notifications db.
+     */
+    retryNotificationsGet(): void {
+        this.errorMessage = '';
+        this.getNotifications();
     }
 
 }

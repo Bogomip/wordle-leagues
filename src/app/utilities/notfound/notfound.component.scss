@@ -1,0 +1,41 @@
+.fourohfour {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 2rem;
+
+    &__notfound {
+        width: max-content;
+    }
+
+    &__word {
+        display: flex;
+        margin-bottom: 1.15rem;
+        height: auto;
+
+        &--letter {
+            width: 8rem;
+            height: 8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            box-shadow: 0 .2rem .4rem rgba(black, .5);
+
+            &:not(:last-of-type) {
+                margin-right: 1.15rem;
+            }
+
+            &--gray { background-color: var(--main-gray); }
+        }
+
+        &--1 { animation: scalePulse .8s ease-in-out 0s infinite forwards; }
+        &--2 { animation: scalePulse .8s ease-in-out .2s infinite forwards; }
+        &--3 { animation: scalePulse .8s ease-in-out .4s infinite forwards; }
+        &--4 { animation: scalePulse .8s ease-in-out .6s infinite forwards; }
+        &--5 { animation: scalePulse .8s ease-in-out .8s infinite forwards; }
+    }
+}
