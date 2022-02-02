@@ -1,5 +1,9 @@
 <div class="login">
-    <h2 class="login__title">Login</h2>
+    <div class="login__header">
+        <h2 class="login__title">Login</h2>
+        <button class="input__button" [routerLink]="[{ outlets: { left: ['menu'] } }]">Main Menu</button>
+    </div>
+
 
     <form class="form">
         <div class="form__row">
@@ -17,7 +21,16 @@
         <div class="form__row">
             <div class="form__text"></div>
             <div class="form__input">
-                <button class="input__button" type="submit">Login</button>
+                <button style="visibility: hidden" type="submit" #submitButton>Login</button>
+                <div (click)='submitButton.click()'>
+                    <div class="wordle-lettering wordle-lettering__custom">
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_1">L</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_2">O</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_3">G</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_4">I</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_5">N</div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>

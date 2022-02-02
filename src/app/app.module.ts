@@ -14,6 +14,7 @@ import { AddResultsComponent } from './user/add-results/add-results.component';
 import { NotificationsComponent } from './utilities/notifications/notifications.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SpinnerComponent } from './utilities/spinner/spinner.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SpinnerComponent } from './utilities/spinner/spinner.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

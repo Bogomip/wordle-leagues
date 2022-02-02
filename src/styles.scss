@@ -56,7 +56,7 @@ p {
         outline: none;
         background-color: white;
         padding-bottom: .3rem;
-        border-bottom: .4rem solid var(--main-green);
+        border-bottom-width: .4rem;
         transform: scale(1.1);
     }
 
@@ -64,6 +64,7 @@ p {
         background-color: var(--main-darkyellow);
     }
 
+    &--error { border-color: red; }
 }
 
 .input__textarea {
@@ -92,25 +93,62 @@ p {
     }
 
 }
+// .input__button {
+//     border-radius: 1rem;
+//     padding: .5rem 2rem;
+//     background-color: var(--main-darkgreen);
+//     transition: all .2s;
+//     color: var(--eggshell);
+//     box-shadow: 0 .3rem .6rem rgba(black, .5);
+//     margin-right: .5rem;
+
+//     &:hover {
+//         cursor: pointer;
+//         background-color: var(--main-yellow);
+//         color: var(--main-green);
+//         font-weight: bold;
+//         box-shadow: 0 .6rem .9rem rgba(black, .7);
+//     }
+
+//     &:active {
+//         transform: translateY(-.3rem);
+//     }
+
+// }
+
 .input__button {
-    border-radius: 1rem;
-    padding: .5rem 2rem;
-    background-color: var(--main-darkgreen);
-    transition: all .2s;
-    color: var(--eggshell);
+    background-color: var(--main-green);
+    padding: 1rem 2rem;
+    border-radius: .5rem;
     box-shadow: 0 .3rem .6rem rgba(black, .5);
-    margin-right: .5rem;
+    font-size: 1.6rem;
+    transition: all .2s;
+    color: rgba(black, .7);
+    // border: .1rem solid rgba(black, .2);
+    border: none;
 
     &:hover {
         cursor: pointer;
-        background-color: var(--main-yellow);
-        color: var(--main-green);
-        font-weight: bold;
-        box-shadow: 0 .6rem .9rem rgba(black, .7);
+        transform: scale(1.1) translateY(-.1rem);
+        box-shadow: 0 .5rem .9rem rgba(black, .7);
     }
+}
 
-    &:active {
-        transform: translateY(-.3rem);
+.wordle-lettering {
+
+    display: flex;
+    justify-content: flex-end;
+
+    &__letter {
+        padding: .8rem 1rem;
+        margin-right: .3rem;
+        color: rgba(black, .7);
+        font-weight: bold;
+        transition: all .2s;
+
+        &--gray { background-color: var(--main-gray); }
+        &--green { background-color: var(--main-green); }
+        &--yellow { background-color: var(--main-yellow); }
     }
 }
 

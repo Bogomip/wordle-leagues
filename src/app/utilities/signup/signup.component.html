@@ -1,35 +1,68 @@
 <div class="signup">
-    <h2 class="signup__title">SignUp</h2>
+    <div class="signup__header">
+        <h2 class="signup__title">Register</h2>
+        <button class="input__button" [routerLink]="[{ outlets: { left: ['menu'] } }]">Main Menu</button>
+    </div>
 
-    <form class="form">
+    <form class="form" [formGroup]="form" (submit)="signUp()">
         <div class="form__row">
             <div class="form__text">Email Address</div>
             <div class="form__input">
-                <input type="text" class="input__text">
+                <input type="text" class="input__text" name="email" formControlName="email" placeholder="Email Address" [class.input__text--error]="form.controls['email'].invalid">
+
+                <div class="form__error" *ngIf="form.controls['email'].invalid">
+                    <div class="form__error--specific" *ngIf="form.controls['email'].hasError('email')">Please input a valid email address</div>
+                    <div class="form__error--specific" *ngIf="form.controls['email'].hasError('required')">An email address is required</div>
+                </div>
+
             </div>
         </div>
         <div class="form__row">
             <div class="form__text">Display Name</div>
             <div class="form__input">
-                <input type="text" class="input__text">
+                <input type="text" class="input__text" name="name" formControlName="name" placeholder="Display Name" [class.input__text--error]="form.controls['name'].invalid">
+
+                <div class="form__error" *ngIf="form.controls['name'].invalid">
+                    <div class="form__error--specific" *ngIf="form.controls['name'].hasError('minlength')">Your name must be a minimum of three characters long</div>
+                    <div class="form__error--specific" *ngIf="form.controls['name'].hasError('required')">A display name is required</div>
+                </div>
             </div>
         </div>
         <div class="form__row">
             <div class="form__text">Password</div>
             <div class="form__input">
-                <input type="password" class="input__text">
+                <input type="password" class="input__text" name="password" formControlName="password" placeholder="Password" [class.input__text--error]="form.controls['password'].invalid">
+
+                <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('minlength') ? 'form__passworderror--warn' : 'form__passworderror--good'">Seven characters long</div>
+                <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('hasNumber') ? 'form__passworderror--warn' : 'form__passworderror--good'">Has a number</div>
+                <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('hasCapitalCase') ? 'form__passworderror--warn' : 'form__passworderror--good'">An uppercase letter</div>
+                <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('hasSmallCase') ? 'form__passworderror--warn' : 'form__passworderror--good'">A lowercase letter</div>
             </div>
         </div>
         <div class="form__row">
             <div class="form__text">Repeat Password</div>
             <div class="form__input">
-                <input type="password" class="input__text">
+                <input type="password" class="input__text" name="repeatPassword" formControlName="passwordRepeat" placeholder="Repeat Password" [class.input__text--error]="form.controls['passwordRepeat'].hasError('NoPassswordMatch')">
+
+                <div class="form__error" *ngIf="form.controls['passwordRepeat'].hasError('NoPassswordMatch')">
+                    <div class="form__error--specific">Your passwords should match</div>
+                </div>
             </div>
         </div>
         <div class="form__row">
             <div class="form__text"></div>
             <div class="form__input">
-                <button class="input__button" type="submit">Register</button>
+                <button style="visibility: hidden;" type="submit" #submitButton>Register</button>
+                <div (click)='submitButton.click()'>
+                    <div class="wordle-lettering wordle-lettering__custom" [ngClass]="form.invalid ? 'wordle-lettering__custom--invalid' : 'wordle-lettering__custom--valid'">
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_1">S</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_2">U</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_3">B</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_4">M</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_5">I</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_6">T</div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>

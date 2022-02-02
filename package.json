@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "mongodb": "^4.3.1",
     "mongoose": "^6.1.8",
     "multer": "^1.4.4",
     "nodemon": "^2.0.15",
