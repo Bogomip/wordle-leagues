@@ -1,5 +1,9 @@
 <div class="add-results">
-    <h2 class="add-results__title">Submit Results</h2>
+    <div class="add-results__header">
+        <h2 class="add-results__title">Submit Results</h2>
+        <button class="input__button" [routerLink]="[{ outlets: { left: ['menu'] } }]">Main Menu</button>
+    </div>
+
     <p>
         After you have completed the wordle of the day, submit your results into this box by copy and pasting the share code given on the wordle.
     </p>
@@ -17,7 +21,17 @@
         <div class="form__row">
             <div class="form__text"></div>
             <div class="form__input">
-                <button class="input__button" type="submit">Submit Score</button>
+                <button style="visibility: hidden;" type="submit" #submitButton>Submit Score</button>
+                <div (click)='submitButton.click()'>
+                    <div class="wordle-lettering wordle-lettering__custom">
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_1">S</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_2">U</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_3">B</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_4">M</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_5">I</div>
+                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_6">T</div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>

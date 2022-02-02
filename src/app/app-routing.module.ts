@@ -13,6 +13,7 @@ const routes: Routes = [
     { path: '', component: MenuComponent, outlet: 'left' },
     { path: '', component: RulesComponent },
     { path: 'rules', component: RulesComponent },
+    { path: 'menu', component: MenuComponent, outlet: 'left' },
     { path: 'signup', component: SignupComponent, outlet: 'left' },
     { path: 'login', component: LoginComponent, outlet: 'left' },
     { path: 'create', component: CreateComponent, outlet: 'left' },
