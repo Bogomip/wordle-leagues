@@ -1,5 +1,4 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
-import { ValidateFn } from "mongoose";
 
 export class PasswordMatch {
     static passwordMatchValidator(error: ValidationErrors): ValidatorFn {
