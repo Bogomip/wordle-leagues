@@ -5,17 +5,17 @@
     </div>
 
 
-    <form class="form">
+    <form class="form" [formGroup]="form" (submit)="login()">
         <div class="form__row">
             <div class="form__text">Email Address</div>
             <div class="form__input">
-                <input type="text" class="input__text">
+                <input type="text" class="input__text" formControlName="email"  [class.input__text--error]="form.controls['email'].invalid">
             </div>
         </div>
         <div class="form__row">
             <div class="form__text">Password</div>
             <div class="form__input">
-                <input type="password" class="input__text">
+                <input type="password" class="input__text" formControlName="password"  [class.input__text--error]="form.controls['password'].invalid">
             </div>
         </div>
         <div class="form__row">
@@ -23,7 +23,7 @@
             <div class="form__input">
                 <button style="visibility: hidden" type="submit" #submitButton>Login</button>
                 <div (click)='submitButton.click()'>
-                    <div class="wordle-lettering wordle-lettering__custom">
+                    <div class="wordle-lettering wordle-lettering__custom"  [ngClass]="form.invalid ? 'wordle-lettering__custom--invalid' : 'wordle-lettering__custom--valid'">
                         <div class="wordle-lettering__letter wordle-lettering__letter--green letter_1">L</div>
                         <div class="wordle-lettering__letter wordle-lettering__letter--green letter_2">O</div>
                         <div class="wordle-lettering__letter wordle-lettering__letter--green letter_3">G</div>

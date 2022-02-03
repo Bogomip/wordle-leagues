@@ -5,18 +5,18 @@
     </div>
 
     <p>
-        After you have completed the wordle of the day, submit your results into this box by copy and pasting the share code given on the wordle.
+        After you have completed the wordle, paste your results into this box by copying the share code from wordle. If you are on mobile click share, and select 'Copy Text' to get access to this data.
+    </p>
+
+    <p class="add-results__error" *ngIf="errorMessage !== ''">
+        {{ errorMessage }}
     </p>
 
     <img src="../../../assets/share-button.JPG" alt="Click this to get access to your results!">
 
-    <p>
-        If you are on mobile click share, and select 'Copy Text' to get access to this data.
-    </p>
-
-    <form class="form">
+    <form class="form" [formGroup]="form" (submit)="submitScore()">
         <div class="form__row">
-            <textarea class="input__textarea" placeholder="Paste your daily wordly data here."></textarea>
+            <textarea class="input__textarea" placeholder="Paste your daily wordly data here." formControlName="data"></textarea>
         </div>
         <div class="form__row">
             <div class="form__text"></div>
