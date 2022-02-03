@@ -1,7 +1,10 @@
 <div class="signup">
+
+    <app-spinner></app-spinner>
+
     <div class="signup__header">
         <h2 class="signup__title">Register</h2>
-        <button class="input__button" [routerLink]="[{ outlets: { left: ['menu'] } }]">Main Menu</button>
+        <button class="input__button" routerLink="">Main Menu</button>
     </div>
 
     <form class="form" [formGroup]="form" (submit)="signUp()">

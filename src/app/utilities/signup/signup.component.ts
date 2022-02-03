@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup,  Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PasswordMatch } from '../password-match';
 import { PasswordValidator } from '../password-validator';
 
@@ -8,11 +10,19 @@ import { PasswordValidator } from '../password-validator';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
 
     form: FormGroup;
 
-    constructor() { }
+    // errror message
+    errorMessage: string = '';
+
+    // regstration subscription
+    register: Subscription = new Subscription;
+
+    constructor(
+        private auth: AuthenticationService
+    ) { }
 
     ngOnInit(): void {
         this.form = new FormGroup({
@@ -32,7 +42,25 @@ export class SignupComponent implements OnInit {
         ] })
     }
 
+    ngOnDestroy(): void {
+        this.register.unsubscribe();
+    }
+
+    /**
+     * Signs the user up!
+     */
     signUp(): void {
+        const email: string = this.form.get('email')?.value;
+        const username: string = this.form.get('name')?.value;
+        const password: string = this.form.get('password')?.value;
+
+        this.register = this.auth.createNewUser(email, username, password).subscribe({
+            next: (result) => {
+                console.log(result);
+            },
+            error: (error) => {
+                this.errorMessage = error.error.message;
+        }})
 
     }
 
