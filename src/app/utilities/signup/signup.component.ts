@@ -13,6 +13,7 @@ import { PasswordValidator } from '../password-validator';
 export class SignupComponent implements OnInit, OnDestroy {
 
     form: FormGroup;
+    isLoading: boolean = false;
 
     // errror message
     errorMessage: string = '';
@@ -54,7 +55,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         const username: string = this.form.get('name')?.value;
         const password: string = this.form.get('password')?.value;
 
-        this.register = this.auth.createNewUser(email, username, password).subscribe({
+        this.register = this.auth.createNewUserWithEmailAndPassword(email, username, password).subscribe({
             next: (result) => {
                 console.log(result);
             },

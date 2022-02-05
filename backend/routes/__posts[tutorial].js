@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
 const multer = require('multer');
-const { count } = require('console');
 const MIME_TYPE_MAP = {
   'image/png': 'png',
   'image/jpeg': 'jpg',

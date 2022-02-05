@@ -17,16 +17,6 @@ export class AddResultsComponent implements OnInit, OnDestroy {
     // submit subscirption
     submitSubscription: Subscription = new Subscription;
 
-    sampleInput: string = `
-        Wordle 229 6/6
-
-        ⬜🟨🟩⬜⬜
-        🟩⬜🟩🟩⬜
-        🟩⬜🟩🟩⬜
-        🟩⬜🟩🟩⬜
-        🟩🟩🟩🟩⬜
-        🟩🟩🟩🟩🟩`;
-
     constructor(
         private http: HttpClient
     ) { }
@@ -39,6 +29,12 @@ export class AddResultsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.submitSubscription.unsubscribe();
+    }
+
+    showSubmitBox: boolean = true;
+
+    hide(): void {
+        this.showSubmitBox = false;
     }
 
     submitScore(): void {

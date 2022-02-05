@@ -32,4 +32,14 @@ export class GeneralService {
     cancelFutureAnimation(): void {
         localStorage.setItem('animation', JSON.stringify({runAnimation: false}));
     }
+
+    /**
+     * Converts a day offset from now (0 is today) into the wordle code (from the game)
+     * @param dayOffset
+     * @returns
+     */
+    getWordle(dayOffset: number): number {
+        const beginningTime: number = 1624050004933; // approx, midnight qatar time on the first ever wordle... can do a better job?
+        return 229;
+    }
 }
