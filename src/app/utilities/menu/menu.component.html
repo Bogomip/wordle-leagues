@@ -1,9 +1,9 @@
 <nav class="menu" [class.menu__animation]="menuAnimation" [class.menu__noanimation]="!menuAnimation">
     <a class="menu__link" routerLink="rules/" routerLinkActive="menu__link--active">How it works</a>
-    <a class="menu__link" routerLink="leagues/" routerLinkActive="menu__link--active">Leagues</a>
-    <a class="menu__link" [routerLink]="[{ outlets: { left: ['signup'] } }]" routerLinkActive="menu__link--active">Signup</a>
-    <a class="menu__link" [routerLink]="[{ outlets: { left: ['login'] } }]" routerLinkActive="menu__link--active">Login</a>
-    <a class="menu__link" [routerLink]="[{ outlets: { left: ['create'] } }]" routerLinkActive="menu__link--active">Create League</a>
-    <a class="menu__link" [routerLink]="[{ outlets: { left: ['submit'] } }]" routerLinkActive="menu__link--active">Submit Daily Score</a>
+    <a class="menu__link" routerLink="leagues/" routerLinkActive="menu__link--active" *ngIf="user">Leagues</a>
+    <a class="menu__link" [routerLink]="[{ outlets: { left: ['signup'] } }]" routerLinkActive="menu__link--active" *ngIf="!user">Signup</a>
+    <a class="menu__link" [routerLink]="[{ outlets: { left: ['login'] } }]" routerLinkActive="menu__link--active" *ngIf="!user">Login</a>
+    <a class="menu__link" [routerLink]="[{ outlets: { left: ['create'] } }]" routerLinkActive="menu__link--active" *ngIf="user">Create League</a>
+    <a class="menu__link" (click)="logout()" *ngIf="user">Logout</a>
     <a class="menu__link" href="https://www.powerlanguage.co.uk/wordle/" target="_new">Play Wordle</a>
 </nav>

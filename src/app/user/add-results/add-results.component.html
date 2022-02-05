@@ -1,9 +1,44 @@
-<div class="add-results">
+<div class="add-results" *ngIf="showSubmitBox">
+
     <div class="add-results__header">
-        <h2 class="add-results__title">Submit Results</h2>
-        <button class="input__button" [routerLink]="[{ outlets: { left: ['menu'] } }]">Main Menu</button>
+        <div class="add-results__title">Submit Wordle Scores</div>
+        <div class="add-results__clear" (click)="hide()">Later</div>
     </div>
 
+    <div class="add-results__result">
+        <app-spinner></app-spinner>
+        <div class="add-results__day">
+            <div class="add-results__day--date">Sun 31</div>
+            <div class="add-results__day--wordle">#229</div>
+        </div>
+        <div class="add-results__score wordle-lettering">
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">1</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">2</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">3</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">4</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">5</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">6</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">X</div>
+        </div>
+    </div>
+    <div class="add-results__result">
+        <app-spinner></app-spinner>
+        <div class="add-results__day">
+            <div class="add-results__day--date">Mon 1</div>
+            <div class="add-results__day--wordle">#230</div>
+        </div>
+        <div class="add-results__score wordle-lettering">
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">1</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">2</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">3</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">4</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">5</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">6</div>
+            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">X</div>
+        </div>
+    </div>
+
+<!--
     <p>
         After you have completed the wordle, paste your results into this box by copying the share code from wordle. If you are on mobile click share, and select 'Copy Text' to get access to this data.
     </p>
@@ -34,5 +69,5 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form> -->
 </div>
