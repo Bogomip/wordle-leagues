@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { User } from 'src/app/user/user.model';
+import { AuthenticationService, User } from 'src/app/services/authentication.service';
 
 export interface WordleNotification {
     _id: string; name: string; score: number; leaguename: string

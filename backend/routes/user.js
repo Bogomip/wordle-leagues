@@ -24,7 +24,8 @@ router.post('/register', (req, res, next) => {
             username: req.body.username,
             password: hashedPassword,
             joindate: new Date().getTime(),
-            leagues: []
+            leagues: [],
+            results: []
         })
 
         // then save the user...
@@ -38,7 +39,8 @@ router.post('/register', (req, res, next) => {
                 name: user.username,
                 email: user.email,
                 joinDate: user.joindate,
-                leagues: []
+                leagues: [],
+                results: []
             })
         }).catch(err => {
             res.status(404).json({
@@ -99,7 +101,40 @@ router.post(
     '/score',
     checkAuth,
     (req, res, next) => {
+        User.findOneAndUpdate(
+            { _id: req.body.userId, results: [{ wordleId: req.body.wordleId }] },
+            { $push: { results: { wordleId: req.body.wordleId, score: req.body.score }}},
+            { upsert: true }
+        ).then((result) => {
+            res.status(200).json({
+                message: 'Added score :D'
+            })
+        }).catch((error) => {
+            res.status(400).json({
+                message: 'Failed to add score...' + error
+            })
+        })
 
+
+        // the thing above does work BUT it doesnt do unique...
+
+        // this doesnt work
+        // User.findById(req.body.userId).then((user) => {
+        //     // see if this result has been added...
+        //     user.results.findOneAndUpdate(
+        //         { wordleId: req.body.wordleId },
+        //         { wordleId: req.body.wordleId, score: req.body.score },
+        //         { upsert: true }
+        //     ).then((result) => {
+        //         res.status(200).json({
+        //             message: 'Added score :D'
+        //         })
+        //     }).catch((error) => {
+        //         res.status(400).json({
+        //             message: 'Failed to add score...' + error
+        //         })
+        //     })
+        // })
     }
 )
 

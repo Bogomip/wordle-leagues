@@ -5,69 +5,21 @@
         <div class="add-results__clear" (click)="hide()">Later</div>
     </div>
 
-    <div class="add-results__result">
-        <app-spinner></app-spinner>
+    <div class="add-results__result" *ngFor="let scoreDay of gamesToSubmit; let i = index">
+        <app-spinner *ngIf="scoreDay.submitting"></app-spinner>
         <div class="add-results__day">
-            <div class="add-results__day--date">Sun 31</div>
-            <div class="add-results__day--wordle">#229</div>
+            <div class="add-results__day--date">{{ scoreDay.date }}</div>
+            <div class="add-results__day--wordle">#{{ scoreDay.id }}</div>
         </div>
         <div class="add-results__score wordle-lettering">
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">1</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">2</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">3</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">4</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">5</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">6</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--yellow">X</div>
-        </div>
-    </div>
-    <div class="add-results__result">
-        <app-spinner></app-spinner>
-        <div class="add-results__day">
-            <div class="add-results__day--date">Mon 1</div>
-            <div class="add-results__day--wordle">#230</div>
-        </div>
-        <div class="add-results__score wordle-lettering">
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">1</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">2</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">3</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">4</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">5</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">6</div>
-            <div class="add-results__score--number wordle-lettering__letter wordle-lettering__letter--gray">X</div>
+            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 1 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 1)">1</div>
+            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 2 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 2)">2</div>
+            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 3 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 3)">3</div>
+            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 4 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 4)">4</div>
+            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 5 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 5)">5</div>
+            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 6 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 6)">6</div>
+            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 0 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 0)">X</div>
         </div>
     </div>
 
-<!--
-    <p>
-        After you have completed the wordle, paste your results into this box by copying the share code from wordle. If you are on mobile click share, and select 'Copy Text' to get access to this data.
-    </p>
-
-    <p class="add-results__error" *ngIf="errorMessage !== ''">
-        {{ errorMessage }}
-    </p>
-
-    <img src="../../../assets/share-button.JPG" alt="Click this to get access to your results!">
-
-    <form class="form" [formGroup]="form" (submit)="submitScore()">
-        <div class="form__row">
-            <textarea class="input__textarea" placeholder="Paste your daily wordly data here." formControlName="data"></textarea>
-        </div>
-        <div class="form__row">
-            <div class="form__text"></div>
-            <div class="form__input">
-                <button style="visibility: hidden;" type="submit" #submitButton>Submit Score</button>
-                <div (click)='submitButton.click()'>
-                    <div class="wordle-lettering wordle-lettering__custom">
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_1">S</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_2">U</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_3">B</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_4">M</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_5">I</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_6">T</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form> -->
 </div>
