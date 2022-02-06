@@ -104,7 +104,7 @@ router.post(
 
         User.findOneAndReplace(
             { _id: req.body._id, results: { $elemMatch: { wordleId: 231 }}},
-            { results: { wordleId: req.body.wordleId, score: req.body.score }},
+            { _id: req.body.id,  results: { wordleId: req.body.wordleId, score: req.body.score }},
             {
                 upsert: true,
                 new: true
