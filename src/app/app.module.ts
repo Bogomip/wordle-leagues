@@ -12,9 +12,10 @@ import { CreateComponent } from './leagues/create/create.component';
 import { NotfoundComponent } from './utilities/notfound/notfound.component';
 import { AddResultsComponent } from './user/add-results/add-results.component';
 import { NotificationsComponent } from './utilities/notifications/notifications.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SpinnerComponent } from './utilities/spinner/spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+      { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

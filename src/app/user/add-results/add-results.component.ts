@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { AuthenticationService, User } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-add-results',
@@ -10,63 +10,85 @@ import { Subscription } from 'rxjs';
 })
 export class AddResultsComponent implements OnInit, OnDestroy {
 
-    // forma nd error message...
-    form: FormGroup;
+    // error message and controls...
     errorMessage: string = '';
+    showSubmitBox: boolean = true;
+    gamesToSubmit: { id: number, date: string, submitting: boolean, value: number }[] = [];
 
     // submit subscirption
     submitSubscription: Subscription = new Subscription;
 
+    // user data...
+    user: User;
+
     constructor(
+        private auth: AuthenticationService,
         private http: HttpClient
     ) { }
 
     ngOnInit(): void {
-        this.form = new FormGroup({
-            'data': new FormControl(null, { validators: [Validators.required]})
+
+        this.loadGames();
+
+        this.auth.user.subscribe((user: User) => {
+            this.user = user;
         })
-    }
+     }
 
     ngOnDestroy(): void {
         this.submitSubscription.unsubscribe();
     }
 
-    showSubmitBox: boolean = true;
+    loadGames(): void {
+        // test data...
+        this.gamesToSubmit = [
+            { id: 231, date: this.gameToDate(231), submitting: false, value: -1 },
+            { id: 232, date: this.gameToDate(232), submitting: false, value: -1 }
+        ]
+    }
 
+    submitScore(wordleId: number, score: number): void {
+        const accessGame: { id: number, date: string, submitting: boolean, value: number } = this.gamesToSubmit.find((test) => test.id === wordleId)!;
+        if(accessGame) {
+            // set the values on the front end...
+            accessGame.value = score;
+            // accessGame.submitting = true;
+
+            // and call the backend...
+            this.http.post<{ message: string }>('http://localhost:3000/api/user/score', { userId: this.user._id, wordleId: wordleId, score: score}).subscribe({
+                next: (result: { message: string }) => {
+                    console.log(result);
+                },
+                error: (error: any) => {
+                    console.log(error);
+                }
+            })
+
+        } else {
+            // game not found?
+            // reload games as something went wrong...
+            this.loadGames();
+        }
+    }
+
+    /**
+     * Converts the game ID into a date in the format 'Wed 07'
+     * @param wordleId
+     */
+    gameToDate(wordleId: number): string {
+        const first: number = new Date('2021-6-19').getTime();
+        const id: Date = new Date(first + wordleId * 1000 * 60 * 60 * 24);
+        const [dayString, dayValue]: [string, number] = [id.toLocaleDateString('en-gb', { weekday: 'short' }), id.getDate()];
+        return `${dayString} ${dayValue}`;
+    }
+
+
+    /**
+     * Hides the submit box
+     */
     hide(): void {
         this.showSubmitBox = false;
     }
 
-    submitScore(): void {
-        // parse the data into the expected format.
-        const data: string = this.form.get('data')?.value?.split(" ") || 'error';
-        const wordleDay: number = 229;
-
-        if(data[0] === "Wordle") {
-            if(+data[1] === wordleDay) {
-                const scoreSplit: string[] = data[2].split('/');
-                if(['1','2','3','4','5','6','X'].includes(scoreSplit[0])) {
-
-                    // submit to database...
-                    this.submitSubscription = this.http.post('http://localhost:3000/api/', { score: scoreSplit[0] }).subscribe({
-                        next: (result) => {
-
-                        },
-                        error: (error: any) => {
-                            console.log("Error dubmitting to database: " + error);
-                        }
-                    })
-
-                } else {
-                    this.errorMessage = "Your score is provided in an incorrect format. Please ensure you do not format the score from what is provided by Wordle."
-                }
-            } else {
-                this.errorMessage = "Your Wordle data is for the wrong day! You can only submit todays or yesterdays Wordle score..."
-            }
-        } else {
-            this.errorMessage = "Your Wordle data is in an incorrect format or may be for another Wordle style game..."
-        }
-
-    }
 
 }

@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, take, tap } from 'rxjs';
-import { User } from '../user/user.model';
 
 export interface AuthData {
     email: string;
     password: string;
     remainLoggedIn: boolean;
     username?: string;
+}
+
+export interface User {
+    _id: string;
+    token: string;
+    name: string;
+    email: string;
+    joinDate: number;
+    leagues: string[];
 }
 
 @Injectable({
@@ -17,6 +25,7 @@ export interface AuthData {
 export class AuthenticationService {
 
     user = new BehaviorSubject<User>(null!);
+    token: string = '';
 
     constructor(
         private http: HttpClient
@@ -73,6 +82,7 @@ export class AuthenticationService {
      * @param userData
      */
     handleUserLoggedIn(userData: User): void {
+        this.token = userData.token;
         this.user.next(userData);
     }
 
@@ -81,7 +91,7 @@ export class AuthenticationService {
      * @returns
      */
     checkLoginStatusOnLoad(): void {
-        const localUserData = localStorage.getItem('user');
+        const localUserData: User = JSON.parse(localStorage.getItem('user')!);
         // check if its exists...
         if(!localUserData) return;
         // and if it does, handle it!
@@ -96,6 +106,17 @@ export class AuthenticationService {
         localStorage.setItem('user', JSON.stringify(user));
     }
 
+    /**
+     * Simply returns the token for use in cases where the observable cannot exist.
+     * @returns
+     */
+    getToken(): string {
+        return this.token;
+    }
+
+    /**
+     * Logs the user out...
+     */
     logout(): void {
         localStorage.removeItem('user');
         this.user.next(null!);
