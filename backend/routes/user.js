@@ -101,11 +101,17 @@ router.post(
     '/score',
     checkAuth,
     (req, res, next) => {
-        User.findOneAndUpdate(
-            { _id: req.body.userId, results: [{ wordleId: req.body.wordleId }] },
-            { $push: { results: { wordleId: req.body.wordleId, score: req.body.score }}},
-            { upsert: true }
+
+        User.findOneAndReplace(
+            { _id: req.body._id, results: { $elemMatch: { wordleId: 231 }}},
+            { results: { wordleId: req.body.wordleId, score: req.body.score }},
+            {
+                upsert: true,
+                new: true
+            }
         ).then((result) => {
+            console.log(result);
+
             res.status(200).json({
                 message: 'Added score :D'
             })
@@ -114,6 +120,7 @@ router.post(
                 message: 'Failed to add score...' + error
             })
         })
+
 
 
         // the thing above does work BUT it doesnt do unique...
