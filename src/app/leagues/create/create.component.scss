@@ -15,6 +15,15 @@
     }
 
     p { margin-bottom: 2rem;}
+
+    &__error {
+        font-style: italic;
+        color: red;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
 
 .form {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService, User } from '../services/authentication.service';
 import { League, LeagueMember, LeagueService } from '../services/league.service';
 
 @Component({
@@ -14,14 +15,23 @@ export class LeaguesComponent implements OnInit {
     // how much each position is worth, starting from 1st. No fail points are available.
     scoreArray: number[] = [2,3,4,3,2,1];
 
-    constructor(private leagueService: LeagueService) { }
+    // users...
+    user: User;
+
+    constructor(
+        private leagueService: LeagueService,
+        private auth: AuthenticationService
+    ) { }
 
     ngOnInit(): void {
-        this.leagues = this.leagueService.getLeaguesData();
-        // sort each league by the total points...
-        for(let i = 0; i < this.leagues.length; i++) {
-            this.leagues[i].members = [...this.sortLeagueArray(this.leagues[i].members)];
-        }
+        this.auth.user.subscribe((user: User) => {
+            this.user = user;
+            this.leagues = this.leagueService.getLeaguesData(this.user._id);
+            // sort each league by the total points...
+            for(let i = 0; i < this.leagues.length; i++) {
+                this.leagues[i].members = [...this.sortLeagueArray(this.leagues[i].members)];
+            }
+        })
     }
 
     /**

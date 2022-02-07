@@ -1,24 +1,26 @@
-<div class="add-results" *ngIf="showSubmitBox">
+<div class="add-results">
 
-    <div class="add-results__header">
+    <div class="add-results__header" [class.add-results__hidden]="!showSubmitBox">
         <div class="add-results__title">Submit Wordle Scores</div>
-        <div class="add-results__clear" (click)="hide()">Later</div>
+        <div class="add-results__clear" (click)="hide()">{{ showSubmitBox ? 'Later' : 'Add Scores' }}</div>
     </div>
 
-    <div class="add-results__result" *ngFor="let scoreDay of gamesToSubmit; let i = index">
-        <app-spinner *ngIf="scoreDay.submitting"></app-spinner>
-        <div class="add-results__day">
-            <div class="add-results__day--date">{{ scoreDay.date }}</div>
-            <div class="add-results__day--wordle">#{{ scoreDay.id }}</div>
-        </div>
-        <div class="add-results__score wordle-lettering">
-            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 1 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 1)">1</div>
-            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 2 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 2)">2</div>
-            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 3 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 3)">3</div>
-            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 4 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 4)">4</div>
-            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 5 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 5)">5</div>
-            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 6 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 6)">6</div>
-            <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 0 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 0)">X</div>
+    <div class="show" *ngIf="showSubmitBox">
+        <div class="add-results__result" *ngFor="let scoreDay of gamesToSubmit; let i = index">
+            <app-spinner *ngIf="scoreDay.submitting"></app-spinner>
+            <div class="add-results__day">
+                <div class="add-results__day--date">{{ scoreDay.date }}</div>
+                <div class="add-results__day--wordle">#{{ scoreDay.id }}</div>
+            </div>
+            <div class="add-results__score wordle-lettering">
+                <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 1 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 1)">1</div>
+                <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 2 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 2)">2</div>
+                <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 3 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 3)">3</div>
+                <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 4 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 4)">4</div>
+                <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 5 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 5)">5</div>
+                <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 6 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 6)">6</div>
+                <div class="add-results__score--number wordle-lettering__letter" [ngClass]="scoreDay.value === 0 ? 'wordle-lettering__letter--green' : 'wordle-lettering__letter--yellow'" (click)="submitScore(scoreDay.id, 0)">X</div>
+            </div>
         </div>
     </div>
 
