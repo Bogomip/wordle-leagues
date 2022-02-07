@@ -5,9 +5,7 @@ const userScehema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
-  joindate: { type: Number, required: true },
-  leagues: { type: Array, required: false },
-  results: { type: Array, required: false }
+  joindate: { type: Number, required: true }
 });
 
 userScehema.plugin(uniqueValidator);

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 const User = require('../models/user');
-const user = require('../models/user');
+const Result = require('../models/result');
 const checkAuth = require('../middleware/check-auth');
 
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
@@ -15,6 +15,9 @@ const generateToken = (email, id, remainLoggedIn) => {
 
 }
 
+/**
+ * Signs up then logs in a user.
+ */
 router.post('/register', (req, res, next) => {
 
     bcrypt.hash(req.body.password, 10).then(hashedPassword => {
@@ -23,9 +26,7 @@ router.post('/register', (req, res, next) => {
             email: req.body.email,
             username: req.body.username,
             password: hashedPassword,
-            joindate: new Date().getTime(),
-            leagues: [],
-            results: []
+            joindate: new Date().getTime()
         })
 
         // then save the user...
@@ -38,9 +39,7 @@ router.post('/register', (req, res, next) => {
                 token: token,
                 name: user.username,
                 email: user.email,
-                joinDate: user.joindate,
-                leagues: [],
-                results: []
+                joinDate: user.joindate
             })
         }).catch(err => {
             res.status(404).json({
@@ -52,6 +51,9 @@ router.post('/register', (req, res, next) => {
     });
 })
 
+/**
+ * Logs in a user.
+ */
 router.post('/login', (req, res, next) => {
 
     let fetchedUser;
@@ -84,8 +86,7 @@ router.post('/login', (req, res, next) => {
             token: token,
             name: fetchedUser.username,
             email: fetchedUser.email,
-            joinDate: fetchedUser.joindate,
-            leagues: fetchedUser.leagues
+            joinDate: fetchedUser.joindate
         })
 
     }).catch((error) => {
@@ -96,52 +97,56 @@ router.post('/login', (req, res, next) => {
 
 })
 
-// submit a score to the database...
+/**
+ * submit a score to the database...
+ */
 router.post(
     '/score',
     checkAuth,
     (req, res, next) => {
 
-        User.findOneAndReplace(
-            { _id: req.body._id, results: { $elemMatch: { wordleId: 231 }}},
-            { _id: req.body.id,  results: { wordleId: req.body.wordleId, score: req.body.score }},
-            {
-                upsert: true,
-                new: true
-            }
-        ).then((result) => {
-            console.log(result);
+        Result.findOne({ wordleId: req.body.wordleId, user: req.body.userId }).then((result) => {
+            if(!result) {
+                // insert
+                const result = new Result({
+                    user: req.body.userId,
+                    wordleId: req.body.wordleId,
+                    score: req.body.score
+                })
 
-            res.status(200).json({
-                message: 'Added score :D'
-            })
+                result.save().then(result => {
+                    res.status(200).json({
+                        success: true,
+                        message: `Success`
+                    })
+                }).catch((error) => {
+                    res.status(400).json({
+                        success: false,
+                        message: `Error: ${error}`
+                    })
+                })
+
+            } else {
+                // record is found properly and should be updated with the new score...
+                result.updateOne({ score: req.body.score }).then((result) => {
+                    res.status(200).json({
+                        success: true,
+                        message: `Success`
+                    })
+                }).catch((error) => {
+                    res.status(400).json({
+                        success: false,
+                        message: `Error: ${error}`
+                    })
+                })
+            }
+
         }).catch((error) => {
             res.status(400).json({
-                message: 'Failed to add score...' + error
+                success: false,
+                message: `Error: ${error}`
             })
         })
-
-
-
-        // the thing above does work BUT it doesnt do unique...
-
-        // this doesnt work
-        // User.findById(req.body.userId).then((user) => {
-        //     // see if this result has been added...
-        //     user.results.findOneAndUpdate(
-        //         { wordleId: req.body.wordleId },
-        //         { wordleId: req.body.wordleId, score: req.body.score },
-        //         { upsert: true }
-        //     ).then((result) => {
-        //         res.status(200).json({
-        //             message: 'Added score :D'
-        //         })
-        //     }).catch((error) => {
-        //         res.status(400).json({
-        //             message: 'Failed to add score...' + error
-        //         })
-        //     })
-        // })
     }
 )
 

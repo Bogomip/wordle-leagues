@@ -8,28 +8,31 @@
         After you have created a new league a randomly generated ID and link will be provided to you. This you may distribute to anybody you want to join your league.
     </p>
 
-    <form class="form">
-        <div class="form__row">
-            <div class="form__text">League Name</div>
-            <div class="form__input">
-                <input type="text" class="input__text">
-            </div>
+    <p class="create__error" *ngIf="errorMessage" (click)="clearError()">
+        {{ errorMessage }}
+    </p>
+
+    <div class="form__row">
+        <div class="form__text">League Name</div>
+        <div class="form__input">
+            <input type="text" id="league-name" class="input__text">
         </div>
-        <div class="form__row">
-            <div class="form__text"></div>
-            <div class="form__input">
-                <button style="visibility: hidden;" type="submit" #submitButton>Create new league</button>
-                <div (click)='submitButton.click()'>
-                    <div class="wordle-lettering wordle-lettering__custom">
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_1">C</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_2">R</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_3">E</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_4">A</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_5">T</div>
-                        <div class="wordle-lettering__letter wordle-lettering__letter--green letter_6">E</div>
-                    </div>
+    </div>
+    <div class="form__row">
+        <div class="form__text"></div>
+        <div class="form__input">
+            <button style="visibility: hidden;" type="button" (click)="createLeague()" #submitButton>Create new league</button>
+            <div (click)='submitButton.click()'>
+                <div class="wordle-lettering wordle-lettering__custom">
+                    <div class="wordle-lettering__letter wordle-lettering__letter--green letter_1">C</div>
+                    <div class="wordle-lettering__letter wordle-lettering__letter--green letter_2">R</div>
+                    <div class="wordle-lettering__letter wordle-lettering__letter--green letter_3">E</div>
+                    <div class="wordle-lettering__letter wordle-lettering__letter--green letter_4">A</div>
+                    <div class="wordle-lettering__letter wordle-lettering__letter--green letter_5">T</div>
+                    <div class="wordle-lettering__letter wordle-lettering__letter--green letter_6">E</div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+
 </div>

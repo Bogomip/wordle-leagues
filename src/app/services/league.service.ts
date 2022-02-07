@@ -28,17 +28,17 @@ export class LeagueService implements OnInit, OnDestroy {
     private subscriptions: { [key: string] : Subscription } = {};
 
     leagues: League[] = [
-        {
-            _id: 'blah',
-            name: 'Pavanders',
-            notificationsAllowed: true,
-            members: [
-                  {  _id: '1', name: 'Rosemary', tags: { admin: false, pastWinner: true, pastRunnerUp: false }, score: { 1: 0, 2: 1, 3: 6, 4: 4, 5: 0, 6: 1, fail: 0 }, today: 3, joinTime: new Date().getTime() },
-                  {  _id: '2', name: 'Kev', tags: { admin: false, pastWinner: false, pastRunnerUp: false }, score: { 1: 1, 2: 0, 3: 3, 4: 8, 5: 0, 6: 0, fail: 0 }, today: 2, joinTime: new Date().getTime() },
-                  {  _id: '3', name: 'Sian', tags: { admin: true, pastWinner: false, pastRunnerUp: true }, score: { 1: 0, 2: 0, 3: 4, 4: 6, 5: 1, 6: 0, fail: 0 }, today: 6, joinTime: new Date().getTime() },
-                  {  _id: '4', name: 'Clare', tags: { admin: false, pastWinner: false, pastRunnerUp: false }, score: { 1: 0, 2: 1, 3: 4, 4: 3, 5: 0, 6: 2, fail: 0 }, today: 5, joinTime: new Date().getTime() }
-            ]
-        }
+        // {
+        //     _id: 'blah',
+        //     name: 'Pavanders',
+        //     notificationsAllowed: true,
+        //     members: [
+        //           {  _id: '1', name: 'Rosemary', tags: { admin: false, pastWinner: true, pastRunnerUp: false }, score: { 1: 0, 2: 1, 3: 6, 4: 4, 5: 0, 6: 1, fail: 0 }, today: 3, joinTime: new Date().getTime() },
+        //           {  _id: '2', name: 'Kev', tags: { admin: false, pastWinner: false, pastRunnerUp: false }, score: { 1: 1, 2: 0, 3: 3, 4: 8, 5: 0, 6: 0, fail: 0 }, today: 2, joinTime: new Date().getTime() },
+        //           {  _id: '3', name: 'Sian', tags: { admin: true, pastWinner: false, pastRunnerUp: true }, score: { 1: 0, 2: 0, 3: 4, 4: 6, 5: 1, 6: 0, fail: 0 }, today: 6, joinTime: new Date().getTime() },
+        //           {  _id: '4', name: 'Clare', tags: { admin: false, pastWinner: false, pastRunnerUp: false }, score: { 1: 0, 2: 1, 3: 4, 4: 3, 5: 0, 6: 2, fail: 0 }, today: 5, joinTime: new Date().getTime() }
+        //     ]
+        // }
     ]
 
     constructor(
@@ -50,12 +50,13 @@ export class LeagueService implements OnInit, OnDestroy {
         // subscribe to and collect user data as it is changed or modified...
         this.auth.user.subscribe((user: User) => {
             this.user = user;
+            this.getLeaguesData(user._id);
         })
 
-        this.getLeaguesData();
     }
 
     ngOnDestroy(): void {
+        console.log("destroy!");
         // unsubscribe to everything!
         for(let [key, subscription] of Object.entries(this.subscriptions)) {
             subscription.unsubscribe();
@@ -67,9 +68,9 @@ export class LeagueService implements OnInit, OnDestroy {
      * @param id
      * @returns
      */
-    getLeaguesData(id?: string): League[] {
+    getLeaguesData(id: string): League[] {
         // add the subscription to the subscriptions object
-        this.subscriptions['getleaguedata'] = this.http.get('http://localhost:3000/data/all?pies=yes').subscribe((result) => {
+        this.subscriptions['getleaguedata'] = this.http.get('http://localhost:3000/api/data/all/userId=' + id).subscribe((result) => {
             console.log(result);
         })
         // return a new instance...

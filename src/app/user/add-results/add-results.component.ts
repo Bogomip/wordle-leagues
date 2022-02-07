@@ -27,11 +27,10 @@ export class AddResultsComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-
-        this.loadGames();
-
+        // subscribe to the user, and once thats done find the last two games...
         this.auth.user.subscribe((user: User) => {
             this.user = user;
+            this.loadGames();
         })
      }
 
@@ -40,27 +39,47 @@ export class AddResultsComponent implements OnInit, OnDestroy {
     }
 
     loadGames(): void {
-        // test data...
+
+        const todaysGame: number = this.todaysGame();
+        // the only allowable values to change....
         this.gamesToSubmit = [
-            { id: 231, date: this.gameToDate(231), submitting: false, value: -1 },
-            { id: 232, date: this.gameToDate(232), submitting: false, value: -1 }
+            { id: todaysGame - 1, date: this.gameToDate(todaysGame - 1), submitting: false, value: -1 },
+            { id: todaysGame, date: this.gameToDate(todaysGame), submitting: false, value: -1 }
         ]
+        // get the data from the database...
+        this.http.post<{ success: boolean, data: any}>('http://localhost:3000/api/data/daily', { userId: this.user._id, gameId: todaysGame}).subscribe({
+            next: (result: { success: boolean, data: any[] }) => {
+                // iterate over all data points and see if any exist that we have submitted...
+                for(let dataPoint of result.data) {
+                    const dataIndex: number = this.gamesToSubmit.findIndex((temp) => temp.id === dataPoint.wordleId);
+                    // if it exists update the main array..
+                    if(dataIndex !== -1) {
+                        this.gamesToSubmit[dataIndex].value = dataPoint.score;
+                    }
+                }
+            },  error: (error: any) => {
+                console.log(`${error.message}`);
+            }
+        })
     }
 
     submitScore(wordleId: number, score: number): void {
+        // find the game in question...
         const accessGame: { id: number, date: string, submitting: boolean, value: number } = this.gamesToSubmit.find((test) => test.id === wordleId)!;
+        // if its a game you are able to access then update the score...
         if(accessGame) {
             // set the values on the front end...
             accessGame.value = score;
-            // accessGame.submitting = true;
+            accessGame.submitting = true;
 
             // and call the backend...
             this.http.post<{ message: string }>('http://localhost:3000/api/user/score', { userId: this.user._id, wordleId: wordleId, score: score}).subscribe({
                 next: (result: { message: string }) => {
-                    console.log(result);
+                    accessGame.submitting = false;
                 },
                 error: (error: any) => {
-                    console.log(error);
+                    console.log(`Error: ${error}`);
+                    accessGame.submitting = false;
                 }
             })
 
@@ -82,12 +101,22 @@ export class AddResultsComponent implements OnInit, OnDestroy {
         return `${dayString} ${dayValue}`;
     }
 
+    /**
+     * Returns todays game number
+     * @returns
+     */
+    todaysGame(): number {
+        const first: number = new Date('2021-6-19').getTime();
+        const today: number = new Date().getTime();
+        return Math.floor((today - first) / (1000 * 60 * 60 * 24));
+    }
+
 
     /**
      * Hides the submit box
      */
     hide(): void {
-        this.showSubmitBox = false;
+        this.showSubmitBox = !this.showSubmitBox;
     }
 
 
