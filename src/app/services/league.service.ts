@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, take, tap } from 'rxjs';
 import { AuthenticationService, User } from './authentication.service';
 
 export interface League {
@@ -27,19 +27,11 @@ export class LeagueService implements OnInit, OnDestroy {
     user: User;
     private subscriptions: { [key: string] : Subscription } = {};
 
-    leagues: League[] = [
-        // {
-        //     _id: 'blah',
-        //     name: 'Pavanders',
-        //     notificationsAllowed: true,
-        //     members: [
-        //           {  _id: '1', name: 'Rosemary', tags: { admin: false, pastWinner: true, pastRunnerUp: false }, score: { 1: 0, 2: 1, 3: 6, 4: 4, 5: 0, 6: 1, fail: 0 }, today: 3, joinTime: new Date().getTime() },
-        //           {  _id: '2', name: 'Kev', tags: { admin: false, pastWinner: false, pastRunnerUp: false }, score: { 1: 1, 2: 0, 3: 3, 4: 8, 5: 0, 6: 0, fail: 0 }, today: 2, joinTime: new Date().getTime() },
-        //           {  _id: '3', name: 'Sian', tags: { admin: true, pastWinner: false, pastRunnerUp: true }, score: { 1: 0, 2: 0, 3: 4, 4: 6, 5: 1, 6: 0, fail: 0 }, today: 6, joinTime: new Date().getTime() },
-        //           {  _id: '4', name: 'Clare', tags: { admin: false, pastWinner: false, pastRunnerUp: false }, score: { 1: 0, 2: 1, 3: 4, 4: 3, 5: 0, 6: 2, fail: 0 }, today: 5, joinTime: new Date().getTime() }
-        //     ]
-        // }
-    ]
+    // subscribable values to alert other components to changes or impensing changes.
+    leagues = new BehaviorSubject<League[]>(null!);
+    leagueUpdating = new Subject<string>();
+
+    private leaguesLocal: League[] = [];
 
     constructor(
         private auth: AuthenticationService,
@@ -68,13 +60,36 @@ export class LeagueService implements OnInit, OnDestroy {
      * @param id
      * @returns
      */
-    getLeaguesData(id: string): League[] {
+    getLeaguesData(id: string): void {
+        // alert all the currently active leagues they are going to be updated...
+        this.leaguesLocal.forEach((league: League) => this.leagueUpdating.next(league._id));
         // add the subscription to the subscriptions object
-        this.subscriptions['getleaguedata'] = this.http.get('http://localhost:3000/api/data/all/userId=' + id).subscribe((result) => {
-            console.log(result);
-        })
-        // return a new instance...
-        return [...this.leagues];
+        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League[]}>('http://localhost:3000/api/data/all/userId=' + id).subscribe({
+            next: (result: {success: boolean, data: League[]}) => {
+                this.leaguesLocal = [...result.data];   // store a local version
+                this.leagues.next([...this.leaguesLocal]);    // emit the full version to subscribers
+        }})
+    }
+
+    /**
+     * Retrieves the data for one individual league...
+     * @param id
+     * @returns
+     */
+     getLeagueData(id: string, leagueId: string): void {
+        // alert components this league is being updated...
+        this.leagueUpdating.next(leagueId);
+        // add the subscription to the subscriptions object
+        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League}>(`http://localhost:3000/api/data/league/userId=${id}&leagueId=${leagueId}`).subscribe({
+            next: (result: {success: boolean, data: League}) => {
+                // find the league from the local array and replace it.
+                const leagueIndex: number = this.leaguesLocal.findIndex((temp: League) => temp._id === leagueId);
+                if(leagueIndex !== -1) {
+                    this.leaguesLocal[leagueIndex] = result.data;
+                }
+                // and after changing the local version, reemit the whole thing...
+                this.leagues.next([...this.leaguesLocal]);
+        }})
     }
 
 }

@@ -1,0 +1,20 @@
+<div class="search">
+
+    <app-spinner *ngIf="isSearching"></app-spinner>
+
+    <div class="search__add" *ngIf="!foundLeague">
+        <input class="search__add--input" type="text" id="league-code" placeholder="League Code...">
+        <button class="search__add--button"(click)="searchLeagues()">Search League</button>
+    </div>
+
+    <div class="search__found" *ngIf="foundLeague">
+        <div class="search__detail">
+            <div class="search__detail--name">{{ foundLeague.name }}</div>
+            <div class="search__detail--members">Currently with {{ foundLeague.members }} members</div>
+        </div>
+        <div class="search__buttons">
+            <button class="input__button search__button" (click)="joinLeague()">Join</button>
+            <button class="input__button search__button" (click)="resetSearch()">Back</button>
+        </div>
+    </div>
+</div>

@@ -74,5 +74,25 @@ router.post(
         console.log('restarting league...' + req.body);
 })
 
+router.get(
+    '/search/:leagueId'
+    , checkAuth
+    , (req, res, next) => {
+        const leagueId = req.params.leagueId.split('=')[1];
+        console.log(leagueId);
+
+        league.findOne({ leagueId: leagueId }, 'leagueId name members').then(result => {
+            res.status(200).json({
+                success: true,
+                data: { code: result.leagueId, name: result.name, members: result.members.length }
+            })
+        }).catch(error => {
+            res.status(400).json({
+                success: false,
+                message: `Error: ${error}`
+            })
+        })
+})
+
 
 module.exports = router;

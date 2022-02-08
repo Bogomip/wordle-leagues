@@ -2,13 +2,10 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
-const league = require('../models/league');
 const result = require('../models/result');
 const Results = require('../models/result')
 const methods = require('../methods/methods');
 const user = require('../models/user');
-const league = require('../models/league');
-const league = require('../models/league');
 const league = require('../models/league');
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 
@@ -24,13 +21,14 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
 
         // loop over the results collecting data to form the next queries...
         let usersList = [];
-        let lowestWordleDate = methods.todaysGame();
+        let lowestWordleDate, todaysGame = methods.todaysGame();
 
         for(let league of leagues) {
             // build a list of users to query for...
             for(let member of league.members) {
-                if(!usersList.find(temp => temp === member)) {
-                    usersList.push(member);
+                console.log(member.toString());
+                if(!usersList.find(temp => temp.toString() === member.toString())) {
+                    usersList.push(member.toString());
                 }
             }
             // and see if the lowest looked at wordle date is found...
@@ -41,15 +39,20 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
         const resultsQuery = result.find({ user: { $in: usersList }}, 'wordleId score user');
 
         Promise.all([usersQuery, resultsQuery]).then(([users, results]) => {
-            console.log(users, results);
+            // console.log(users, results);
+            let leagueReturn = [];
 
             // parse user data into a useable format...
-            for(let league of leagues) {
+            for(let leagueIteration of leagues) {
+
+                // make a new copy of this to increase speed when dealing with large data sets...
+                let leagueIterationScore = [...results];
+
                 // create a new league
                 let newLeague = {
-                    _id: league._id,
-                    name: league.name,
-                    notificationsAllowed: league.notifications,
+                    _id: leagueIteration._id,
+                    name: leagueIteration.name,
+                    notificationsAllowed: leagueIteration.notifications ? leagueIteration.notifications : true,
                     members: []
                 }
                 // and iterate over the users to place them into the array for members...
@@ -61,24 +64,47 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
                 //     today?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
                 //     joinTime: number;
 
-                const usersInLeague = users.filter(temp => league.members.find(usr => usr === temp._id));
+                const usersInLeague = users.filter(temp => !!leagueIteration.members.find(usr => usr.toString() === temp._id.toString()));
+                // console.log(`Usres in league ${leagueIteration.name}: ${usersInLeague}`);
 
                 for(let member of usersInLeague) {
+                    // get the scores for this user...
+                    const userScores = leagueIterationScore.filter(temp => temp.user.toString() === member._id.toString());
+                    // then remove from the array so next iterations are faster...
+                    leagueIterationScore.filter(temp => temp.user.toString() !== member._id.toString());
+                    // and create a scores array...
+                    const scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 0};
+                    userScores.forEach(result => scores[result.score] = scores[result.score] + 1);
+
                     // iterate through the users array to find all users that belong
-                    for(let user of users) {
-
+                    const leagueMember = {
+                        _id: member._id,
+                        name: member.username,
+                        tags: {
+                            admin: !!leagueIteration.admins.find(temp => temp.toString() === member._id.toString()),
+                            pastWinner: leagueIteration.previousWinner === member._id,
+                            pastRunnerUp: leagueIteration.previousRunnerUp === member._id,
+                        },
+                        score: {
+                            1: scores[1],
+                            2: scores[2],
+                            3: scores[3],
+                            4: scores[4],
+                            5: scores[5],
+                            6: scores[6],
+                            fail: scores[0]
+                        },
+                        today: userScores.find(temp => temp.wordleId === todaysGame)?.score
                     }
+                    newLeague.members.push(leagueMember);
                 }
+
+                leagueReturn.push(newLeague);
             }
-
-
-
-
-
 
             res.status(200).json({
                 success: true,
-                data: users
+                data: leagueReturn
             })
         }).catch(error => {
             res.status(400).json({

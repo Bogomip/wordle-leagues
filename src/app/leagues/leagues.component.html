@@ -2,27 +2,24 @@
 
     <div class="leagues__header">
         <h1 class="leagues__title">Your Leagues</h1>
-        <div class="leagues__add">
-            <input class="leagues__add--input" type="text" placeholder="League Code...">
-            <button class="leagues__add--button">Add League</button>
-        </div>
+        <app-search-leagues></app-search-leagues>
     </div>
 
 
     <div class="league" *ngFor="let league of leagues">
 
-        <app-spinner></app-spinner>
+        <app-spinner *ngIf="isDataRefreshing(league._id)"></app-spinner>
 
         <div class="league__header">
             <h2 class="league__name">{{ league.name }}</h2>
             <div class="league__admin-controls">
 
 
-                <div class="league__control league__control--darkyellow">
+                <div class="league__control league__control--darkyellow" *ngIf="isLeagueAdmin(league._id)">
                     <div class="league__control--text">Delete League</div>
                     <img src="../../assets/icons/trash.png" alt="Delete League" (click)="deleteLeague(league._id)">
                 </div>
-                <div class="league__control league__control--yellow">
+                <div class="league__control league__control--yellow" *ngIf="isLeagueAdmin(league._id)">
                     <div class="league__control--text">Restart League</div>
                     <img src="../../assets/icons/cycle.png" alt="Restart League" (click)="restartLeague(league._id)">
                 </div>
@@ -45,7 +42,7 @@
         <table class="league__table">
 
             <colgroup>
-                <col span="1" style="width: 1%;">
+                <col span="1" style="width: 1%;" *ngIf="isLeagueAdmin(league._id)">
                 <col span="1" style="width: 40%; text-align: left;">
                 <col span="1" style="width: 4%;">
                 <col span="1" style="width: 4%;">
@@ -58,8 +55,8 @@
             </colgroup>
 
             <thead>
-                <th> </th>
-                <th>Name</th>
+                <th *ngIf="isLeagueAdmin(league._id)"></th>
+                <th style="text-align: left;">Name</th>
                 <th>1</th>
                 <th>2</th>
                 <th>3</th>
@@ -70,7 +67,7 @@
                 <th>Points</th>
             </thead>
             <tr *ngFor="let user of league.members">
-                    <td class="league__user-admin">
+                    <td class="league__user-admin" *ngIf="isLeagueAdmin(league._id)">
                         <div class="league__control league__control--darkyellow" (click)="removeUserFromLeague(league._id, user._id)">
                             <div class="league__control--text league__control--small">Delete Member</div>
                             <img src="../../assets/icons/trash.png" alt="Delete User">
