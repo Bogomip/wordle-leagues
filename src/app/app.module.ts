@@ -16,6 +16,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SpinnerComponent } from './utilities/spinner/spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
+import { SearchLeaguesComponent } from './utilities/search-leagues/search-leagues.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
     NotfoundComponent,
     AddResultsComponent,
     NotificationsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    SearchLeaguesComponent
   ],
   imports: [
     BrowserModule,

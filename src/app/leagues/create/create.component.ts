@@ -36,7 +36,7 @@ export class CreateComponent implements OnInit {
         if(leagueName.length >= 3 && leagueName.length <= 30) {
             this.http.post('http://localhost:3000/api/league/create', { userId: this.user._id, name: leagueName }).subscribe({
                 next: () => {
-                    this.router.navigate(['/']);
+                    this.router.navigate(['/leagues']);
                 },
                 error: () => {
                     this.errorMessage = 'League could not be created, check you are correctly logged in, refresh the page, or try again later.'

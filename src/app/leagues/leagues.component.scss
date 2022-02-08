@@ -10,42 +10,6 @@
     &__title {
     }
 
-    &__add {
-
-        &--input {
-            width: 15rem;
-            border-radius: 1rem;
-            padding: .5rem 2rem;
-            margin-right: .5rem;
-            border: .1rem solid rgba(black, .3);
-            box-shadow: 0 .3rem .6rem rgba(black, .5);
-        }
-
-        &--button {
-            width: 15rem;
-            border-radius: 1rem;
-            padding: .5rem 2rem;
-            background-color: var(--main-darkgreen);
-            transition: all .2s;
-            color: var(--eggshell);
-            box-shadow: 0 .3rem .6rem rgba(black, .5);
-
-            &:hover {
-                cursor: pointer;
-                background-color: var(--main-yellow);
-                color: var(--main-green);
-                font-weight: bold;
-                box-shadow: 0 .6rem .9rem rgba(black, .7);
-            }
-
-            &:active {
-                transform: translateY(-.3rem);
-            }
-        }
-
-
-
-    }
 }
 
 .league {
@@ -153,10 +117,6 @@
             text-align: center;
             padding: .5rem;
             vertical-align: baseline;
-
-            &:nth-of-type(2) {
-                text-align: left;
-            }
 
             .league__control {
                 padding: .3rem 1rem;

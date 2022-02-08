@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthenticationService, User } from 'src/app/services/authentication.service';
+import { LeagueService } from 'src/app/services/league.service';
 
 @Component({
   selector: 'app-add-results',
@@ -23,7 +24,8 @@ export class AddResultsComponent implements OnInit, OnDestroy {
 
     constructor(
         private auth: AuthenticationService,
-        private http: HttpClient
+        private http: HttpClient,
+        private leagueService: LeagueService
     ) { }
 
     ngOnInit(): void {
@@ -75,10 +77,14 @@ export class AddResultsComponent implements OnInit, OnDestroy {
             // and call the backend...
             this.http.post<{ message: string }>('http://localhost:3000/api/user/score', { userId: this.user._id, wordleId: wordleId, score: score}).subscribe({
                 next: (result: { message: string }) => {
+                    // update all leagues...
+                    this.leagueService.getLeaguesData(this.user._id);
+                    // stop the spinner..
                     accessGame.submitting = false;
                 },
                 error: (error: any) => {
                     console.log(`Error: ${error}`);
+                    // stop the spinner..
                     accessGame.submitting = false;
                 }
             })
