@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const messageSchema = mongoose.Schema({
     type: { type: Number, required: true },
+    time: { type: Number, required: true },
     title: { type: String, required: true },
     content: { type: String, required: true },
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }]
