@@ -159,6 +159,8 @@ router.post(
                         users: leagueToDelete.members
                     })
 
+                    // DIDNT GET THIS FAR!!!!
+
                     console.log(message.content);
 
                     message.save().then(messageResults => {
