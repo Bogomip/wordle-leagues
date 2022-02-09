@@ -6,8 +6,6 @@ const methods = require('../methods/methods');
 const user = require('../models/user');
 const message = require('../models/messages');
 const result = require('../models/result');
-const { runner } = require('karma');
-const { Console } = require('console');
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 
 
@@ -76,6 +74,7 @@ router.post('/leave',
         console.log('leaving league...' + req.body);
 })
 
+
 router.post(
     '/delete',
     checkAuth,
@@ -132,17 +131,14 @@ router.post(
                 // got everything so delete away!
                 league.deleteOne({ _id: leagueId }).then(deleteCount => {
 
-                    // get appropriate dates for the messages
-                    const dateDay = new Date(day, month, year);
-                    const dateTime = new Date(hour, minute);
-
                     // get the admin name
-                    const adminName = users.find(usr => usr._id === adminId).username;
+                    const adminName = users.find(usr => usr._id.toString() === adminId.toString()).username;
 
                     let winners;
                     let runners;
 
                     // make nice strings for the winners and runnerups
+
                     if(winner.names.length > 1) {
                         winners = winner.names.slice(0, -1).join(', ').concat(` and ${winner.names[winner.names.length - 2]}`);
                     } else winners = winner.names[0];
@@ -152,22 +148,25 @@ router.post(
                     } else runners = runnerUp.names[0];
 
                     // build the message
-                    const message = new message({
+                    const messageToUsers = new message({
                         type: 1,
+                        time: new Date().getTime(),
                         title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
-                        content: `On ${dateDay} at ${dateTime} the ${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winners} with ${winner.score} points, and the runner ups were ${runner} with ${runnerUp.score}.`,
+                        content: `${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winners} with ${winner.score} points, and the runner ups were ${runners} with ${runnerUp.score}.`,
                         users: leagueToDelete.members
                     })
 
-                    // DIDNT GET THIS FAR!!!!
-
-                    console.log(message.content);
-
-                    message.save().then(messageResults => {
+                    messageToUsers.save().then(messageResults => {
                         // message posted!
-                        res.status(200).json({
+                        // return a copy of the message to be sent to users so it can be dynamically added to the users message bar.
+                        res.status(201).json({
                             success: true,
-                            message: `Deletion Success`
+                            data: {
+                                type: 1,
+                                time: new Date().getTime(),
+                                title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
+                                content: `${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winners} with ${winner.score} points, and the runner ups were ${runners} with ${runnerUp.score}.`,
+                            }
                         })
                     }).catch(error => {
                         res.status(400).json({
@@ -189,48 +188,6 @@ router.post(
                     message: `An error occured whilst trying to delete the league: ${error}`
                 })
             })
-
-
-
-
-
-
-            // user.find({ _id: { $in: leagueToDelete.members }}, '_id username').then(usersData => {
-
-            //     // got everything so delete away!
-            //     league.deleteOne({ leagueId: leagueCode }).then(deletionSuccess => {
-
-            //         // get appropriate dates for the messages
-            //         const dateDay = new Date(day, month, year);
-            //         const dateTime = new Date(hour, minute);
-
-            //         // geta ppropriate names for the messages
-            //         const adminName = usersData.find(usr => usr._id === adminId).username;
-            //         const winnerName = usersData.find(usr => usr._id === leagueToDelete.previousWinner).username;
-            //         const runnerUpName = usersData.find(usr => usr._id === leagueToDelete.previousRunnerUp).username;
-
-            //         // build the message
-            //         const message = new message({
-            //             type: 1,
-            //             title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
-            //             content: `On ${dateDay} at ${dateTime} the ${leagueToDelete.name} league was deleted by ${adminName}. The`,
-            //             users: leagueToDelete.members
-            //         })
-
-            //     }).catch(error => {
-            //         res.status(400).json({
-            //             success: false,
-            //             message: `Deletion Failed: ${error}`
-            //         })
-            //     })
-            // }).catch(error => {
-            //     // if the users arent found for some reason then cancel the process.
-            //     res.status(400).json({
-            //         success: false,
-            //         message: `Something is wrong with the league data, sdo i cant delete it: ${error}`
-            //     })
-            // })
-
         }).catch(error => {
             res.status(400).json({
                 success: false,
