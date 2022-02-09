@@ -33,13 +33,25 @@ export class GeneralService {
         localStorage.setItem('animation', JSON.stringify({runAnimation: false}));
     }
 
+
     /**
-     * Converts a day offset from now (0 is today) into the wordle code (from the game)
-     * @param dayOffset
+     * Converts the game ID into a date in the format 'Wed 07'
+     * @param wordleId
+     */
+     gameToDate(wordleId: number): string {
+        const first: number = new Date('2021-6-19').getTime();
+        const id: Date = new Date(first + wordleId * 1000 * 60 * 60 * 24);
+        const [dayString, dayValue]: [string, number] = [id.toLocaleDateString('en-gb', { weekday: 'short' }), id.getDate()];
+        return `${dayString} ${dayValue}`;
+    }
+
+    /**
+     * Returns todays game number
      * @returns
      */
-    getWordle(dayOffset: number): number {
-        const beginningTime: number = 1624050004933; // approx, midnight qatar time on the first ever wordle... can do a better job?
-        return 229;
+    todaysGame(): number {
+        const first: number = new Date('2021-6-19').getTime();
+        const today: number = new Date().getTime();
+        return Math.floor((today - first) / (1000 * 60 * 60 * 24));
     }
 }

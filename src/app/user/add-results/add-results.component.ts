@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthenticationService, User } from 'src/app/services/authentication.service';
+import { GeneralService } from 'src/app/services/general.service';
 import { LeagueService } from 'src/app/services/league.service';
 
 @Component({
@@ -25,7 +26,8 @@ export class AddResultsComponent implements OnInit, OnDestroy {
     constructor(
         private auth: AuthenticationService,
         private http: HttpClient,
-        private leagueService: LeagueService
+        private leagueService: LeagueService,
+        private generalService: GeneralService
     ) { }
 
     ngOnInit(): void {
@@ -42,11 +44,11 @@ export class AddResultsComponent implements OnInit, OnDestroy {
 
     loadGames(): void {
 
-        const todaysGame: number = this.todaysGame();
+        const todaysGame: number = this.generalService.todaysGame();
         // the only allowable values to change....
         this.gamesToSubmit = [
-            { id: todaysGame - 1, date: this.gameToDate(todaysGame - 1), submitting: false, value: -1 },
-            { id: todaysGame, date: this.gameToDate(todaysGame), submitting: false, value: -1 }
+            { id: todaysGame - 1, date: this.generalService.gameToDate(todaysGame - 1), submitting: false, value: -1 },
+            { id: todaysGame, date: this.generalService.gameToDate(todaysGame), submitting: false, value: -1 }
         ]
         // get the data from the database...
         this.http.post<{ success: boolean, data: any}>('http://localhost:3000/api/data/daily', { userId: this.user._id, gameId: todaysGame}).subscribe({
@@ -83,7 +85,7 @@ export class AddResultsComponent implements OnInit, OnDestroy {
                     accessGame.submitting = false;
                 },
                 error: (error: any) => {
-                    console.log(`Error: ${error}`);
+                    console.log(`Error: ${error.message}`);
                     // stop the spinner..
                     accessGame.submitting = false;
                 }
@@ -95,28 +97,6 @@ export class AddResultsComponent implements OnInit, OnDestroy {
             this.loadGames();
         }
     }
-
-    /**
-     * Converts the game ID into a date in the format 'Wed 07'
-     * @param wordleId
-     */
-    gameToDate(wordleId: number): string {
-        const first: number = new Date('2021-6-19').getTime();
-        const id: Date = new Date(first + wordleId * 1000 * 60 * 60 * 24);
-        const [dayString, dayValue]: [string, number] = [id.toLocaleDateString('en-gb', { weekday: 'short' }), id.getDate()];
-        return `${dayString} ${dayValue}`;
-    }
-
-    /**
-     * Returns todays game number
-     * @returns
-     */
-    todaysGame(): number {
-        const first: number = new Date('2021-6-19').getTime();
-        const today: number = new Date().getTime();
-        return Math.floor((today - first) / (1000 * 60 * 60 * 24));
-    }
-
 
     /**
      * Hides the submit box

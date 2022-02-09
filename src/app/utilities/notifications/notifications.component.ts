@@ -2,9 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthenticationService, User } from 'src/app/services/authentication.service';
+import { GeneralService } from 'src/app/services/general.service';
+import { League, LeagueMember, LeagueService } from 'src/app/services/league.service';
 
 export interface WordleNotification {
-    _id: string; name: string; score: number; leaguename: string
+    _id: string; name: string; wordleId: number; score: number; leagueName: string; leagueId: string; seen: boolean;
+}
+
+interface LeagueIdentifier {
+    _id: string; name: string;
 }
 
 @Component({
@@ -17,16 +23,7 @@ export class NotificationsComponent implements OnInit {
     // user data
     user: User;
 
-    // notifications and leagues data..
-    notifications: WordleNotification[] = [
-        { _id: '123', name: 'Rosemary', score: 3, leaguename: 'Pavanders' },
-        { _id: '256', name: 'Ken', score: 3, leaguename: 'Pavanders' },
-        { _id: '1244', name: 'Sian', score: 2, leaguename: 'Pavanders' },
-        { _id: '12311', name: 'Clare', score: 5, leaguename: 'Pavanders' },
-        { _id: '12310', name: 'Alex', score: 4, leaguename: 'Pavanders' },
-    ]
-
-    leagues: string[] = ['Pavanders'];
+    leagues: LeagueIdentifier[] = [];
 
     // subscriptions...
     notificationsSubscription: Subscription;
@@ -40,42 +37,95 @@ export class NotificationsComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService,
-        private http: HttpClient
+        private http: HttpClient,
+        private leagueService: LeagueService,
+        private generalService: GeneralService
     ) { }
 
     ngOnInit(): void {
-        this.auth.user.subscribe((user: User) => {
-            this.user = user;
-        })
+        // user subscription
+        this.auth.user.subscribe((user: User) =>  this.user = user )
+        // league subscription...
+        this.leagueService.leagues.subscribe((leagues: League[]) => { if(leagues.length > 0) this.processNewLeagueData(leagues) });
+        // league updating...
+        this.leagueService.leagueUpdating.subscribe((leagueId: string) => this.leagueCurrentlyUpdating(leagueId));
+    }
+
+    /**
+     * If a league is currently being updated then visually show it is being updated...
+     * @param leagueId
+     */
+    leagueCurrentlyUpdating(leagueId: string): void {
+
+    }
+
+
+    // notifications and leagues data..
+    notifications: WordleNotification[] = []
+
+
+    // new leagues data has just been triggered so update everything...
+    processNewLeagueData(leagues: League[]): void {
+        // get todays league id as these are the only notifications that matter...
+        const wordleNumber: number = this.generalService.todaysGame();
+        let newNotifications: WordleNotification[] = [];
+        let newLeagues: LeagueIdentifier[] = [];
+        // sort the local data...
+        let localData: WordleNotification[] = JSON.parse(localStorage.getItem('notifications')!);
+        let todaysLocalData: WordleNotification[] = localData ? localData.filter((temp: WordleNotification) => temp.wordleId === wordleNumber) : []; // filter only todays wordles...
+
+        // iterate over each league...
+        for(let i = 0; i < leagues.length ; i++) {
+            // and iterate over each member...
+            // add them to the main array if they have done todays wordle...
+            leagues[i].members.forEach((member: LeagueMember) => {
+                if(member.today) {
+                    // check for if any notifications from this person have been seen and removed...
+                    const seen: boolean = todaysLocalData.find((temp: WordleNotification) => temp._id === member._id && temp.score === member.today)?.seen || false;
+                    const notification: WordleNotification = { _id: member._id, name: member.name, wordleId: wordleNumber, score: member.today, leagueName: leagues[i].name, leagueId: leagues[i]._id, seen: seen };
+                    newNotifications.push(notification);
+                    // check if the league is already in the league array and if not, add it...
+                    if(!newLeagues.find((temp: LeagueIdentifier) => leagues[i]._id === temp._id)) newLeagues.push({ _id: leagues[i]._id, name: leagues[i].name});
+                }
+            })
+        }
+        // store locally...
+        localStorage.setItem('notifications', JSON.stringify(newNotifications));
+        // push to main notifications array...
+        this.notifications = [...newNotifications];
+        // push tot he leagues array
+        this.leagues = newLeagues;
+        // remove emoty leagues...
+        this.removeEmptyLeagues();
     }
 
     /**
      * Retrive notifications from the database.
      */
-    getNotifications(): void {
-        this.isLoading = true;
-        const userId: string = '12345'; // why does this.user.id not work?
+    // getNotifications(): void {
+    //     this.isLoading = true;
+    //     const userId: string = '12345'; // why does this.user.id not work?
 
-        this.http.get<WordleNotification[]>('http://localhost:3000/api/notifications?id=' + userId).subscribe(
-        {
-            next: (data: WordleNotification[]) => {
+    //     this.http.get<WordleNotification[]>('http://localhost:3000/api/notifications?id=' + userId).subscribe(
+    //     {
+    //         next: (data: WordleNotification[]) => {
 
-                this.isLoading = false;
-            },
-            error: (error: any) => {
-                this.errorMessage = 'Your notifications failed to load... give it a minute then try again by clicking here!';
-                this.isLoading = false;
-            }
-        })
-    }
+    //             this.isLoading = false;
+    //         },
+    //         error: (error: any) => {
+    //             this.errorMessage = 'Your notifications failed to load... give it a minute then try again by clicking here!';
+    //             this.isLoading = false;
+    //         }
+    //     })
+    // }
 
     /**
      * Gets all members of a league in the notifications...
      * @param leagueName
      * @returns
      */
-    getLeagueUsers(leagueName: string): WordleNotification[] {
-        return this.notifications.filter((user: WordleNotification) => user.leaguename === leagueName);
+    getLeagueUsers(leagueId: string): WordleNotification[] {
+        return this.notifications.filter((user: WordleNotification) => user.leagueId === leagueId && user.seen === false);
     }
 
     /**
@@ -98,24 +148,55 @@ export class NotificationsComponent implements OnInit {
             userElements[i].classList.add('delete');
         }
 
+        // get the local notifications data and set seen to true for this user everywhere.
+        let localData: WordleNotification[] = JSON.parse(localStorage.getItem('notifications') || '[]') || [];
+
+        for(let i = 0; i < localData.length ; i++) {
+            if(localData[i]._id === user._id) localData[i].seen = true;
+        }
+
+        // reupload local data...
+        localStorage.setItem('notifications', JSON.stringify(localData));
+
         // after 1 second trigger the removal from the db...
         setTimeout(() => {
             this.notifications = [...this.notifications.filter((notification: WordleNotification) => notification._id !== user._id)];
-            // check if this league still has any players and if no remove it from the list...
-            const leagueUserCount: number = this.getLeagueUsers(user.leaguename).length;
-
-            if(leagueUserCount === 0) {
-                this.leagues = [...this.leagues.filter((league: string) => league !== user.leaguename)];
-            }
+            // check all leagues to see if notifications still exist...
+            this.removeEmptyLeagues();
         }, 1000);
+    }
+
+    /**
+     * Removes all empty leagues from the system...
+     */
+    removeEmptyLeagues(): void {
+        let newLeagueArray: LeagueIdentifier[] = [];
+        // iterate over all notifications...
+        for(let i = 0 ; i < this.leagues.length ; i++) {
+            const league: LeagueIdentifier = this.leagues[i];
+            const leagueUserCount: number = this.notifications.filter((temp: WordleNotification) => temp.leagueId === league._id && temp.seen === true).length;
+
+            if(leagueUserCount !== 0) {
+                newLeagueArray.push(this.leagues[i]);
+            }
+        }
+        this.leagues = [...newLeagueArray];
+    }
+
+    /**
+     * Updates the local storage to reflect a users new scores have been seen
+     * @param userId
+     */
+    updateLocalNotificationsStorage(userId: string): void {
+
     }
 
     /**
      * If a get fails, this will retry the notifications db.
      */
-    retryNotificationsGet(): void {
-        this.errorMessage = '';
-        this.getNotifications();
-    }
+    // retryNotificationsGet(): void {
+    //     this.errorMessage = '';
+    //     this.getNotifications();
+    // }
 
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, User } from 'src/app/services/authentication.service';
+import { LeagueService } from 'src/app/services/league.service';
 
 @Component({
   selector: 'app-search-leagues',
@@ -17,7 +18,8 @@ export class SearchLeaguesComponent implements OnInit {
 
     constructor(
         private http: HttpClient,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private leagueService: LeagueService
     ) { }
 
     ngOnInit(): void {
@@ -44,8 +46,18 @@ export class SearchLeaguesComponent implements OnInit {
         this.foundLeague = null!;
     }
 
+    /**
+     * Joins the league and updates the leagues thing...
+     */
     joinLeague(): void {
-
+        this.leagueService.joinLeague(this.user._id, this.foundLeague.code).subscribe({
+            next: (result: any) => {
+                // success - refresh the leagues information...
+                this.leagueService.getLeaguesData(this.user._id);
+        },  error: (error: any) => {
+                // failure
+                this.errorMessage = `Unable to join league: ${error}`;
+        }})
     }
 
 }

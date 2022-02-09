@@ -28,7 +28,7 @@ export class LeagueService implements OnInit, OnDestroy {
     private subscriptions: { [key: string] : Subscription } = {};
 
     // subscribable values to alert other components to changes or impensing changes.
-    leagues = new BehaviorSubject<League[]>(null!);
+    leagues = new BehaviorSubject<League[]>([]);
     leagueUpdating = new Subject<string>();
 
     private leaguesLocal: League[] = [];
@@ -90,6 +90,66 @@ export class LeagueService implements OnInit, OnDestroy {
                 // and after changing the local version, reemit the whole thing...
                 this.leagues.next([...this.leaguesLocal]);
         }})
+    }
+
+    /**
+     * Joins a league for a user, returns an observable. Tidy this up?
+     * @param userId
+     * @param leagueCode
+     * @returns
+     */
+    joinLeague(userId: string, leagueCode: string): Observable<any> {
+        return this.http.post('http://localhost:3000/api/league/join', { userId: userId, leagueCode: leagueCode }).pipe(take(1), tap({
+            next: (result: any) => {
+                return true;
+        },  error: (error: any) => {
+                return false;
+        }}));
+    }
+
+    /**
+     * Has a user leave a league
+     * @param userId
+     * @param leagueCode
+     * @returns
+     */
+    leaveLeague(userId: string, leagueCode: string): Observable<any> {
+        return this.http.post('http://localhost:3000/api/league/leave', { userId: userId, leagueCode: leagueCode }).pipe(take(1), tap({
+            next: (result: any) => {
+                return true;
+        },  error: (error: any) => {
+                return false;
+        }}));
+    }
+
+    /**
+     * Deletes a league from the system... causes a message to be pushed to all users with the final results.
+     * @param adminId
+     * @param leagueId
+     * @returns
+     */
+    deleteLeague(adminId: string, leagueId: string): Observable<any> {
+        return this.http.post('http://localhost:3000/api/league/delete', { adminId: adminId, leagueId: leagueId }).pipe(take(1), tap({
+            next: (result: any) => {
+                return true;
+        },  error: (error: any) => {
+                return false;
+        }}));
+    }
+
+    /**
+     * Restarts a league... causes a message to be pushed to all users with the final results.
+     * @param adminId
+     * @param leagueCode
+     * @returns
+     */
+    restartLeague(adminId: string, leagueCode: string): Observable<any> {
+        return this.http.post('http://localhost:3000/api/league/restart', { adminId: adminId, leagueCode: leagueCode }).pipe(take(1), tap({
+            next: (result: any) => {
+                return true;
+        },  error: (error: any) => {
+                return false;
+        }}));
     }
 
 }
