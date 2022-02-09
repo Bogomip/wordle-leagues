@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
 const league = require('../models/league');
 const methods = require('../methods/methods');
+const user = require('../models/user');
+const message = require('../models/messages');
+const result = require('../models/result');
+const { runner } = require('karma');
+const { Console } = require('console');
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 
 
@@ -51,7 +55,19 @@ router.post('/create'
 router.post('/join',
     checkAuth,
     (req, res, next) => {
-        console.log('joining league...')
+        const userId = req.body.userId;
+        const leagueCode = req.body.leagueCode;
+
+        league.updateOne({ leagueId: leagueCode }, { $addToSet: { members: userId }}).then(results => {
+            res.status(200).json({
+                success: true
+            })
+        }).catch(error => {
+            res.status(400).json({
+                success: true
+            })
+        })
+
 })
 
 router.post('/leave',
@@ -60,18 +76,172 @@ router.post('/leave',
         console.log('leaving league...' + req.body);
 })
 
-router.delete(
+router.post(
     '/delete',
     checkAuth,
     (req, res, next) => {
-        console.log('deleting league...' + req.body);
+        const leagueId = req.body.leagueId;
+        const adminId = req.body.adminId;
+
+        league.findOne({ _id: leagueId, admins: { $in : [adminId] }}).then(leagueReturned => {
+            // user has been found as an admin of this group...
+            // get the userlist as they will need to be notified...
+            const leagueToDelete = leagueReturned;
+
+            // get the data for the league and the user data too.
+            const userQuery = user.find({ _id: { $in : leagueToDelete.members }}, 'username');
+            const resultQuery = result.find({ user: { $in : leagueToDelete.members }, wordleId: { $gte: leagueToDelete.startId }}, 'score user');
+
+            // we havwe to go over the whole group on a deletion because
+            // we need to know who won!
+            Promise.all([userQuery, resultQuery]).then(([users, results]) => {
+
+                let winner = { names: ['Nobody'], score: 0 };
+                let runnerUp = { names: ['Nobody'], score: 0 };
+                let scoreArray = [0,2,3,4,3,2,1];
+
+                // not working 100% atm... but go with it!
+                for(let i = 0 ; i < users.length ; i++) {
+                    // total score..
+                    let totalScore = 0;
+                    // get the scores for this user...
+                    const userScores = results.filter(temp => temp.user.toString() === users[i]._id.toString());
+                    // then remove from the array so next iterations are faster...
+                    results.filter(temp => temp.user.toString() !== users[i]._id.toString());
+
+                    // and create a scores array...
+                    // and calculate a score fo◘r the user...
+                    userScores.forEach(result => totalScore += scoreArray[result.score]);
+
+                    // then decide if they are a winner or a runnerup or nothing..
+                    if(totalScore > winner.score) {
+                        runnerUp = winner;    // the winner is now the runner up
+                        winner = { names: [users[i].username], score: totalScore }; // this is now the winner
+                    } else if (totalScore === winner.score) {
+                        // equal to the winner
+                        winner.names.push(users[i].username);
+                    } else if (totalScore > runnerUp.score) {
+                        // the new runner up
+                        runnerUp = { names: [users[i].username], score: totalScore }
+                    } else if (totalScore === runnerUp.score) {
+                        // equal to the runner up
+                        runnerUp.names.push(users[i].username);
+                    } // else they place no where!
+                }
+
+                // got everything so delete away!
+                league.deleteOne({ _id: leagueId }).then(deleteCount => {
+
+                    // get appropriate dates for the messages
+                    const dateDay = new Date(day, month, year);
+                    const dateTime = new Date(hour, minute);
+
+                    // get the admin name
+                    const adminName = users.find(usr => usr._id === adminId).username;
+
+                    let winners;
+                    let runners;
+
+                    // make nice strings for the winners and runnerups
+                    if(winner.names.length > 1) {
+                        winners = winner.names.slice(0, -1).join(', ').concat(` and ${winner.names[winner.names.length - 2]}`);
+                    } else winners = winner.names[0];
+
+                    if(runnerUp.names.length > 1) {
+                        runners = runnerUp.names.slice(0, -1).join(', ').concat(` and ${runnerUp.names[runnerUp.names.length - 2]}`);
+                    } else runners = runnerUp.names[0];
+
+                    // build the message
+                    const message = new message({
+                        type: 1,
+                        title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
+                        content: `On ${dateDay} at ${dateTime} the ${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winners} with ${winner.score} points, and the runner ups were ${runner} with ${runnerUp.score}.`,
+                        users: leagueToDelete.members
+                    })
+
+                    console.log(message.content);
+
+                    message.save().then(messageResults => {
+                        // message posted!
+                        res.status(200).json({
+                            success: true,
+                            message: `Deletion Success`
+                        })
+                    }).catch(error => {
+                        res.status(400).json({
+                            success: false,
+                            message: `Deletion Successful but Members not informed: ${error}`
+                        })
+                    })
+
+                }).catch(error => {
+                    res.status(400).json({
+                        success: false,
+                        message: `Deletion Failed: ${error}`
+                    })
+                })
+
+            }).catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: `An error occured whilst trying to delete the league: ${error}`
+                })
+            })
+
+
+
+
+
+
+            // user.find({ _id: { $in: leagueToDelete.members }}, '_id username').then(usersData => {
+
+            //     // got everything so delete away!
+            //     league.deleteOne({ leagueId: leagueCode }).then(deletionSuccess => {
+
+            //         // get appropriate dates for the messages
+            //         const dateDay = new Date(day, month, year);
+            //         const dateTime = new Date(hour, minute);
+
+            //         // geta ppropriate names for the messages
+            //         const adminName = usersData.find(usr => usr._id === adminId).username;
+            //         const winnerName = usersData.find(usr => usr._id === leagueToDelete.previousWinner).username;
+            //         const runnerUpName = usersData.find(usr => usr._id === leagueToDelete.previousRunnerUp).username;
+
+            //         // build the message
+            //         const message = new message({
+            //             type: 1,
+            //             title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
+            //             content: `On ${dateDay} at ${dateTime} the ${leagueToDelete.name} league was deleted by ${adminName}. The`,
+            //             users: leagueToDelete.members
+            //         })
+
+            //     }).catch(error => {
+            //         res.status(400).json({
+            //             success: false,
+            //             message: `Deletion Failed: ${error}`
+            //         })
+            //     })
+            // }).catch(error => {
+            //     // if the users arent found for some reason then cancel the process.
+            //     res.status(400).json({
+            //         success: false,
+            //         message: `Something is wrong with the league data, sdo i cant delete it: ${error}`
+            //     })
+            // })
+
+        }).catch(error => {
+            res.status(400).json({
+                success: false,
+                message: `Error: ${error}`
+            })
+        });
 })
 
 router.post(
     '/restart'
     , checkAuth
     , (req, res, next) => {
-        console.log('restarting league...' + req.body);
+        console.log('restarting league...' + req.body.adminId);
 })
 
 router.get(
@@ -79,7 +249,6 @@ router.get(
     , checkAuth
     , (req, res, next) => {
         const leagueId = req.params.leagueId.split('=')[1];
-        console.log(leagueId);
 
         league.findOne({ leagueId: leagueId }, 'leagueId name members').then(result => {
             res.status(200).json({

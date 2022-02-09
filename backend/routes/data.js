@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
 const result = require('../models/result');
 const Results = require('../models/result')
@@ -26,7 +25,6 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
         for(let league of leagues) {
             // build a list of users to query for...
             for(let member of league.members) {
-                console.log(member.toString());
                 if(!usersList.find(temp => temp.toString() === member.toString())) {
                     usersList.push(member.toString());
                 }

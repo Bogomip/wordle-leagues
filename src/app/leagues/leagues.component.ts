@@ -14,7 +14,10 @@ export class LeaguesComponent implements OnInit {
     currentlyReloadingLeagues: string[] = [];
 
     // how much each position is worth, starting from 1st. No fail points are available.
-    scoreArray: number[] = [2,3,4,3,2,1];
+    scoreArray: number[] = [2,3,4,3,2,1]; // HAS TO MATCH THE DB FOR NOW.
+
+    // errors
+    errorMessage: string = '';
 
     // users...
     user: User;
@@ -106,23 +109,47 @@ export class LeaguesComponent implements OnInit {
 
     }
 
-    leaveLeague(leagueId: string): void {
-        // if an admin leaves what happens?
-    }
-
-    addLeaguecodeToClipboard(leagueId: string): void {
+    leaveLeague(leagueCode: string): void {
 
     }
 
-    restartLeague(leagueId: string): void {
+    addLeaguecodeToClipboard(leagueCode: string): void {
 
     }
 
+    /**
+     * Function a league admin can call to restart the league
+     * essentially resets the wordleId from code to today.
+     *
+     * @param leagueCode
+     */
+    restartLeague(leagueCode: string): void {
+        this.leagueService.restartLeague(this.user._id, leagueCode).subscribe({
+            next: (result: { success: boolean }) => {
+                this.leagueService.getLeaguesData(this.user._id);
+        },  error: (error: any) => {
+                this.errorMessage = `League could not restart: ${error.message}`;
+            }
+        })
+    }
+
+    /**
+     * Function an admin can call to remove a league and all the users within it.
+     *
+     * @param leagueId
+     */
     deleteLeague(leagueId: string): void {
-
+        this.leagueService.deleteLeague(this.user._id, leagueId).subscribe({
+            next: (result: { success: boolean }) => {
+                this.leagueService.getLeaguesData(this.user._id);
+        },  error: (error: any) => {
+                console.log(error.message);
+                this.errorMessage = `League could not be deleted: ${error.message}`;
+            }
+        })
     }
 
-    removeUserFromLeague(leagueId: string, userIdToDelete: string): void {
+    removeUserFromLeague(leagueCode: string, userIdToDelete: string): void {
 
     }
 }

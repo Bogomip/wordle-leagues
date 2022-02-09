@@ -31,6 +31,7 @@ router.post('/register', (req, res, next) => {
 
         // then save the user...
         user.save().then(result => {
+            console.log('User registered:' + user.username);
             // save has worked and the user now exists!
             const token = generateToken(fetchedUser.email, fetchedUser._id, false);
 
@@ -47,7 +48,6 @@ router.post('/register', (req, res, next) => {
             })
         })
 
-        console.log('user registration in progress...')
     });
 })
 
@@ -108,13 +108,13 @@ router.post(
         Result.findOne({ wordleId: req.body.wordleId, user: req.body.userId }).then((result) => {
             if(!result) {
                 // insert
-                const result = new Result({
+                const newPost = new Result({
                     user: req.body.userId,
                     wordleId: req.body.wordleId,
                     score: req.body.score
                 })
 
-                result.save().then(result => {
+                newPost.save().then(result => {
                     res.status(200).json({
                         success: true,
                         message: `Success`

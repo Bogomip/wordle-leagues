@@ -1,14 +1,14 @@
 <div class="notification" *ngIf="leagues.length > 0 || errorMessage !== ''">
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <div class="notification__error" (click)="retryNotificationsGet()" *ngIf="errorMessage !== ''">
+    <div class="notification__error" *ngIf="errorMessage !== ''">
         {{ errorMessage }}
     </div>
     <!-- for all leagues for which there is a notification -->
     <div class="notification__league" *ngFor="let league of leagues">
         <div class="notification__league--name">
-            {{ league }}
+            {{ league.name }}
         </div>
-        <div class="notification__user {{user._id}}" *ngFor="let user of getLeagueUsers(league)">
+        <div class="notification__user {{user._id}}" *ngFor="let user of getLeagueUsers(league._id)">
             <div class="notification__user--control">
                 <div class="notification__user--delete" (click)="removeNotification(user)">X</div>
                 <div class="notification__user--name">{{ user.name }}</div>

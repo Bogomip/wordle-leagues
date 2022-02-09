@@ -1,13 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const path = require('path');
 
 const dataRoutes = require('./routes/data');
 const userRoutes = require('./routes/user');
 const leagueRoutes = require('./routes/leagues');
 
-const debug = require('debug')('node-angular');
 const app = express();
 
 mongoose.connect("mongodb+srv://wordleleagueadmin:yv7YfcnAl8Qt3c2K@cluster0.vuxdp.mongodb.net/wordle-league?retryWrites=true&w=majority")
