@@ -50,6 +50,7 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
                 let newLeague = {
                     _id: leagueIteration._id,
                     name: leagueIteration.name,
+                    code: leagueIteration.leagueId,
                     notificationsAllowed: leagueIteration.notifications ? leagueIteration.notifications : true,
                     members: []
                 }
@@ -67,7 +68,7 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
 
                 for(let member of usersInLeague) {
                     // get the scores for this user...
-                    const userScores = leagueIterationScore.filter(temp => temp.user.toString() === member._id.toString());
+                    const userScores = leagueIterationScore.filter(temp => temp.user.toString() === member._id.toString() && temp.wordleId >= leagueIteration.startId);
                     // then remove from the array so next iterations are faster...
                     leagueIterationScore.filter(temp => temp.user.toString() !== member._id.toString());
                     // and create a scores array...
@@ -80,8 +81,8 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
                         name: member.username,
                         tags: {
                             admin: !!leagueIteration.admins.find(temp => temp.toString() === member._id.toString()),
-                            pastWinner: leagueIteration.previousWinner === member._id,
-                            pastRunnerUp: leagueIteration.previousRunnerUp === member._id,
+                            pastWinner: !!leagueIteration.previousWinner.find(temp => temp.toString() === member._id.toString()),
+                            pastRunnerUp: !!leagueIteration.previousRunnerUp.find(temp => temp.toString() === member._id.toString()),
                         },
                         score: {
                             1: scores[1],
@@ -111,24 +112,6 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
                 error: error
             })
         })
-
-        // // now query for the users...
-        // user.find({ _id: { $in :  usersList }}, 'username').then(users => {
-        //     // uer search succeeded
-        //     console.log(users);
-        //     res.status(200).json({
-        //         success: true,
-        //         data: users
-        //     })
-        // }).catch(error => {
-        //     // user search failed
-        //     console.log('lol nope');
-        //     res.status(400).json({
-        //         success: false,
-        //         message: 'Error occured whilst collating user data for league'
-        //     })
-        // })
-
 
     }).catch(error => {
         res.status(400).json({

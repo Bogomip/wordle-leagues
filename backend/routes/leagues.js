@@ -6,8 +6,93 @@ const methods = require('../methods/methods');
 const user = require('../models/user');
 const message = require('../models/messages');
 const result = require('../models/result');
+const { runner } = require('karma');
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 
+/**
+ * Takes user data and results from a league user query and determines the winner and runner up from the data.
+ * pass in an optional array of the fields you want to take from the user data.
+ *
+ * @param {*} usersData
+ * @param {*} resultsData
+ * @param {*} scoreArray
+ * @param {*} fields
+ * @returns
+ */
+function calculateLeagueWinners(usersData, resultsData, scoreArray, fields = ['_id']) {
+
+    let winner = { score: 0 };
+    let runnerUp = { score: 0 };
+
+    // set empty arrays for all fields
+    fields.map(temp => {
+        winner[temp] = new Array();
+        runnerUp[temp] = new Array();
+    });
+
+    for(let i = 0 ; i < usersData.length ; i++) {
+        // total score..
+        let totalScore = 0;
+        // get the scores for this user...
+        const userScores = resultsData.filter(temp => temp.user.toString() === usersData[i]._id.toString());
+        // then remove from the array so next iterations are faster...
+        resultsData.filter(temp => temp.user.toString() !== usersData[i]._id.toString());
+
+        // and create a scores array...
+        // and calculate a score for the user...
+        userScores.forEach(result => totalScore += scoreArray[result.score]);
+
+        // then decide if they are a winner or a runnerup or nothing..
+        // also set them as winner if they are the first person through the loop!
+        if(totalScore > winner.score || i === 0) {
+            runnerUp = {...winner};    // the winner is now the runner up
+            // iterate over all required keys...
+            for(let o = 0 ; o < fields.length ; o++) winner[fields[o]] = [usersData[i][fields[o]]];
+            winner.score = totalScore;
+        } else if (totalScore === winner.score) {
+            // equal to the winner
+            for(let o = 0 ; o < fields.length ; o++) winner[fields[o]].push(usersData[i][fields[o]]);
+        } else if (totalScore > runnerUp.score) {
+            // the new runner up
+            for(let o = 0 ; o < fields.length ; o++) runnerUp[fields[o]] = [usersData[i][fields[o]]];
+            runnerUp.score = totalScore;
+        } else if (totalScore === runnerUp.score) {
+            // equal to the runner up
+            for(let o = 0 ; o < fields.length ; o++) runnerUp[fields[o]].push(usersData[i][fields[o]]);
+        } // else they place no where!
+    }
+
+    console.log(winner, runnerUp);
+
+    return [winner, runnerUp];
+}
+
+/**
+ * Constructs a string from the winner array { name: [winner with same score], score: number }
+ * and returns it...
+ * @param {*} winnerArray
+ * @param {*} runnerUpArray
+ */
+function winnersAndRunnerUpString(winnerArray, runnerUpArray, namefield = 'username') {
+
+    let winners, runners;
+
+    if(winnerArray[namefield].length > 1) {
+        winners = winnerArray[namefield].slice(0, -1).join(', ').concat(` and ${winnerArray[namefield][winnerArray[namefield].length - 2]}`);
+    } else winners = winnerArray[namefield][0];
+
+    if(runnerUpArray[namefield].length > 1) {
+        runners = runnerUpArray[namefield].slice(0, -1).join(', ').concat(` and ${runnerUpArray[namefield][runnerUp[namefield].length - 2]}`);
+    } else runners = runnerUpArray[namefield][0];
+
+    return [winners, runners];
+}
+
+/******
+ *
+ * ROUTER METHODS
+ *
+ */
 
 router.post('/create'
     , checkAuth
@@ -34,10 +119,7 @@ router.post('/create'
                     success: true
                 })
             }).catch(error => {
-                res.status(400).json({
-                    success: false,
-                    message: `Error: ${error}`
-                })
+                res.status(400).json({ success: false,  message: `Error: ${error}` })
             })
 
         } else {
@@ -86,7 +168,6 @@ router.post(
             // user has been found as an admin of this group...
             // get the userlist as they will need to be notified...
             const leagueToDelete = leagueReturned;
-
             // get the data for the league and the user data too.
             const userQuery = user.find({ _id: { $in : leagueToDelete.members }}, 'username');
             const resultQuery = result.find({ user: { $in : leagueToDelete.members }, wordleId: { $gte: leagueToDelete.startId }}, 'score user');
@@ -94,59 +175,14 @@ router.post(
             // we havwe to go over the whole group on a deletion because
             // we need to know who won!
             Promise.all([userQuery, resultQuery]).then(([users, results]) => {
-
-                let winner = { names: ['Nobody'], score: 0 };
-                let runnerUp = { names: ['Nobody'], score: 0 };
-                let scoreArray = [0,2,3,4,3,2,1];
-
-                // not working 100% atm... but go with it!
-                for(let i = 0 ; i < users.length ; i++) {
-                    // total score..
-                    let totalScore = 0;
-                    // get the scores for this user...
-                    const userScores = results.filter(temp => temp.user.toString() === users[i]._id.toString());
-                    // then remove from the array so next iterations are faster...
-                    results.filter(temp => temp.user.toString() !== users[i]._id.toString());
-
-                    // and create a scores array...
-                    // and calculate a score fo◘r the user...
-                    userScores.forEach(result => totalScore += scoreArray[result.score]);
-
-                    // then decide if they are a winner or a runnerup or nothing..
-                    if(totalScore > winner.score) {
-                        runnerUp = winner;    // the winner is now the runner up
-                        winner = { names: [users[i].username], score: totalScore }; // this is now the winner
-                    } else if (totalScore === winner.score) {
-                        // equal to the winner
-                        winner.names.push(users[i].username);
-                    } else if (totalScore > runnerUp.score) {
-                        // the new runner up
-                        runnerUp = { names: [users[i].username], score: totalScore }
-                    } else if (totalScore === runnerUp.score) {
-                        // equal to the runner up
-                        runnerUp.names.push(users[i].username);
-                    } // else they place no where!
-                }
+                // find the winners and runners up, and make nice strings for them
+                let [winner, runnerUp] = calculateLeagueWinners(users,results,[0,2,3,4,3,2,1], ['username']);
+                let [winners, runners] = winnersAndRunnerUpString(winner, runnerUp);
 
                 // got everything so delete away!
                 league.deleteOne({ _id: leagueId }).then(deleteCount => {
-
                     // get the admin name
                     const adminName = users.find(usr => usr._id.toString() === adminId.toString()).username;
-
-                    let winners;
-                    let runners;
-
-                    // make nice strings for the winners and runnerups
-
-                    if(winner.names.length > 1) {
-                        winners = winner.names.slice(0, -1).join(', ').concat(` and ${winner.names[winner.names.length - 2]}`);
-                    } else winners = winner.names[0];
-
-                    if(runnerUp.names.length > 1) {
-                        runners = runnerUp.names.slice(0, -1).join(', ').concat(` and ${runnerUp.names[runnerUp.names.length - 2]}`);
-                    } else runners = runnerUp.names[0];
-
                     // build the message
                     const messageToUsers = new message({
                         type: 1,
@@ -196,12 +232,82 @@ router.post(
         });
 })
 
+
 router.post(
-    '/restart'
-    , checkAuth
-    , (req, res, next) => {
-        console.log('restarting league...' + req.body.adminId);
+    '/restart',
+    checkAuth,
+    (req, res, next) => {
+        const leagueId = req.body.leagueId;
+        const adminId = req.body.adminId;
+
+        league.findOne({ _id: leagueId, admins: { $in : [adminId] }}).then(leagueReturned => {
+            // user has been found as an admin of this group...
+            // get the userlist as they will need to be notified of the restart...
+            const leagueToRestart = leagueReturned;
+            // get the data for the league and the user data too.
+            const userQuery = user.find({ _id: { $in : leagueToRestart.members }}, 'username');
+            const resultQuery = result.find({ user: { $in : leagueToRestart.members }, wordleId: { $gte: leagueToRestart.startId }}, 'score user');
+
+            // we havwe to go over the whole group on a restart because we need to know who won!
+            Promise.all([userQuery, resultQuery]).then(([users, results]) => {
+                // find the winners and runners up, and make nice strings for them
+                let [winner, runnerUp] = calculateLeagueWinners(users,results,[0,2,3,4,3,2,1],['username','_id']);
+                let [winners, runners] = winnersAndRunnerUpString(winner, runnerUp);
+                let newWordleId = methods.todaysGame();
+
+                // got everything so delete away!
+                league.updateOne({ _id: leagueId }, { $set : { startId: newWordleId, previousWinner: [winner._id], previousRunnerUp: [runnerUp._id] }}).then(updateResult => {
+                    // get the admin name
+                    const adminName = users.find(usr => usr._id.toString() === adminId.toString()).username;
+                    // build the message
+                    const messageToUsers = new message({
+                        type: 2,
+                        time: new Date().getTime(),
+                        title: `League ${leagueToRestart.name} was restarted by ${adminName}.`,
+                        content: `${leagueToRestart.name} league was just restarted by ${adminName}. This league had run from ${leagueToRestart.startId} and will now run from today, wordle number ${newWordleId}. The winners of the previous round were ${winners} with ${winner.score} points, and the runner up was ${runners} with ${runnerUp.score}.`,
+                        users: leagueToRestart.members
+                    })
+
+                    messageToUsers.save().then(messageResults => {
+                        // message posted!
+                        // return a copy of the message to be sent to users so it can be dynamically added to the users message bar.
+                        res.status(201).json({
+                            success: true,
+                            data: {
+                                type: 2,
+                                time: new Date().getTime(),
+                                title: `League ${leagueToRestart.name} was restarted by ${adminName}.`,
+                                content: `${leagueToRestart.name} league was just restarted by ${adminName}. This league had run from ${leagueToRestart.startId} and will now run from today, wordle number ${newWordleId}. The winners of the previous round were ${winners} with ${winner.score} points, and the runner up was ${runners} with ${runnerUp.score}.`,
+                            }
+                        })
+                    }).catch(error => {
+                        res.status(400).json({
+                            success: false,
+                            message: `Restart Successful but Members not informed: ${error}`
+                        })
+                    })
+
+                }).catch(error => {
+                    res.status(400).json({
+                        success: false,
+                        message: `Restart Failed: ${error}`
+                    })
+                })
+
+            }).catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: `An error occured whilst trying to restart the league: ${error}`
+                })
+            })
+        }).catch(error => {
+            res.status(400).json({
+                success: false,
+                message: `Error: ${error}`
+            })
+        });
 })
+
 
 router.get(
     '/search/:leagueId'

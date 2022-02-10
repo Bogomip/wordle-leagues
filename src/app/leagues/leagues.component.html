@@ -2,9 +2,17 @@
 
     <div class="leagues__header">
         <h1 class="leagues__title">Your Leagues</h1>
-        <app-search-leagues></app-search-leagues>
+        <div class="leagues__buttons">
+            <app-search-leagues></app-search-leagues>
+            <div class="leagues__create input__button">Create League</div>
+        </div>
     </div>
 
+    <div class="leagues__code-copy" *ngIf="copiedToClipboard" (click)="removeCopyNotification()">
+        Code copied to clipboard!
+    </div>
+
+    <app-create></app-create>
 
     <div class="league" *ngFor="let league of leagues">
 
@@ -23,13 +31,13 @@
                     <div class="league__control--text">Restart League</div>
                     <img src="../../assets/icons/cycle.png" alt="Restart League">
                 </div>
-                <div class="league__control league__control--green">
+                <div class="league__control league__control--green" (click)="addLeaguecodeToClipboard(league.code)">
                     <div class="league__control--text">Copy League Code</div>
-                    <img src="../../assets/icons/copy.png" alt="Copy League Code" (click)="addLeaguecodeToClipboard(league._id)">
+                    <img src="../../assets/icons/copy.png" alt="Copy League Code">
                 </div>
-                <div class="league__control league__control--darkyellow">
+                <div class="league__control league__control--darkyellow" (click)="leaveLeague(league._id)">
                     <div class="league__control--text">Leave League</div>
-                    <img src="../../assets/icons/exit.png" alt="Leave League" (click)="leaveLeague(league._id)">
+                    <img src="../../assets/icons/exit.png" alt="Leave League">
                 </div>
 
                 <div class="league__control league__control--green" *ngIf="league.notificationsAllowed" (click)="toggleNotifications()">

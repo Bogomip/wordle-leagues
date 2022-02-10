@@ -1,9 +1,30 @@
 <nav class="menu" [class.menu__animation]="menuAnimation" [class.menu__noanimation]="!menuAnimation">
-    <a class="menu__link" routerLink="rules/" routerLinkActive="menu__link--active">How it works</a>
-    <a class="menu__link" routerLink="leagues/" routerLinkActive="menu__link--active" *ngIf="user">Leagues</a>
-    <a class="menu__link" [routerLink]="[{ outlets: { left: ['signup'] } }]" routerLinkActive="menu__link--active" *ngIf="!user">Signup</a>
-    <a class="menu__link" [routerLink]="[{ outlets: { left: ['login'] } }]" routerLinkActive="menu__link--active" *ngIf="!user">Login</a>
-    <a class="menu__link" [routerLink]="[{ outlets: { left: ['create'] } }]" routerLinkActive="menu__link--active" *ngIf="user">Create League</a>
-    <a class="menu__link" (click)="logout()" *ngIf="user">Logout</a>
-    <a class="menu__link" href="https://www.powerlanguage.co.uk/wordle/" target="_new">Play Wordle</a>
+    <a class="menu__link" routerLink="rules/" routerLinkActive="menu__link--active">
+        <img src="../../../assets/icons/question.png" alt="How to play">
+        <div class="menu__tooltip menu__tooltip--left">How to play</div>
+    </a>
+    <a class="menu__link" routerLink="leagues/" routerLinkActive="menu__link--active" *ngIf="user">
+        <img src="../../../assets/icons/table2.png" alt="League Tables">
+        <div class="menu__tooltip">League Tables</div>
+    </a>
+    <a class="menu__link" routerLink="signup/" routerLinkActive="menu__link--active" *ngIf="!user">
+        <img src="../../../assets/icons/user-plus.png" alt="Sign Up">
+        <div class="menu__tooltip">Sign Up</div>
+    </a>
+    <a class="menu__link" routerLink="login/" routerLinkActive="menu__link--active" *ngIf="!user">
+        <img src="../../../assets/icons/enter.png" alt="Login">
+        <div class="menu__tooltip">Login</div>
+    </a>
+    <!-- <a class="menu__link" routerLink="" *ngIf="user">
+        <img src="../../../assets/icons/plus.png" alt="Create League">
+        <div class="menu__tooltip">Create New League</div>
+    </a> -->
+    <a class="menu__link" (click)="logout()" *ngIf="user">
+        <img src="../../../assets/icons/exit-large.png" alt="Logout">
+        <div class="menu__tooltip">Logout</div>
+    </a>
+    <a class="menu__link" href="https://www.powerlanguage.co.uk/wordle/" target="_new">
+        <p>Wordle</p>
+        <div class="menu__tooltip menu__tooltip--right">Play Wordle</div>
+    </a>
 </nav>

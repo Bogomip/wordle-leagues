@@ -16,8 +16,9 @@ export class LeaguesComponent implements OnInit {
     // how much each position is worth, starting from 1st. No fail points are available.
     scoreArray: number[] = [2,3,4,3,2,1]; // HAS TO MATCH THE DB FOR NOW.
 
-    // errors
+    // errors and control booleans
     errorMessage: string = '';
+    copiedToClipboard: boolean = false;
 
     // users...
     user: User;
@@ -113,9 +114,24 @@ export class LeaguesComponent implements OnInit {
 
     }
 
+    /**
+     * Adds the league code tot he clipboard
+     * @param leagueCode
+     */
     addLeaguecodeToClipboard(leagueCode: string): void {
-
+        navigator.clipboard.writeText(`http://localhost:4200/#/joinleague/${leagueCode}`).then(result => {
+            this.copiedToClipboard = true;
+            // show the alert for 3 seconds then fade out.
+            setTimeout(() => {
+                this.copiedToClipboard = false;
+            }, 3000);
+        })
     }
+
+    /**
+     * Removes the copied to clipboard notification immediately (not wait for fadeout)
+     */
+    removeCopyNotification(): void { this.copiedToClipboard = false; }
 
     /**
      * Function a league admin can call to restart the league
@@ -123,8 +139,8 @@ export class LeaguesComponent implements OnInit {
      *
      * @param leagueCode
      */
-    restartLeague(leagueCode: string): void {
-        this.leagueService.restartLeague(this.user._id, leagueCode).subscribe({
+    restartLeague(leagueId: string): void {
+        this.leagueService.restartLeague(this.user._id, leagueId).subscribe({
             next: (result: { success: boolean }) => {
                 this.leagueService.getLeaguesData(this.user._id);
         },  error: (error: any) => {

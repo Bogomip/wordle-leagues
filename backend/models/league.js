@@ -6,8 +6,8 @@ const leagueSchemea = mongoose.Schema({
   leagueId: { type: String, required: true },
   startId: { type: Number, required: true },
   notifications: { type: Boolean, required: true },
-  previousWinner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
-  previousRunnerUp: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
+  previousWinner: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
+  previousRunnerUp: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
   admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }]
 });

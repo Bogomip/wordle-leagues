@@ -12,7 +12,7 @@ export class CreateComponent implements OnInit {
 
     leagueName: string;
     user: User;
-    errorMessage: string = '';
+    errorMessage: string = ''
 
     constructor(
         private auth: AuthenticationService,

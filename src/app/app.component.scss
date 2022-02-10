@@ -46,12 +46,6 @@
     height: auto;
 }
 
-.content {
-    position: relative;
-    display: flex;
-    justify-content: center;
-}
-
 .footer {
     position: absolute;
     font-size: 1.2rem;
@@ -64,7 +58,7 @@
 .wordle-logo {
 
 
-    margin: 3rem 0 3rem 2rem;
+    margin: 2rem 0 2rem 2rem;
 
     &__scale-animation { animation: scaleToPt7 1s ease-in-out 3.5s 1 forwards; }
     &__scale-noanimation { transform: scale(.7); }

@@ -54,6 +54,7 @@ export class SearchLeaguesComponent implements OnInit {
             next: (result: any) => {
                 // success - refresh the leagues information...
                 this.leagueService.getLeaguesData(this.user._id);
+                this.resetSearch();
         },  error: (error: any) => {
                 // failure
                 this.errorMessage = `Unable to join league: ${error}`;

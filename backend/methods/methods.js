@@ -8,6 +8,10 @@
     return Math.floor((today - first) / (1000 * 60 * 60 * 24));
 }
 
+/**
+ * Generates a rnadom ID
+ * @returns
+ */
 function generateRandomId() {
     const randomWords = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const characterCount = 7;
