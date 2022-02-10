@@ -1,0 +1,19 @@
+<div class="join-code">
+    <div class="join-code__code" [class.join-code__active]="stage === 0" *ngIf="stage >=0">
+        Attempting to join league with code {{ leagueCode }}...
+    </div>
+    <div class="join-code__user" [class.join-code__active]="stage === 1" *ngIf="stage >= 1">
+        {{ !userError ? 'Verifying user credentials...' : userError }}
+    </div>
+    <div class="join-code__join" [class.join-code__active]="stage === 2" *ngIf="stage >= 2">
+        {{ success === false ? 'Joining this league failed, click below to retry' : 'Requesting to join the league...' }}
+    </div>
+    <div class="join-code__outcome" [class.join-code__active]="stage === 3" *ngIf="stage === 3">
+        Success, you have joined the league!
+    </div>
+
+</div>
+
+<div class="join-code join-code__retry input__button" *ngIf="!success && stage >= 2" (click)="joinleague()">
+    Retry joining this league
+</div>

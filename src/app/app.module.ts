@@ -17,6 +17,7 @@ import { SpinnerComponent } from './utilities/spinner/spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { SearchLeaguesComponent } from './utilities/search-leagues/search-leagues.component';
+import { JoinFromCodeComponent } from './utilities/join-from-code/join-from-code.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SearchLeaguesComponent } from './utilities/search-leagues/search-league
     AddResultsComponent,
     NotificationsComponent,
     SpinnerComponent,
-    SearchLeaguesComponent
+    SearchLeaguesComponent,
+    JoinFromCodeComponent
   ],
   imports: [
     BrowserModule,

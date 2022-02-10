@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreateComponent } from './leagues/create/create.component';
 import { LeaguesComponent } from './leagues/leagues.component';
 import { AddResultsComponent } from './user/add-results/add-results.component';
+import { JoinFromCodeComponent } from './utilities/join-from-code/join-from-code.component';
 import { LoginComponent } from './utilities/login/login.component';
 import { MenuComponent } from './utilities/menu/menu.component';
 import { NotfoundComponent } from './utilities/notfound/notfound.component';
@@ -10,14 +11,13 @@ import { RulesComponent } from './utilities/rules/rules.component';
 import { SignupComponent } from './utilities/signup/signup.component';
 
 const routes: Routes = [
-    { path: '', component: MenuComponent, outlet: 'left' },
     { path: '', component: RulesComponent, pathMatch:'full' },
     { path: 'leagues', component: LeaguesComponent},
-    { path: 'menu', component: MenuComponent, outlet: 'left' },
-    { path: 'signup', component: SignupComponent, outlet: 'left' },
-    { path: 'login', component: LoginComponent, outlet: 'left' },
-    { path: 'create', component: CreateComponent, outlet: 'left' },
+    { path: 'signup', component: SignupComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'create', component: CreateComponent },
     { path: 'rules', component: RulesComponent },
+    { path: 'joinleague/:id', component: JoinFromCodeComponent },
     { path: '**', component: NotfoundComponent}
 ];
 

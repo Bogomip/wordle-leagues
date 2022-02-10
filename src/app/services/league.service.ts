@@ -5,6 +5,7 @@ import { AuthenticationService, User } from './authentication.service';
 
 export interface League {
     _id: string;
+    code: string;
     name: string;
     notificationsAllowed: boolean;
     members: LeagueMember[];
@@ -143,8 +144,8 @@ export class LeagueService implements OnInit, OnDestroy {
      * @param leagueCode
      * @returns
      */
-    restartLeague(adminId: string, leagueCode: string): Observable<any> {
-        return this.http.post('http://localhost:3000/api/league/restart', { adminId: adminId, leagueCode: leagueCode }).pipe(take(1), tap({
+    restartLeague(adminId: string, leagueId: string): Observable<any> {
+        return this.http.post('http://localhost:3000/api/league/restart', { adminId: adminId, leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
                 return true;
         },  error: (error: any) => {

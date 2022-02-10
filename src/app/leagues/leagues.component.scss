@@ -1,4 +1,6 @@
 .leagues {
+
+    position: relative;
     margin: 3rem 4rem;
 
     &__header {
@@ -7,7 +9,34 @@
         align-items: center;
     }
 
+    &__buttons {
+        display: flex;
+        align-items: baseline;
+    }
+
     &__title {
+    }
+
+    &__code-copy {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30rem;
+        padding: 2rem 4rem;
+        background-color: var(--eggshell);
+        border: .2rem solid var(--main-green);
+        box-shadow: 0 .4rem .7rem rgba(black, .5);
+        opacity: 1;
+        font-size: 2rem;
+        text-align: center;
+        z-index: 10000;
+
+        animation: opacity100to0 1s ease-in-out 1.8s 1 forwards;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
 }
@@ -19,6 +48,7 @@
     padding: 1rem 2rem;
     border: .2rem solid rgba(black, .1);
     box-shadow: 0 .4rem .8rem rgba(black, .5);
+    border-radius: .7rem;
 
     &__header {
         display: flex;

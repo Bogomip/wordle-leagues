@@ -132,6 +132,10 @@ p {
         transform: scale(1.1) translateY(-.1rem);
         box-shadow: 0 .5rem .9rem rgba(black, .7);
     }
+
+    &:active {
+        transform: scale(1) translateY(0rem);
+    }
 }
 
 .wordle-lettering {

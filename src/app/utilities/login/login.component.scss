@@ -1,10 +1,18 @@
 .login {
 
     width: 40rem;
+    margin: 5rem auto;
+    margin-bottom: 0;
+    border-radius: .7rem;
+    background-color: var(--eggshell);
+    padding: 2rem;
+    box-shadow: 0 .4rem .8rem rgba(black, .5);
 
     &__title {
         font-size: 3rem;
         font-weight: bold;
+        width: 100%;
+        text-align: center;
     }
 
     &__header {

@@ -1,0 +1,50 @@
+.join-code {
+
+    position: relative;
+    width: 40rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin: 8rem auto;
+    box-shadow: 0 .4rem .8rem rgba(black, .5);
+
+    &__code, &__user, &__join, &__outcome, &__retry {
+        animation: opacity0to100 .5s ease-in-out 0s 1 forwards;
+        padding: 2rem 4rem;
+        font-size: 2rem;
+        text-align: center;
+        color: black;
+    }
+
+    &__retry {
+        width: 25rem;
+        padding: 1.5rem 2rem;
+        transition: all .2s;
+
+        &:hover {
+            color: red;
+            background-color: var(--eggshell);
+        }
+    }
+
+    &__code {
+        background-color: var(--main-yellow);
+    }
+
+    &__user {
+        background-color: var(--main-yellow);
+    }
+
+    &__join {
+        background-color: var(--main-yellow);
+    }
+
+    &__outcome {
+        background-color: var(--main-yellow);
+    }
+
+    &__active {
+        background-color: var(--main-green);
+        color: var(--eggshell);
+    }
+
+}
