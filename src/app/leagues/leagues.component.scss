@@ -14,9 +14,6 @@
         align-items: baseline;
     }
 
-    &__title {
-    }
-
     &__code-copy {
         position: fixed;
         top: 50%;
@@ -39,6 +36,28 @@
         }
     }
 
+    &__create-container {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    &__create-container--animate {
+        animation:  maxHeightTo100 1s ease-in-out 0s 1 forwards,
+                    opacity0to100 1s ease-in-out 0s 1 forwards;
+    }
+
+    &__create-container--animate-out {
+        animation:  opacity100to0 1s ease-in-out 0s 1 forwards,
+                    maxHeightTo0 1s ease-in-out 0s 1 forwards;
+    }
+
+}
+
+.input__button {
+    margin-left: 1rem;
+    padding: .3rem 2rem;
+    transform: translateY(.1rem);
+    text-align: center;
 }
 
 .league {

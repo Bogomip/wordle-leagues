@@ -5,43 +5,44 @@
 
     &__add {
 
+        display: flex;
+        align-items: baseline;
+
         &--input {
             width: 15rem;
             border-radius: 1rem;
             padding: .5rem 2rem;
-            margin-right: .5rem;
+            margin-right: 1rem;
             border: .1rem solid rgba(black, .3);
             box-shadow: 0 .3rem .6rem rgba(black, .5);
         }
 
-        &--button {
-            width: 15rem;
-            border-radius: 1rem;
-            padding: .5rem 2rem;
-            background-color: var(--main-darkgreen);
-            transition: all .2s;
-            color: var(--eggshell);
-            box-shadow: 0 .3rem .6rem rgba(black, .5);
+        // &--button {
+        //     width: 15rem;
+        //     border-radius: 1rem;
+        //     padding: .5rem 2rem;
+        //     background-color: var(--main-darkgreen);
+        //     transition: all .2s;
+        //     color: var(--eggshell);
+        //     box-shadow: 0 .3rem .6rem rgba(black, .5);
 
-            &:hover {
-                cursor: pointer;
-                background-color: var(--main-yellow);
-                color: var(--main-green);
-                font-weight: bold;
-                box-shadow: 0 .6rem .9rem rgba(black, .7);
-            }
+        //     &:hover {
+        //         cursor: pointer;
+        //         background-color: var(--main-yellow);
+        //         color: var(--main-green);
+        //         font-weight: bold;
+        //         box-shadow: 0 .6rem .9rem rgba(black, .7);
+        //     }
 
-            &:active {
-                transform: translateY(-.3rem);
-            }
-        }
+        //     &:active {
+        //         transform: translateY(-.3rem);
+        //     }
+        // }
     }
 
     &__found {
         display: flex;
         padding: 1rem 2rem;
-        // transform: translateX(100%);
-        // animation: transformXToOrigin 1s ease-in-out 0s 1 forwards;
     }
 
     &__detail {
@@ -76,6 +77,10 @@
             margin-bottom: .5rem;
         }
     }
+}
+
+.input__button {
+    padding: .5rem 2rem;
 }
 
 @keyframes transformXToOrigin {
