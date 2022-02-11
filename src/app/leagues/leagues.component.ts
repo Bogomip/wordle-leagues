@@ -19,6 +19,7 @@ export class LeaguesComponent implements OnInit {
     // errors and control booleans
     errorMessage: string = '';
     copiedToClipboard: boolean = false;
+    createNewLeague: boolean = false;
 
     // users...
     user: User;
@@ -167,5 +168,26 @@ export class LeaguesComponent implements OnInit {
 
     removeUserFromLeague(leagueCode: string, userIdToDelete: string): void {
 
+    }
+
+    /**
+     * Opens and closes the create new league box.
+     * nneds work on the animation...
+     */
+    toggleCreateNewLeague(): void {
+
+        if(this.createNewLeague === false) {
+            document.getElementById('create-container')?.classList.remove('leagues__create-container--animate-out');
+            // its about to change to true... so add the animation.
+            document.getElementById('create-container')?.classList.add('leagues__create-container--animate');
+
+            this.createNewLeague = true;
+        } else {
+            // remove the entry animation
+            document.getElementById('create-container')?.classList.add('leagues__create-container--animate-out');
+            document.getElementById('create-container')?.classList.remove('leagues__create-container--animate');
+
+            this.createNewLeague = false;
+        }
     }
 }

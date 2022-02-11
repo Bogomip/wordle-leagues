@@ -4,7 +4,7 @@
         <h1 class="leagues__title">Your Leagues</h1>
         <div class="leagues__buttons">
             <app-search-leagues></app-search-leagues>
-            <div class="leagues__create input__button">Create League</div>
+            <div class="input__button" (click)="toggleCreateNewLeague()">Create League</div>
         </div>
     </div>
 
@@ -12,7 +12,9 @@
         Code copied to clipboard!
     </div>
 
-    <app-create></app-create>
+    <div id="create-container" class="leagues__create-container">
+        <app-create *ngIf="createNewLeague"></app-create>
+    </div>
 
     <div class="league" *ngFor="let league of leagues">
 

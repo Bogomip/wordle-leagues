@@ -10,7 +10,6 @@
 
 .layout-left {
     position: relative;
-    flex: .1;
     background-color: var(--eggshell);
     z-index: 10;
 
@@ -23,7 +22,7 @@
 .layout-central {
     background-color: var(--eggshell);
     clip-path: polygon(0% 0%, 100% 0%, 0% 100%, 0% 100%);
-    width: 6rem;
+    width: 5rem;
 
     &__wrapper {
         display: flex;
@@ -56,7 +55,6 @@
 }
 
 .wordle-logo {
-
 
     margin: 2rem 0 2rem 2rem;
 
@@ -102,8 +100,8 @@
         }
 
         &--letter {
-            width: 8rem;
-            height: 8rem;
+            width: 7rem;
+            height: 7rem;
             display: flex;
             justify-content: center;
             align-items: center;
