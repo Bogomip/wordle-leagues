@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, Subscription, take, tap } from 'rxjs';
+import { MessagesComponent } from '../utilities/messages/messages.component';
 import { AuthenticationService, User } from './authentication.service';
 
 export interface League {
@@ -130,9 +131,9 @@ export class LeagueService implements OnInit, OnDestroy {
      * @returns
      */
     deleteLeague(adminId: string, leagueId: string): Observable<any> {
-        return this.http.post('http://localhost:3000/api/league/delete', { adminId: adminId, leagueId: leagueId }).pipe(take(1), tap({
+        return this.http.post<any>('http://localhost:3000/api/league/delete', { adminId: adminId, leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
-                return true;
+                console.log(result);
         },  error: (error: any) => {
                 return false;
         }}));

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, User } from '../services/authentication.service';
 import { League, LeagueMember, LeagueService } from '../services/league.service';
+import { Message, MessagesService } from '../services/messages.service';
 
 @Component({
   selector: 'app-leagues',
@@ -26,7 +27,8 @@ export class LeaguesComponent implements OnInit {
 
     constructor(
         private leagueService: LeagueService,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private messageService: MessagesService
     ) { }
 
     ngOnInit(): void {
@@ -142,8 +144,9 @@ export class LeaguesComponent implements OnInit {
      */
     restartLeague(leagueId: string): void {
         this.leagueService.restartLeague(this.user._id, leagueId).subscribe({
-            next: (result: { success: boolean }) => {
+            next: (result: { success: boolean, data: Message }) => {
                 this.leagueService.getLeaguesData(this.user._id);
+                this.messageService.addMessage(result.data);
         },  error: (error: any) => {
                 this.errorMessage = `League could not restart: ${error.message}`;
             }
@@ -157,10 +160,10 @@ export class LeaguesComponent implements OnInit {
      */
     deleteLeague(leagueId: string): void {
         this.leagueService.deleteLeague(this.user._id, leagueId).subscribe({
-            next: (result: { success: boolean }) => {
+            next: (result: { success: boolean, data: Message }) => {
                 this.leagueService.getLeaguesData(this.user._id);
+                this.messageService.addMessage(result.data);
         },  error: (error: any) => {
-                console.log(error.message);
                 this.errorMessage = `League could not be deleted: ${error.message}`;
             }
         })
