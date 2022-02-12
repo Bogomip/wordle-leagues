@@ -61,9 +61,6 @@ function calculateLeagueWinners(usersData, resultsData, scoreArray, fields = ['_
             for(let o = 0 ; o < fields.length ; o++) runnerUp[fields[o]].push(usersData[i][fields[o]]);
         } // else they place no where!
     }
-
-    console.log(winner, runnerUp);
-
     return [winner, runnerUp];
 }
 
@@ -85,7 +82,7 @@ function winnersAndRunnerUpString(winnerArray, runnerUpArray, namefield = 'usern
         runners = runnerUpArray[namefield].slice(0, -1).join(', ').concat(` and ${runnerUpArray[namefield][runnerUp[namefield].length - 2]}`);
     } else runners = runnerUpArray[namefield][0];
 
-    return [winners, runners];
+    return [winners || '(Nobody won!)', runners || '(Nobody challenged for second!)'];
 }
 
 /******
@@ -198,6 +195,7 @@ router.post(
                         res.status(201).json({
                             success: true,
                             data: {
+                                _id: messageResults._id,
                                 type: 1,
                                 time: new Date().getTime(),
                                 title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
@@ -253,10 +251,12 @@ router.post(
                 // find the winners and runners up, and make nice strings for them
                 let [winner, runnerUp] = calculateLeagueWinners(users,results,[0,2,3,4,3,2,1],['username','_id']);
                 let [winners, runners] = winnersAndRunnerUpString(winner, runnerUp);
+                let winnerId = winner._id || '';
+                let runnerId = runnerUp._id || '';
                 let newWordleId = methods.todaysGame();
 
                 // got everything so delete away!
-                league.updateOne({ _id: leagueId }, { $set : { startId: newWordleId, previousWinner: [winner._id], previousRunnerUp: [runnerUp._id] }}).then(updateResult => {
+                league.updateOne({ _id: leagueId }, { $set : { startId: newWordleId, previousWinner: winnerId, previousRunnerUp: runnerId }}).then(updateResult => {
                     // get the admin name
                     const adminName = users.find(usr => usr._id.toString() === adminId.toString()).username;
                     // build the message
@@ -274,6 +274,7 @@ router.post(
                         res.status(201).json({
                             success: true,
                             data: {
+                                _id: messageResults._id,
                                 type: 2,
                                 time: new Date().getTime(),
                                 title: `League ${leagueToRestart.name} was restarted by ${adminName}.`,

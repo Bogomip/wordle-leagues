@@ -1,18 +1,19 @@
 <div class="messages">
 
-    <div class="message-quick message-quick--won">
+    <div class="message-quick message-quick--won" *ngFor="let message of messages" id="{{ message._id }}">
         <div class="message-quick__background"></div>
         <div class="message-quick__title-view">
-            <div class="message-quick__title">You won a league!</div>
+            <div class="message-quick__title">{{ message.title }}</div>
             <div class="message-quick__icon">
                 <img src="../../../assets/icons/trophy-gold.png" alt="Winning Trophy">
             </div>
         </div>
         <div class="message-quick__description">
-            <div class="message-quick__message">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia deleniti atque aperiam eveniet, mollitia rerum ipsum ut unde optio at possimus? Repellat, unde. Modi id amet, voluptatum hic possimus dolore.</div>
+            <div class="message-quick__time">{{ message.time | date:'MMM d, h:mm:ss a' }}</div>
             <div class="message-quick__controls">
-                <div class="message-quick__button message-quick__button--dismiss" (click)="dismissMessage('12345')">&#10008;</div>
+                <div class="message-quick__button message-quick__button--dismiss" (click)="dismissMessage(message._id)">&#10008;</div>
             </div>
+            <div class="message-quick__message">{{ message.content }}</div>
         </div>
     </div>
 
