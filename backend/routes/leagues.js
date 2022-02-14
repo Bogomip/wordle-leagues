@@ -159,9 +159,9 @@ router.post(
     checkAuth,
     (req, res, next) => {
         const leagueId = req.body.leagueId;
-        const adminId = req.body.adminId;
+        const userId = methods.getUserDataFromToken(req)._id;
 
-        league.findOne({ _id: leagueId, admins: { $in : [adminId] }}).then(leagueReturned => {
+        league.findOne({ _id: leagueId, admins: { $in : [userId] }}).then(leagueReturned => {
             // user has been found as an admin of this group...
             // get the userlist as they will need to be notified...
             const leagueToDelete = leagueReturned;
@@ -173,34 +173,65 @@ router.post(
             // we need to know who won!
             Promise.all([userQuery, resultQuery]).then(([users, results]) => {
                 // find the winners and runners up, and make nice strings for them
-                let [winner, runnerUp] = calculateLeagueWinners(users,results,[0,2,3,4,3,2,1], ['username']);
-                let [winners, runners] = winnersAndRunnerUpString(winner, runnerUp);
+                let [winner, runnerUp] = calculateLeagueWinners(users,results,[0,2,3,4,3,2,1], ['username', '_id']);
+                let [winnersString, runnersString] = winnersAndRunnerUpString(winner, runnerUp);
 
                 // got everything so delete away!
                 league.deleteOne({ _id: leagueId }).then(deleteCount => {
                     // get the admin name
-                    const adminName = users.find(usr => usr._id.toString() === adminId.toString()).username;
-                    // build the message
-                    const messageToUsers = new message({
-                        type: 1,
-                        time: new Date().getTime(),
-                        title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
-                        content: `${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winners} with ${winner.score} points, and the runner ups were ${runners} with ${runnerUp.score}.`,
-                        users: leagueToDelete.members
-                    })
+                    const adminName = users.find(usr => usr._id.toString() === userId.toString()).username;
+                    // message to the winner and runner up in the case of draws...
+                    sharedWin = winner._id.length > 1 ? `You shared the win with ${winner._id.length} other people. ` : ``;
+                    sharedRunner = runnerUp._id.length > 1 ? `You shared second place with ${runnerUp._id.length} other people. ` : ``;
 
-                    messageToUsers.save().then(messageResults => {
+                    // build the messages
+                    const messageToUsers = new message({
+                        type: 1, time: new Date().getTime(), users: leagueToDelete.members,
+                        title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
+                        content: `${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winnersString} with ${winner.score} points, and the runner ups were ${runnersString} with ${runnerUp.score}.`
+                    }).save();
+
+                    const messageToWinner = new message({
+                        type: 11, time: new Date().getTime(), users: winner._id,
+                        title: `You have won the '${leagueToDelete.name}' league!`,
+                        content: `You were just declared the winner of the ${leagueToDelete.name} league, congratulations! ${sharedWin} You had ${winner.score} points and second place had ${runnerUp.score}. A new league starts today!`
+                    }).save();
+
+                    const messageToRunnerUp = new message({
+                        type: 12, time: new Date().getTime(), users: runnerUp._id,
+                        title: `You have come second in the '${leagueToDelete.name}' league!`,
+                        content: `You were just declared the runner up of the ${leagueToDelete.name} league, congratulations! ${sharedRunner} You had ${runnerUp.score} points and the winner had ${winner.score}. A new league starts today!`
+                    }).save();
+
+                    // post all messages and once complete return the message
+                    Promise.all([messageToUsers, messageToWinner, messageToRunnerUp]).then(([allRes,winRes,runnerRes]) => {
                         // message posted!
                         // return a copy of the message to be sent to users so it can be dynamically added to the users message bar.
+                        let data = [
+                            {
+                                _id: allRes._id, type: 1, time: new Date().getTime(), title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
+                                content: `${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winnersString} with ${winner.score} points, and the runner ups were ${runnersString} with ${runnerUp.score}.`,
+                            }
+                        ]
+                        // if the admin who called the delete is winner of the league then create a new message informing of their win...
+                        if(!!winner._id.find(temp => temp === userId)) {
+                            data.push({
+                                _id: winRes._id, type: 11, time: new Date().getTime(), title: `You have won the '${leagueToDelete.name}' league!`,
+                                content: `You were just declared the winner of the ${leagueToDelete.name} league, congratulations! ${sharedWin} You had ${winner.score} points and second place had ${runnerUp.score}. A new league starts today!`
+                            })
+                        }
+                        // if the admin who called the delete is runnerup of the league then create a new message informing of their runns up...
+                        if(!!runnerUp._id.find(temp => temp === userId)) {
+                            data.push({
+                                _id: runnerRes._id, type: 12, time: new Date().getTime(), title: `You have come second in the '${leagueToDelete.name}' league!`,
+                                content: `You were just declared the runner up of the ${leagueToDelete.name} league, congratulations! ${sharedRunner} You had ${runnerUp.score} points and the winner had ${winner.score}. A new league starts today!`
+                            })
+                        }
+
+                        // and return the data to the user...
                         res.status(201).json({
                             success: true,
-                            data: {
-                                _id: messageResults._id,
-                                type: 1,
-                                time: new Date().getTime(),
-                                title: `League ${leagueToDelete.name} was deleted by ${adminName}.`,
-                                content: `${leagueToDelete.name} league was deleted by ${adminName}. The winners of the final round were ${winners} with ${winner.score} points, and the runner ups were ${runners} with ${runnerUp.score}.`,
-                            }
+                            data: data
                         })
                     }).catch(error => {
                         res.status(400).json({
