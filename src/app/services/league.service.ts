@@ -115,8 +115,8 @@ export class LeagueService implements OnInit, OnDestroy {
      * @param leagueCode
      * @returns
      */
-    leaveLeague(userId: string, leagueCode: string): Observable<any> {
-        return this.http.post('http://localhost:3000/api/league/leave', { userId: userId, leagueCode: leagueCode }).pipe(take(1), tap({
+    leaveLeague(leagueId: string): Observable<any> {
+        return this.http.post('http://localhost:3000/api/league/leave', { leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
                 return true;
         },  error: (error: any) => {
@@ -130,8 +130,8 @@ export class LeagueService implements OnInit, OnDestroy {
      * @param leagueId
      * @returns
      */
-    deleteLeague(adminId: string, leagueId: string): Observable<any> {
-        return this.http.post<any>('http://localhost:3000/api/league/delete', { adminId: adminId, leagueId: leagueId }).pipe(take(1), tap({
+    deleteLeague(leagueId: string): Observable<any> {
+        return this.http.post<any>('http://localhost:3000/api/league/delete', { leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
                 console.log(result);
         },  error: (error: any) => {
@@ -145,8 +145,8 @@ export class LeagueService implements OnInit, OnDestroy {
      * @param leagueCode
      * @returns
      */
-    restartLeague(adminId: string, leagueId: string): Observable<any> {
-        return this.http.post('http://localhost:3000/api/league/restart', { adminId: adminId, leagueId: leagueId }).pipe(take(1), tap({
+    restartLeague(leagueId: string): Observable<any> {
+        return this.http.post('http://localhost:3000/api/league/restart', { leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
                 return true;
         },  error: (error: any) => {

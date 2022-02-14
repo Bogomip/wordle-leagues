@@ -113,8 +113,16 @@ export class LeaguesComponent implements OnInit {
 
     }
 
-    leaveLeague(leagueCode: string): void {
-
+    leaveLeague(leagueId: string): void {
+        this.leagueService.leaveLeague(leagueId).subscribe({
+            next: (result: { success: boolean, data: Message[] }) => {
+                console.log(result);
+                this.leagueService.getLeaguesData(this.user._id);
+                this.messageService.addMessage(result.data);
+        },  error: (error: any) => {
+                this.errorMessage = `League could not be left: ${error.message}`;
+            }
+        })
     }
 
     /**
@@ -143,8 +151,9 @@ export class LeaguesComponent implements OnInit {
      * @param leagueCode
      */
     restartLeague(leagueId: string): void {
-        this.leagueService.restartLeague(this.user._id, leagueId).subscribe({
-            next: (result: { success: boolean, data: Message }) => {
+        this.leagueService.restartLeague(this.user._id).subscribe({
+            next: (result: { success: boolean, data: Message[] }) => {
+                console.log(result);
                 this.leagueService.getLeaguesData(this.user._id);
                 this.messageService.addMessage(result.data);
         },  error: (error: any) => {
@@ -159,8 +168,8 @@ export class LeaguesComponent implements OnInit {
      * @param leagueId
      */
     deleteLeague(leagueId: string): void {
-        this.leagueService.deleteLeague(this.user._id, leagueId).subscribe({
-            next: (result: { success: boolean, data: Message }) => {
+        this.leagueService.deleteLeague(this.user._id).subscribe({
+            next: (result: { success: boolean, data: Message[] }) => {
                 this.leagueService.getLeaguesData(this.user._id);
                 this.messageService.addMessage(result.data);
         },  error: (error: any) => {
