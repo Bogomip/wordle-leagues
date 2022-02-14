@@ -49,8 +49,8 @@ export class MessagesService implements OnDestroy {
      * Add a message onto the message string...
      * @param message
      */
-    addMessage(message: Message): void {
-        this.messages.push({...message});
+    addMessage(message: Message[]): void {
+        message.forEach((newMessage: Message) => this.messages.push({...newMessage}));
         this.messagesObservable.next([...this.messages]);
     }
 
