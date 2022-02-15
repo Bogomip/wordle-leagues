@@ -1,12 +1,63 @@
 .messages {
 
+    position: absolute;
+    left: 50%;
+    top: 0;
     width: 35rem;
-    height: 50rem;
-    overflow-y: auto;
+    transform: translateX(-50%);
+
+    height: 90%;
+
+    overflow: hidden;
     padding: 1rem;
+    padding-top: 3.5rem;
+
+    &__paginator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background-color: var(--eggshell);
+
+        border-bottom: .2rem solid #6aaa64;
+
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-bottom: .5rem;
+
+        overflow: hidden;
+
+        &--navigate {
+            background-color: #b59f3b;
+            border-radius: .5rem;
+            padding: .3rem .6rem;
+            text-align: center;
+            transition: all .2s;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #6aaa64;
+            }
+
+            &:active {
+                transform: translateY(-.2rem);
+            }
+        }
+
+        &--page-text {
+
+        }
+    }
+
+    &:hover {
+        .message-quick { filter: grayscale(.7); transform: translateX(-.5rem); }
+        .message-quick:hover { filter: grayscale(0); transform: translateX(.5rem); }
+    }
 
 }
-
 
 .message-quick {
 
@@ -16,10 +67,12 @@
     border-radius: .7rem;
     box-shadow: 0 .3rem .6rem rgba(black, .5);
     overflow: hidden;
-    max-height: 50rem;
+    max-height: 20rem;
 
     display: grid;
     grid-template: 1fr / 1fr;
+
+    transition: all .2s;
 
     &:hover {
         .message-quick__title-view { transition: transform .4s .4s, opacity .1s; }

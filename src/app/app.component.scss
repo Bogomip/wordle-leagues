@@ -9,14 +9,36 @@
 }
 
 .layout-left {
+
+
     position: relative;
     background-color: var(--eggshell);
     z-index: 10;
 
+    flex: 1;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: stretch;
+    justify-content: space-between;
+
+
+}
+
+.menu {
+}
+
+.messages {
+    position: relative;
+    flex: 1;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.footer {
+    font-size: 1.2rem;
+    font-style: italic;
+    margin: 1rem 1.5rem 1rem 2rem;
 }
 
 .layout-central {
@@ -31,7 +53,7 @@
 }
 
 .layout-right {
-    flex: 1;
+    flex: 4;
     background-color: white;
     border-radius: 2rem;
     overflow: hidden;
@@ -45,14 +67,7 @@
     height: auto;
 }
 
-.footer {
-    position: absolute;
-    font-size: 1.2rem;
-    font-style: italic;
-    bottom: 0;
-    left: 0;
-    margin: 1rem 1.5rem 1rem 2rem;
-}
+
 
 .wordle-logo {
 

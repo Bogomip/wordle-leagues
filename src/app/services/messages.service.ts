@@ -37,7 +37,7 @@ export class MessagesService implements OnDestroy {
         .subscribe({
             next: (result: { data: Message[], success: boolean }) => {
                 this.messages = [...result.data];
-                this.messagesObservable.next([...this.messages]);
+                this.pushNewMessages([...this.messages]);
             },
             error: (error: any) => {
                 console.log(`Error retrieving messages: ${error}`);
@@ -51,7 +51,17 @@ export class MessagesService implements OnDestroy {
      */
     addMessage(message: Message[]): void {
         message.forEach((newMessage: Message) => this.messages.push({...newMessage}));
-        this.messagesObservable.next([...this.messages]);
+        this.pushNewMessages([...this.messages]);
+    }
+
+    /**
+     * Performs any last operations on the new messages to push and pushes them.
+     * (a) Sort into time order.
+     * @param messages
+     */
+    pushNewMessages(messages: Message[]): void {
+        const sortedMessages = messages.sort((a: Message, b: Message) => b.time - a.time);
+        this.messagesObservable.next([...sortedMessages]);
     }
 
     /**
@@ -66,7 +76,7 @@ export class MessagesService implements OnDestroy {
                 // put a delay on set interval so that the animation can occur on the item.
                 setTimeout(() => {
                     this.messages = [...this.messages.filter((temp: Message) => messageId !== temp._id)];
-                    this.messagesObservable.next([...this.messages]);
+                    this.pushNewMessages([...this.messages]);
                 }, 500)
             }
         }))

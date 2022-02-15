@@ -1,6 +1,14 @@
-<div class="messages">
+<div class="messages" id="messages">
 
-    <div class="message-quick message-quick--won" *ngFor="let message of messages" id="{{ message._id }}">
+    <div class="messages__paginator" *ngIf="messages.length > 6">
+        <div class="messages__paginator--navigate">(--</div>
+        <div class="messages__paginator--page-text">
+            Messages Page {{ messageCurrentPage }} of {{ messagePages }}
+        </div>
+        <div class="messages__paginator--navigate">--)</div>
+    </div>
+
+    <div class="message-quick message-quick--won" *ngFor="let message of getPageMessages()" id="{{ message._id }}">
         <div class="message-quick__background"></div>
         <div class="message-quick__title-view">
             <div class="message-quick__title">{{ message.title }}</div>
@@ -16,5 +24,6 @@
             <div class="message-quick__message">{{ message.content }}</div>
         </div>
     </div>
+
 
 </div>

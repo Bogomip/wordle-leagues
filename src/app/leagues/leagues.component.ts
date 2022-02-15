@@ -151,7 +151,7 @@ export class LeaguesComponent implements OnInit {
      * @param leagueCode
      */
     restartLeague(leagueId: string): void {
-        this.leagueService.restartLeague(this.user._id).subscribe({
+        this.leagueService.restartLeague(leagueId).subscribe({
             next: (result: { success: boolean, data: Message[] }) => {
                 console.log(result);
                 this.leagueService.getLeaguesData(this.user._id);
@@ -168,7 +168,7 @@ export class LeaguesComponent implements OnInit {
      * @param leagueId
      */
     deleteLeague(leagueId: string): void {
-        this.leagueService.deleteLeague(this.user._id).subscribe({
+        this.leagueService.deleteLeague(leagueId).subscribe({
             next: (result: { success: boolean, data: Message[] }) => {
                 this.leagueService.getLeaguesData(this.user._id);
                 this.messageService.addMessage(result.data);
