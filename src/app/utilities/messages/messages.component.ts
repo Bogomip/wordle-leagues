@@ -129,7 +129,6 @@ export class MessagesComponent implements OnInit, AfterViewInit {
         } catch(e) {  }
     }
 
-
     /**
      * Get the Types object for the type selected.
      * @param typeId

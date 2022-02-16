@@ -22,6 +22,14 @@
         margin-bottom: 3rem;
     }
 
+    &__error {
+        font-size: 1.4rem;
+        color: red;
+        font-style: italic;
+        margin-bottom: 1.6rem;
+        margin-top: -2rem;
+    }
+
 }
 
 .form {

@@ -93,4 +93,12 @@ export class MessagesService implements OnInit, OnDestroy {
             }
         }))
     }
+
+    /**
+     * Clear the messages from memory
+     */
+    clearMessages(): void {
+        this.messages = [];
+        this.pushNewMessages([]);
+    }
 }
