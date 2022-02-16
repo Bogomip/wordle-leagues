@@ -6,6 +6,7 @@ const router = express.Router();
 const User = require('../models/user');
 const Result = require('../models/result');
 const checkAuth = require('../middleware/check-auth');
+const { rejects } = require('assert');
 
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 const generateToken = (email, id, remainLoggedIn) => {
@@ -43,7 +44,7 @@ router.post('/register', (req, res, next) => {
                 joinDate: fetchedUser.joindate
             })
         }).catch(err => {
-            res.status(404).json({
+            res.status(401).json({
                 error: err
             })
         })
@@ -57,14 +58,11 @@ router.post('/register', (req, res, next) => {
 router.post('/login', (req, res, next) => {
 
     let fetchedUser;
-    let errorMessage;
-
+    // get the user...
     User.findOne({ email: req.body.email }).then((user) => {
         // user not found...
         if(!user) {
-            return res.status(401).json({
-                message: 'Auth Failed  - No matching email found...'
-            })
+            reject();
         } else {
             // store user data;
             fetchedUser = user;
@@ -72,17 +70,14 @@ router.post('/login', (req, res, next) => {
             return bcrypt.compare(req.body.password, user.password);
         }
     }).then((result) => {
-        // if the passwords no not match throw and error
         if(!result) {
-            return res.status(401).json({
-                message: 'Auth Failed - Passwords dont match...'
-            })
+            // if the passwords no not match throw an error
+            reject();
         } else {
+            console.log('User logged in: ' + req.body.email);
             // password is valid...
             const token = generateToken(fetchedUser.email, fetchedUser._id, req.body.remainLoggedIn );
-
-            console.log('User logged in: ' + req.body.email);
-
+            // set the header...
             res.status(200).json({
                 _id: fetchedUser._id,
                 token: token,
@@ -91,9 +86,11 @@ router.post('/login', (req, res, next) => {
                 joinDate: fetchedUser.joindate
             })
         }
-
     }).catch((error) => {
-
+        return res.status(401).json({
+            message: 'Auth Failed  - There was an issue with some of your credentials.',
+            error: error
+        })
     })
 
 })

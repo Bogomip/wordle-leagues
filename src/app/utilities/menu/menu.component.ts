@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, User } from 'src/app/services/authentication.service';
 import { GeneralService } from 'src/app/services/general.service';
+import { MessagesService } from 'src/app/services/messages.service';
 
 @Component({
   selector: 'app-menu',
@@ -14,7 +15,8 @@ export class MenuComponent implements OnInit {
 
     constructor(
         private generalService: GeneralService,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private messageService: MessagesService
     ) { }
 
     ngOnInit(): void {
@@ -26,6 +28,7 @@ export class MenuComponent implements OnInit {
     }
 
     logout(): void {
+        this.messageService.clearMessages();
         this.auth.logout();
     }
 

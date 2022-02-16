@@ -76,7 +76,7 @@
                 <th>Fail</th>
                 <th>Points</th>
             </thead>
-            <tr *ngFor="let user of league.members">
+            <tr *ngFor="let leagueUser of league.members" [class.league__loggeduser]="user._id === leagueUser._id">
                     <td class="league__user-admin" *ngIf="isLeagueAdmin(league._id)">
                         <div class="league__control league__control--darkyellow" (click)="removeUserFromLeague(league._id, user._id)">
                             <div class="league__control--text league__control--small">Delete Member</div>
@@ -85,22 +85,22 @@
                     </td>
                     <td class="league__user">
                         <div class="league__user--profile">
-                            <div class="league__user--name">{{ user.name }}</div>
-                            <img src="../../assets/icons/trophy-gold.png" alt="Previous League Winner" *ngIf="user.tags.pastWinner">
-                            <img src="../../assets/icons/trophy-silver.png" alt="Previous League Runner Up" *ngIf="user.tags.pastRunnerUp">
+                            <div class="league__user--name">{{ leagueUser.name }}</div>
+                            <img src="../../assets/icons/trophy-gold.png" alt="Previous League Winner" *ngIf="leagueUser.tags.pastWinner">
+                            <img src="../../assets/icons/trophy-silver.png" alt="Previous League Runner Up" *ngIf="leagueUser.tags.pastRunnerUp">
                         </div>
                         <div class="league__user--status">
-                            <div class="league__user--tag" *ngIf="user.tags.admin">Admin</div>
+                            <div class="league__user--tag" *ngIf="leagueUser.tags.admin">Admin</div>
                     </div>
                 </td>
-                <td [class.league__today]="user.today === 1">{{ user.score[1] }}</td>
-                <td [class.league__today]="user.today === 2">{{ user.score[2] }}</td>
-                <td [class.league__today]="user.today === 3">{{ user.score[3] }}</td>
-                <td [class.league__today]="user.today === 4">{{ user.score[4] }}</td>
-                <td [class.league__today]="user.today === 5">{{ user.score[5] }}</td>
-                <td [class.league__today]="user.today === 6">{{ user.score[6] }}</td>
-                <td [class.league__today]="user.today === 0">{{ user.score.fail }}</td>
-                <td>{{ calculateMemberPoints(user) }}</td>
+                <td><div [class.league__today]="leagueUser.today === 1">{{ leagueUser.score[1] }}</div></td>
+                <td><div [class.league__today]="leagueUser.today === 2">{{ leagueUser.score[2] }}</div></td>
+                <td><div [class.league__today]="leagueUser.today === 3">{{ leagueUser.score[3] }}</div></td>
+                <td><div [class.league__today]="leagueUser.today === 4">{{ leagueUser.score[4] }}</div></td>
+                <td><div [class.league__today]="leagueUser.today === 5">{{ leagueUser.score[5] }}</div></td>
+                <td><div [class.league__today]="leagueUser.today === 6">{{ leagueUser.score[6] }}</div></td>
+                <td><div [class.league__today]="leagueUser.today === 0">{{ leagueUser.score.fail }}</div></td>
+                <td>{{ calculateMemberPoints(leagueUser) }}</td>
             </tr>
         </table>
     </div>

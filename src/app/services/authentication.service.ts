@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, take, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { MessagesService } from './messages.service';
 
 export interface AuthData {
     email: string;
@@ -74,8 +75,7 @@ export class AuthenticationService {
             next: (user: User) => {
                 this.saveCredentialsLocally(user);
                 this.handleUserLoggedIn(user);
-            },
-            error: (error: any) => { }
+            }
         }));
     }
 
