@@ -34,7 +34,9 @@ export class AddResultsComponent implements OnInit, OnDestroy {
         // subscribe to the user, and once thats done find the last two games...
         this.auth.user.subscribe((user: User) => {
             this.user = user;
-            this.loadGames();
+            if(user) {
+                this.loadGames();
+            }
         })
      }
 

@@ -4,6 +4,9 @@
         <!-- <button class="input__button" routerLink="">Main Menu</button> -->
     </div>
 
+    <div class="login__error" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
 
     <form class="form" [formGroup]="form" (submit)="login()">
         <div class="form__row">

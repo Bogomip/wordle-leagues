@@ -41,12 +41,12 @@ export class LoginComponent implements OnInit {
             next: (result: User) => {
                 // logged in successfully
                 // go back to the home page
-                console.log(result);
-                this.router.navigate(['']);
+                this.router.navigate(['/']);
             },
-            error: (error: any) => {
+            error: (error: { message: string }) => {
                 // not logged in...
-                this.errorMessage = `Error logging in: ${error}`;
+                console.log(error);
+                this.errorMessage = `Error logging in: ${error.message}`;
             }
         })
     }

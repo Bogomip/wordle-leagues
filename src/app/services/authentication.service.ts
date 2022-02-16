@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, take, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface AuthData {
     email: string;
@@ -28,7 +29,8 @@ export class AuthenticationService {
     token: string = '';
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private router: Router
     ) { }
 
     /**
@@ -50,7 +52,9 @@ export class AuthenticationService {
                 // upon signup the token is returned and login is automatic...
                 this.handleUserLoggedIn(user);
             },
-            error: (error: any) => {}
+            error: (error: any) => {
+                console.log(error);
+            }
         }));
     }
 
@@ -71,7 +75,7 @@ export class AuthenticationService {
                 this.saveCredentialsLocally(user);
                 this.handleUserLoggedIn(user);
             },
-            error: (error: any) => {}
+            error: (error: any) => { }
         }));
     }
 
@@ -120,5 +124,6 @@ export class AuthenticationService {
     logout(): void {
         localStorage.removeItem('user');
         this.user.next(null!);
+        this.router.navigate(['/']);
     }
 }

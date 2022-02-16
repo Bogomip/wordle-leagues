@@ -30,17 +30,17 @@ router.post('/register', (req, res, next) => {
         })
 
         // then save the user...
-        user.save().then(result => {
-            console.log('User registered:' + user.username);
+        user.save().then(fetchedUser => {
+            console.log('User registered:' + fetchedUser.username);
             // save has worked and the user now exists!
             const token = generateToken(fetchedUser.email, fetchedUser._id, false);
 
             res.status(201).json({
-                _id: result._id,
+                _id: fetchedUser._id,
                 token: token,
-                name: user.username,
-                email: user.email,
-                joinDate: user.joindate
+                name: fetchedUser.username,
+                email: fetchedUser.email,
+                joinDate: fetchedUser.joindate
             })
         }).catch(err => {
             res.status(404).json({
@@ -57,42 +57,43 @@ router.post('/register', (req, res, next) => {
 router.post('/login', (req, res, next) => {
 
     let fetchedUser;
+    let errorMessage;
 
     User.findOne({ email: req.body.email }).then((user) => {
         // user not found...
         if(!user) {
             return res.status(401).json({
-                error: 'Auth Failed  - No matching email found...'
+                message: 'Auth Failed  - No matching email found...'
             })
+        } else {
+            // store user data;
+            fetchedUser = user;
+            // return a promise from brypt comparing the password and the stored password...
+            return bcrypt.compare(req.body.password, user.password);
         }
-        // store user data;
-        fetchedUser = user;
-        // return a promise from brypt comparing the password and the stored password...
-        return bcrypt.compare(req.body.password, user.password);
     }).then((result) => {
         // if the passwords no not match throw and error
         if(!result) {
             return res.status(401).json({
-                error: 'Auth Failed - Passwords dont match...'
+                message: 'Auth Failed - Passwords dont match...'
+            })
+        } else {
+            // password is valid...
+            const token = generateToken(fetchedUser.email, fetchedUser._id, req.body.remainLoggedIn );
+
+            console.log('User logged in: ' + req.body.email);
+
+            res.status(200).json({
+                _id: fetchedUser._id,
+                token: token,
+                name: fetchedUser.username,
+                email: fetchedUser.email,
+                joinDate: fetchedUser.joindate
             })
         }
-        // password is valid...
-        const token = generateToken(fetchedUser.email, fetchedUser._id, req.body.remainLoggedIn );
-
-        console.log('User logged in: ' + req.body.email);
-
-        res.status(200).json({
-            _id: fetchedUser._id,
-            token: token,
-            name: fetchedUser.username,
-            email: fetchedUser.email,
-            joinDate: fetchedUser.joindate
-        })
 
     }).catch((error) => {
-        return res.status(401).json({
-            error: 'Auth Failed: ' + error
-        })
+
     })
 
 })

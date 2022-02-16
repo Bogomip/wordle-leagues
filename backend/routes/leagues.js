@@ -114,7 +114,7 @@ router.post('/create'
 
                 // set a message to indicate they have created a new league...
                 const messageObject = {
-                    type: 20, time: new Date().getTime(), users: userId,
+                    type: 2, time: new Date().getTime(), users: userId,
                     title: `You just created the '${name}' league!`,
                     content: `A new league was created, hurrah!  To start inviting people to the '${name}' league they will need to use this link (http://localhost:4200/#/joinleague/${leagueId}) or use the league code (${leagueId}) from the leagues page.`
                 };
@@ -235,7 +235,7 @@ router.post(
 
                     // build the messages
                     const messageToUsersObject = {
-                        type: 1, time: currentTime, users: leagueToDelete.members, title: `League '${leagueToDelete.name}' was deleted by ${adminName}.`,
+                        type: 0, time: currentTime, users: leagueToDelete.members, title: `League '${leagueToDelete.name}' was deleted.`,
                         content: `'${leagueToDelete.name}' league was deleted by ${adminName}. The winners of the final round were ${winnersString} with ${winner.score} points, and the runner ups were ${runnersString} with ${runnerUp.score}.`
                     };
 
@@ -317,7 +317,7 @@ router.post(
                     // array of messages because osmetimes we ownt have runner ups
                     // build the messages
                     const messageToUsersObject = {
-                        type: 1, time: new Date().getTime(), users: leagueToRestart.members, title: `League '${leagueToRestart.name}' was restarted by ${adminName}.`,
+                        type: 1, time: new Date().getTime(), users: leagueToRestart.members, title: `League '${leagueToRestart.name}' was restarted.`,
                         content: `'${leagueToRestart.name}' league was just restarted by ${adminName}. This league had run from ${leagueToRestart.startId} and will now run from today, wordle number ${newWordleId}. The winners of the previous round were ${winnersString} with ${winner.score} points, and the runner up was ${runnersString} with ${runnerUp.score}.`
                     };
 
