@@ -36,7 +36,9 @@ export class LeaguesComponent implements OnInit {
         this.auth.user.subscribe((user: User) => {
             this.user = user;
             // force the league service to update its data once a user has been established......
-            this.leagueService.getLeaguesData(user._id);
+            if(user) {
+                this.leagueService.getLeaguesData(user._id);
+            }
         })
 
         // sub to the league behaviour object

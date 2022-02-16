@@ -12,23 +12,24 @@
     padding: 1rem;
     padding-top: 3.5rem;
 
+    display: flex;
+
+    &__container {
+        flex: 1;
+    }
+
     &__paginator {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: auto;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         background-color: var(--eggshell);
 
-        border-bottom: .2rem solid #6aaa64;
-
         font-size: 1.2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        padding-bottom: .5rem;
+        padding-right: .5rem;
 
         overflow: hidden;
+        margin-right: .5rem;
 
         &--navigate {
             background-color: #b59f3b;
@@ -36,10 +37,22 @@
             padding: .3rem .6rem;
             text-align: center;
             transition: all .2s;
+            font-size: 1.4rem;
+            margin-bottom: .5rem;
+
+            &--left {
+                transform: rotateY(180deg);
+            }
+
+            &:last-child {
+                margin-bottom: 2rem;
+            }
 
             &:hover {
-                cursor: pointer;
-                background-color: #6aaa64;
+                &:not(:disabled) {
+                    cursor: pointer;
+                    background-color: #6aaa64;
+                }
             }
 
             &:active {
@@ -47,8 +60,19 @@
             }
         }
 
-        &--page-text {
+        &--buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 0 !important;
+        }
 
+        &--page-text {
+            text-align: center;
+        }
+
+        &--pageno {
+            font-weight: bold;
         }
     }
 
@@ -68,6 +92,8 @@
     box-shadow: 0 .3rem .6rem rgba(black, .5);
     overflow: hidden;
     max-height: 20rem;
+
+    background-image: linear-gradient(to right, #c9b458, #6aaa64);
 
     display: grid;
     grid-template: 1fr / 1fr;
@@ -93,10 +119,6 @@
         align-items: center;
     }
 
-    &--won { background-image: linear-gradient(to right, #6aaa64, #b59f3b); }
-    &--runnerup { background-image: linear-gradient(to right, #6aaa64, #86888a); }
-    &--left { background-image: linear-gradient(to right, #6aaa64, red); }
-
     &__title {
         font-size: 1.4rem;
     }
@@ -106,7 +128,7 @@
     }
 
     &__background {
-        background-image: linear-gradient(to left, #6aaa64, #b59f3b);
+        background-image: linear-gradient(to left, #c9b458, #6aaa64);
         opacity: 0;
         transition: all .5s;
         position: absolute;
@@ -133,6 +155,7 @@
         transform: translateX(-100%) translateY(-2rem);
         opacity: 0;
         max-height: 0rem;
+
     }
 
     &__time {

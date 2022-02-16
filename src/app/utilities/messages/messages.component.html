@@ -1,27 +1,37 @@
 <div class="messages" id="messages">
 
     <div class="messages__paginator" *ngIf="messages.length > 6">
-        <div class="messages__paginator--navigate">(--</div>
-        <div class="messages__paginator--page-text">
-            Messages Page {{ messageCurrentPage }} of {{ messagePages }}
+
+        <div class="messages__paginator--buttons">
+            <button class="messages__paginator--navigate" (click)="firstPage()" [disabled]="messageCurrentPage === 1" title="Back to page one"><div class="messages__paginator--navigate--left">&#10150;</div></button>
+            <button class="messages__paginator--navigate" (click)="lastPage()" [disabled]="messageCurrentPage === 1" title="Back a page"><div class="messages__paginator--navigate--left">&#10152;</div></button>
+            <button class="messages__paginator--navigate" (click)="nextPage()" [disabled]="messageCurrentPage === messagePages" title="Forward one page">&#10152;</button>
+            <button class="messages__paginator--navigate" (click)="finalPage()" [disabled]="messageCurrentPage === messagePages" title="Last page">&#10150;</button>
         </div>
-        <div class="messages__paginator--navigate">--)</div>
+
+        <div class="messages__paginator--page-text">
+            <div class="messages__paginator--pageno">{{ messageCurrentPage }}</div>
+            <div>of</div>
+            <div class="messages__paginator--pageno">{{ messagePages }}</div>
+        </div>
     </div>
 
-    <div class="message-quick message-quick--won" *ngFor="let message of getPageMessages()" id="{{ message._id }}">
-        <div class="message-quick__background"></div>
-        <div class="message-quick__title-view">
-            <div class="message-quick__title">{{ message.title }}</div>
-            <div class="message-quick__icon">
-                <img src="../../../assets/icons/trophy-gold.png" alt="Winning Trophy">
+    <div class="messages__container">
+        <div class="message-quick" *ngFor="let message of getPageMessages()" id="{{ message._id }}">
+            <div class="message-quick__background"></div>
+            <div class="message-quick__title-view">
+                <div class="message-quick__title">{{ message.title }}</div>
+                <div class="message-quick__icon">
+                    <img src="../../../assets/icons/{{ getTypeIcon(message.type) }}" alt="Winning Trophy">
+                </div>
             </div>
-        </div>
-        <div class="message-quick__description">
-            <div class="message-quick__time">{{ message.time | date:'MMM d, h:mm:ss a' }}</div>
-            <div class="message-quick__controls">
-                <div class="message-quick__button message-quick__button--dismiss" (click)="dismissMessage(message._id)">&#10008;</div>
+            <div class="message-quick__description">
+                <div class="message-quick__time">{{ message.time | date:'MMM d, h:mm:ss a' }}</div>
+                <div class="message-quick__controls">
+                    <div class="message-quick__button message-quick__button--dismiss" (click)="dismissMessage(message._id)">&#10008;</div>
+                </div>
+                <div class="message-quick__message">{{ message.content }}</div>
             </div>
-            <div class="message-quick__message">{{ message.content }}</div>
         </div>
     </div>
 

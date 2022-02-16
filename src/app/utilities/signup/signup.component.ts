@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup,  Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PasswordMatch } from '../password-match';
@@ -22,7 +23,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     register: Subscription = new Subscription;
 
     constructor(
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private router: Router
     ) { }
 
     ngOnInit(): void {
@@ -57,7 +59,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
         this.register = this.auth.createNewUserWithEmailAndPassword(email, username, password).subscribe({
             next: (result) => {
-                console.log(result);
+                this.router.navigate(['/']);
             },
             error: (error) => {
                 this.errorMessage = error.error.message;

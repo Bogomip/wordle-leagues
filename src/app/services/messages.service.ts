@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, take, tap } from 'rxjs';
+import { AuthenticationService, User } from './authentication.service';
 
 export interface Message {
     content: string;
@@ -13,16 +14,27 @@ export interface Message {
 @Injectable({
   providedIn: 'root'
 })
-export class MessagesService implements OnDestroy {
+export class MessagesService implements OnInit, OnDestroy {
 
     messagesObservable = new BehaviorSubject<Message[]>([]);
     messages: Message[] = [];
 
     messagesSub: Subscription;
 
+    user: User;
+
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private auth: AuthenticationService
     ) { }
+
+    ngOnInit(): void {
+        this.auth.user.subscribe((user: User) => {
+            if(user) {
+                this.user = user;
+            }
+        })
+    }
 
     ngOnDestroy(): void {
         this.messagesSub.unsubscribe();
@@ -31,10 +43,10 @@ export class MessagesService implements OnDestroy {
   /**
      * Retrives the messages from the database...
      */
-    getMessages(): void {
-        this.messagesSub = this.http
+    getMessages(): Observable<{ data: Message[], success: boolean }> {
+        return this.http
         .get<{ data: Message[], success: boolean }>('http://localhost:3000/api/messages/all')
-        .subscribe({
+        .pipe(tap({
             next: (result: { data: Message[], success: boolean }) => {
                 this.messages = [...result.data];
                 this.pushNewMessages([...this.messages]);
@@ -42,7 +54,7 @@ export class MessagesService implements OnDestroy {
             error: (error: any) => {
                 console.log(`Error retrieving messages: ${error}`);
             }
-        })
+        }))
     }
 
     /**

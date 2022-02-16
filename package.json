@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "server:start": "nodemon backend/server.js"
+    "server:start": "nodemon --trace-warnings backend/server.js"
   },
   "private": true,
   "dependencies": {
