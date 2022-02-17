@@ -93,28 +93,6 @@ p {
     }
 
 }
-// .input__button {
-//     border-radius: 1rem;
-//     padding: .5rem 2rem;
-//     background-color: var(--main-darkgreen);
-//     transition: all .2s;
-//     color: var(--eggshell);
-//     box-shadow: 0 .3rem .6rem rgba(black, .5);
-//     margin-right: .5rem;
-
-//     &:hover {
-//         cursor: pointer;
-//         background-color: var(--main-yellow);
-//         color: var(--main-green);
-//         font-weight: bold;
-//         box-shadow: 0 .6rem .9rem rgba(black, .7);
-//     }
-
-//     &:active {
-//         transform: translateY(-.3rem);
-//     }
-
-// }
 
 .input__button {
     background-color: var(--main-green);
@@ -154,6 +132,35 @@ p {
         &--green { background-color: var(--main-green); }
         &--yellow { background-color: var(--main-yellow); }
     }
+}
+.background-grad {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.background-grad__1 {
+    opacity: 0;
+    background-image: linear-gradient(to bottom right, transparent, #6aaa64);
+    animation: opacity0to100 3.6s ease-in-out 0s infinite alternate;
+}
+.background-grad__2 {
+    opacity: 1;
+    background-image: linear-gradient(to bottom left, transparent, #c9b458);
+    animation: opacity100to0 8.6s ease-in-out 0s infinite alternate;
+}
+.background-grad__3 {
+    opacity: 0;
+    background-image: linear-gradient(to top right, transparent, #b59f3b);
+    animation: opacity0to100 12.87s ease-in-out 0s infinite alternate;
+}
+.background-grad__4 {
+    opacity: 1;
+    background-image: linear-gradient(to top left, transparent, #538d4e);
+    animation: opacity100to0 7.46s ease-in-out 0s infinite alternate;
 }
 
 

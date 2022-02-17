@@ -1,77 +1,83 @@
 <div class="layout">
 
-    <div class="layout-left">
+    <div class="layout-left__parent">
+        <div class="layout-left">
+            <div class="background-grad background-grad__1"></div>
+            <div class="background-grad background-grad__2"></div>
+            <div class="background-grad background-grad__3"></div>
+            <div class="background-grad background-grad__4"></div>
 
-        <div class="wordle-logo" [class.wordle-logo__scale-animation]="runAnimation"  [class.wordle-logo__scale-noanimation]="!runAnimation">
+            <div class="wordle-logo" [class.wordle-logo__scale-animation]="runAnimation"  [class.wordle-logo__scale-noanimation]="!runAnimation">
 
-            <div class="wordle-logo__word wordle-logo__word--wordle">
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">W</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">O</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">R</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">D</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">E</div>
-            </div>
-
-            <div class="wordle-logo__close-animated" [class.wordle-logo__close-notanimated]="!runAnimation">
-                <div class="wordle-logo__word" [class.wordle-logo__word--1]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">G</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">U</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">I</div>
+                <div class="wordle-logo__word wordle-logo__word--wordle">
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--green">W</div>
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">O</div>
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--green">R</div>
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">D</div>
                     <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">D</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">S</div>
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">E</div>
                 </div>
 
-                <div class="wordle-logo__word" [class.wordle-logo__word--2]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">A</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">N</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">G</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">E</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">S</div>
+                <div class="wordle-logo__close-animated" [class.wordle-logo__close-notanimated]="!runAnimation">
+                    <div class="wordle-logo__word" [class.wordle-logo__word--1]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">G</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">U</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">I</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">D</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">S</div>
+                    </div>
+
+                    <div class="wordle-logo__word" [class.wordle-logo__word--2]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">A</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">N</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">G</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">E</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">S</div>
+                    </div>
+
+                    <div class="wordle-logo__word" [class.wordle-logo__word--3]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">W</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">A</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">N</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--green">G</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
+                        <div class="wordle-logo__word--letter wordle-logo__word--letter--green">E</div>
+                    </div>
                 </div>
 
-                <div class="wordle-logo__word" [class.wordle-logo__word--3]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">W</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">A</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">N</div>
+                <div class="wordle-logo__word" [class.wordle-logo__word--4]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--green">L</div>
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--green">E</div>
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--green">A</div>
                     <div class="wordle-logo__word--letter wordle-logo__word--letter--green">G</div>
-                    <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
+                    <div class="wordle-logo__word--letter wordle-logo__word--letter--green">U</div>
                     <div class="wordle-logo__word--letter wordle-logo__word--letter--green">E</div>
                 </div>
+
+
             </div>
 
-            <div class="wordle-logo__word" [class.wordle-logo__word--4]="runAnimation" [class.wordle-logo__word--not-animated]="!runAnimation">
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">L</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">E</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">A</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">G</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">U</div>
-                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">E</div>
+            <div class="menu">
+                <app-menu></app-menu>
             </div>
 
+            <div class="messages">
+                <app-messages></app-messages>
+            </div>
+
+            <div class="footer">
+                Wordle was created by <a href="https://www.powerlanguage.co.uk/" target="_new">powerlanguage</a>. It is owned by the <a href="https://www.nytimes.com/" target="_new">New York Times</a>. I had nothing to do with the creativity behind the game, but made this place for people to put their results into. Conact <a href="mailto:alex.bunting@gmail.com">me</a> if you have issues with this site, I cant help with the Wordle!
+            </div>
 
         </div>
-
-        <div class="menu">
-            <app-menu></app-menu>
-        </div>
-
-        <div class="messages">
-            <app-messages></app-messages>
-        </div>
-
-        <div class="footer">
-            Wordle was created by <a href="https://www.powerlanguage.co.uk/" target="_new">powerlanguage</a>. It is owned by the <a href="https://www.nytimes.com/" target="_new">New York Times</a>. I had nothing to do with the creativity behind the game, but made this place for people to put their results into. Conact <a href="mailto:alex.bunting@gmail.com">me</a> if you have issues with this site, I cant help with the Wordle!
-        </div>
-
     </div>
 
 
-    <div class="layout-central__wrapper">
+    <!-- <div class="layout-central__wrapper">
         <div class="layout-central">&nbsp;</div>
-    </div>
+    </div> -->
 
     <div class="layout-right">
         <router-outlet></router-outlet>

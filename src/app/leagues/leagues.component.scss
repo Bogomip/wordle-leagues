@@ -6,12 +6,17 @@
     &__header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: baseline;
     }
 
     &__buttons {
         display: flex;
-        align-items: baseline;
+        align-items: flex-end;
+        flex-direction: column;
+
+        .input__button {
+            margin-top: 1rem;
+        }
     }
 
     &__code-copy {
@@ -56,7 +61,6 @@
 .input__button {
     margin-left: 1rem;
     padding: .3rem 2rem;
-    transform: translateY(.1rem);
     text-align: center;
 }
 
@@ -143,6 +147,15 @@
 
             img {
                 opacity: 0;
+            }
+        }
+
+
+        &--notext {
+            &:hover {
+                width: auto;
+
+                img { opacity: 1 }
             }
         }
 

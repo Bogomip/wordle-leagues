@@ -174,7 +174,8 @@ export class NotificationsComponent implements OnInit {
         // iterate over all notifications...
         for(let i = 0 ; i < this.leagues.length ; i++) {
             const league: LeagueIdentifier = this.leagues[i];
-            const leagueUserCount: number = this.notifications.filter((temp: WordleNotification) => temp.leagueId === league._id && temp.seen === true).length;
+            const leagueUserCount: number = this.notifications.filter((temp: WordleNotification) => temp.leagueId === league._id && temp.seen === false).length;
+            console.log(this.notifications);
 
             if(leagueUserCount !== 0) {
                 newLeagueArray.push(this.leagues[i]);
