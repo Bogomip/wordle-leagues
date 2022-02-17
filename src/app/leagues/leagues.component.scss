@@ -1,3 +1,5 @@
+@import "../../styles.scss";
+
 .leagues {
 
     position: relative;
@@ -131,22 +133,24 @@
 
         &--small { font-size: 1.2rem; font-weight: lighter; }
 
-        &:hover {
-            cursor: pointer;
-            background-color: var(--main-yellow);
-            color: var(--main-green);
-            font-weight: bold;
-            box-shadow: 0 .6rem .9rem rgba(black, .7);
-            width: 13rem;
+        @media screen and (max-width: $breakpoint-mobile) {
+            &:hover {
+                cursor: pointer;
+                background-color: var(--main-yellow);
+                color: var(--main-green);
+                font-weight: bold;
+                box-shadow: 0 .6rem .9rem rgba(black, .7);
+                width: 13rem;
 
-            .league__control--text {
-                color: black;
-                opacity: 1;
-                transform: translateX(-50%) translateY(-50%) scale(1);
-            }
+                .league__control--text {
+                    color: black;
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(-50%) scale(1);
+                }
 
-            img {
-                opacity: 0;
+                img {
+                    opacity: 0;
+                }
             }
         }
 
@@ -248,5 +252,17 @@
         }
 
 
+    }
+}
+
+.nomobile {
+    @media screen and (max-width: $breakpoint-mobile) {
+        display: none;
+    }
+}
+
+.mobile {
+    @media screen and (max-width: $breakpoint-mobile) {
+        display: auto;
     }
 }
