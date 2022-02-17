@@ -54,12 +54,13 @@
             <colgroup>
                 <col span="1" style="width: 1%;" *ngIf="isLeagueAdmin(league._id)">
                 <col span="1" style="width: 40%; text-align: left;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 4%;">
-                <col span="1" style="width: 4%;">
+                <col class="nomobile" span="1" style="width: 4%;">
+                <col class="nomobile" span="1" style="width: 4%;">
+                <col class="nomobile" span="1" style="width: 4%;">
+                <col class="nomobile" span="1" style="width: 4%;">
+                <col class="nomobile" span="1" style="width: 4%;">
+                <col class="nomobile" span="1" style="width: 4%;">
+                <col class="nomobile" span="1" style="width: 4%;">
                 <col span="1" style="width: 4%;">
                 <col span="1" style="width: 10%;">
             </colgroup>
@@ -67,13 +68,14 @@
             <thead>
                 <th *ngIf="isLeagueAdmin(league._id)"></th>
                 <th style="text-align: left;">Name</th>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
-                <th>6</th>
-                <th>Fail</th>
+                <th class="nomobile">1</th>
+                <th class="nomobile">2</th>
+                <th class="nomobile">3</th>
+                <th class="nomobile">4</th>
+                <th class="nomobile">5</th>
+                <th class="nomobile">6</th>
+                <th class="nomobile">Fail</th>
+                <th class="mobile">#{{ todaysWordle }}</th>
                 <th>Points</th>
             </thead>
             <tr *ngFor="let leagueUser of league.members" [class.league__loggeduser]="user._id === leagueUser._id">
@@ -92,13 +94,14 @@
                             <div class="league__user--tag" *ngIf="leagueUser.tags.admin">Admin</div>
                     </div>
                 </td>
-                <td><div [class.league__today]="leagueUser.today === 1">{{ leagueUser.score[1] }}</div></td>
-                <td><div [class.league__today]="leagueUser.today === 2">{{ leagueUser.score[2] }}</div></td>
-                <td><div [class.league__today]="leagueUser.today === 3">{{ leagueUser.score[3] }}</div></td>
-                <td><div [class.league__today]="leagueUser.today === 4">{{ leagueUser.score[4] }}</div></td>
-                <td><div [class.league__today]="leagueUser.today === 5">{{ leagueUser.score[5] }}</div></td>
-                <td><div [class.league__today]="leagueUser.today === 6">{{ leagueUser.score[6] }}</div></td>
-                <td><div [class.league__today]="leagueUser.today === 0">{{ leagueUser.score.fail }}</div></td>
+                <td class="nomobile"><div [class.league__today]="leagueUser.today === 1">{{ leagueUser.score[1] }}</div></td>
+                <td class="nomobile"><div [class.league__today]="leagueUser.today === 2">{{ leagueUser.score[2] }}</div></td>
+                <td class="nomobile"><div [class.league__today]="leagueUser.today === 3">{{ leagueUser.score[3] }}</div></td>
+                <td class="nomobile"><div [class.league__today]="leagueUser.today === 4">{{ leagueUser.score[4] }}</div></td>
+                <td class="nomobile"><div [class.league__today]="leagueUser.today === 5">{{ leagueUser.score[5] }}</div></td>
+                <td class="nomobile"><div [class.league__today]="leagueUser.today === 6">{{ leagueUser.score[6] }}</div></td>
+                <td class="nomobile"><div [class.league__today]="leagueUser.today === 0">{{ leagueUser.score.fail }}</div></td>
+                <td class="mobileonly"><div class="league__today">{{ leagueUser.today || "N/A" }}</div></td>
                 <td>{{ calculateMemberPoints(leagueUser) }}</td>
             </tr>
         </table>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, User } from '../services/authentication.service';
 import { League, LeagueMember, LeagueService } from '../services/league.service';
+import { GeneralService } from '../services/general.service';
 import { Message, MessagesService } from '../services/messages.service';
 
 @Component({
@@ -17,6 +18,9 @@ export class LeaguesComponent implements OnInit {
     // how much each position is worth, starting from 1st. No fail points are available.
     scoreArray: number[] = [2,3,4,3,2,1]; // HAS TO MATCH THE DB FOR NOW.
 
+    // todays wordle
+    todaysWordle: number;
+
     // errors and control booleans
     errorMessage: string = '';
     copiedToClipboard: boolean = false;
@@ -28,7 +32,8 @@ export class LeaguesComponent implements OnInit {
     constructor(
         private leagueService: LeagueService,
         private auth: AuthenticationService,
-        private messageService: MessagesService
+        private messageService: MessagesService,
+        private generalService: GeneralService
     ) { }
 
     ngOnInit(): void {
@@ -60,6 +65,9 @@ export class LeaguesComponent implements OnInit {
         this.leagueService.leagueUpdating.subscribe((leagueUpdatingId: string) => {
             this.currentlyReloadingLeagues.push(leagueUpdatingId);
         })
+
+        // get todays world...
+        this.todaysWordle = this.generalService.todaysGame();
     }
 
     /**

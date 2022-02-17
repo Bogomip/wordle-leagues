@@ -15,6 +15,12 @@
     --eggshell: #F0EAD6;
 }
 
+// breakpoints, scss
+$breakpoint-large: 1200px;
+$breakpoint-medium: 1000px;
+$breakpoint-small: 800px;
+$breakpoint-mobile: 600px;
+
 html {
     font-size: 62.5%;
     font-family: 'Open Sans', sans-serif;
