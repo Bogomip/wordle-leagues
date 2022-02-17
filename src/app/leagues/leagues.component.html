@@ -41,11 +41,11 @@
                     <div class="league__control--text">Leave League</div>
                     <img src="../../assets/icons/exit.png" alt="Leave League">
                 </div>
-
+<!--
                 <div class="league__control league__control--green" *ngIf="league.notificationsAllowed" (click)="toggleNotifications()">
                     <div class="league__control--text">Notifications</div>
                     <img src="../../assets/icons/bell.png" alt="Turn notifications on/off">
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -78,8 +78,7 @@
             </thead>
             <tr *ngFor="let leagueUser of league.members" [class.league__loggeduser]="user._id === leagueUser._id">
                     <td class="league__user-admin" *ngIf="isLeagueAdmin(league._id)">
-                        <div class="league__control league__control--darkyellow" (click)="removeUserFromLeague(league._id, user._id)">
-                            <div class="league__control--text league__control--small">Delete Member</div>
+                        <div class="league__control league__control--notext league__control--darkyellow" (click)="removeUserFromLeague(league._id, user._id)">
                             <img src="../../assets/icons/trash.png" alt="Delete User">
                         </div>
                     </td>

@@ -26,6 +26,8 @@
 .howtoplay {
     display: grid;
     grid-template: repeat(3, 1fr) / 1fr;
+    align-items: center;
+    justify-content: center;
 
     margin: 10vh 15rem 10vh 15rem;
     color: blue;
@@ -35,8 +37,30 @@
     &__top {
         perspective: 180px;
         perspective-origin: 56% 50%;
+        transition: all 2s;
+
+        animation: gentleWibble 5s ease-in-out 0s infinite ;
+
         .league {
+            user-select: none;
+            position: relative;
+            width: 50rem;
             transform: scale(1.1) rotateX(18deg) rotateY(-18deg) rotateZ(-15deg) translateX(-7rem) translateY(0px) translateZ(0px) skewX(1deg) skewY(0deg);
         }
+
+        &:hover {
+            perspective: 1000px;
+
+            .league {
+                backface-visibility: hidden;
+                transform: scale(1) rotateX(0) rotateY(0) rotateZ(0) translateX(0) translateY(0px) translateZ(0px) skewX(0) skewY(0);
+            }
+        }
     }
+}
+
+@keyframes gentleWibble {
+    0% { perspective: 180px; }
+    50% { perspective: 360px; }
+    100% { perspective: 180px; }
 }

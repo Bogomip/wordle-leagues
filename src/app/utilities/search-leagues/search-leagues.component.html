@@ -4,7 +4,7 @@
 
     <div class="search__add" *ngIf="!foundLeague">
         <input class="search__add--input" type="text" id="league-code" placeholder="League Code...">
-        <button class="input__button"(click)="searchLeagues()">Search League</button>
+        <button class="input__button" (click)="searchLeagues()">Search League</button>
     </div>
 
     <div class="search__found" *ngIf="foundLeague">

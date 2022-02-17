@@ -6,26 +6,31 @@
     height: 100%;
 
     display: flex;
+
 }
 
 .layout-left {
 
+    &__parent {
+        position: relative;
+        display: flex;
+        flex: 1;
+        height: 100%;
+        filter: drop-shadow(.8rem 0 .8rem rgba(black, .5));
+    }
 
     position: relative;
-    background-color: var(--eggshell);
-    z-index: 10;
-
-    flex: 1;
+    // background-color: var(--eggshell);
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 
+    margin-right: 1rem;
+    padding-right: 2rem;
+    clip-path: polygon(0% 0%, 100% 0%, calc(100% - 3rem) 100%, 0% 100%);
 
-}
-
-.menu {
 }
 
 .messages {
@@ -39,22 +44,12 @@
     font-size: 1.2rem;
     font-style: italic;
     margin: 1rem 1.5rem 1rem 2rem;
-}
-
-.layout-central {
-    background-color: var(--eggshell);
-    clip-path: polygon(0% 0%, 100% 0%, 0% 100%, 0% 100%);
-    width: 5rem;
-
-    &__wrapper {
-        display: flex;
-        filter: drop-shadow(.5rem 0 .8rem rgba(black, .5));
-    }
+    color: black;
 }
 
 .layout-right {
     flex: 4;
-    background-color: white;
+    background-color: transparent;
     border-radius: 2rem;
     overflow: hidden;
     overflow-y: scroll;
