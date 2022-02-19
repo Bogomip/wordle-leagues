@@ -98,8 +98,18 @@ export class AuthenticationService {
         const localUserData: User = JSON.parse(localStorage.getItem('user')!);
         // check if its exists...
         if(!localUserData) return;
-        // and if it does, handle it!
         this.handleUserLoggedIn(localUserData);
+        // check the user session is still active and if not, log the user out.
+        this.http.get('http://localhost:3000/api/user/checktoken').subscribe({
+            next: (result: any) => {
+                // do nothing in the case of success :)
+                console.log(`Success: ${result}`);
+            },
+            error: (error: any) => {
+                console.log(`Error: ${error.message}`);
+                this.logout();
+            }
+        })
     }
 
     /**

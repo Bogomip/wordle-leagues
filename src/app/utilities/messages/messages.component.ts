@@ -33,6 +33,7 @@ export class MessagesComponent implements OnInit, AfterViewInit {
     // 11 - you win league
     // 12 - you are runner up of league
     // 20 - you left a league
+    // 21 - You are removed from a league
     types: Types[] = [
         { type: 0, style: 'deleted', icon: 'trash.png', image: 'gold-trophy.png', alt: 'Winner!' },
         { type: 1, style: 'restarted', icon: 'cycle.png', image: 'gold-trophy.png', alt: 'Winner!' },
@@ -120,7 +121,8 @@ export class MessagesComponent implements OnInit, AfterViewInit {
     paginationRecalculation(): void {
         try {
             const containerHeight: number = this.resizeElement.offsetParent?.clientHeight || 0;
-            const messageQuantity: number = Math.round(containerHeight / 80) - 1;
+            const messageQuantity: number = Math.round(containerHeight / 80) - 1  >= 0 ? Math.round(containerHeight / 80) - 1 : 3;
+
             this.messageDisplayQuantity = messageQuantity;
             this.messagePages = Math.ceil(this.messages.length / this.messageDisplayQuantity)
 

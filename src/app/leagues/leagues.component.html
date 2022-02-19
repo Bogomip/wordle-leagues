@@ -1,5 +1,7 @@
 <div class="leagues">
 
+    <app-spinner *ngIf="isLoading"></app-spinner>
+
     <div class="leagues__header">
         <h1 class="leagues__title">Your Leagues</h1>
         <div class="leagues__buttons">
@@ -8,12 +10,19 @@
         </div>
     </div>
 
-    <div class="leagues__code-copy" *ngIf="copiedToClipboard" (click)="removeCopyNotification()">
-        Code copied to clipboard!
+    <div class="leagues__code-copy" *ngIf="copiedToClipboard">
+        <div class="leagues__code-copy--text">
+            The join link has been copied to clipboard. The code for this league is {{ code }}.
+        </div>
+        <div class="leagues__code-copy--remove" (click)="removeCopyNotification()">✘</div>
     </div>
 
     <div id="create-container" class="leagues__create-container">
         <app-create *ngIf="createNewLeague"></app-create>
+    </div>
+
+    <div class="leagues__none" *ngIf="leagues.length === 0 && !isLoading">
+        You do not have any leagues yet. Click above to either create or join a league.
     </div>
 
     <div class="league" *ngFor="let league of leagues">
@@ -23,7 +32,6 @@
         <div class="league__header">
             <h2 class="league__name">{{ league.name }}</h2>
             <div class="league__admin-controls">
-
 
                 <div class="league__control league__control--darkyellow" *ngIf="isLeagueAdmin(league._id)" (click)="deleteLeague(league._id)">
                     <div class="league__control--text">Delete League</div>
@@ -61,7 +69,7 @@
                 <col class="nomobile" span="1" style="width: 4%;">
                 <col class="nomobile" span="1" style="width: 4%;">
                 <col class="nomobile" span="1" style="width: 4%;">
-                <col span="1" style="width: 4%;">
+                <col class="mobile" span="1" style="width: 4%;">
                 <col span="1" style="width: 10%;">
             </colgroup>
 
@@ -79,19 +87,19 @@
                 <th>Points</th>
             </thead>
             <tr *ngFor="let leagueUser of league.members" [class.league__loggeduser]="user._id === leagueUser._id">
-                    <td class="league__user-admin" *ngIf="isLeagueAdmin(league._id)">
-                        <div class="league__control league__control--notext league__control--darkyellow" (click)="removeUserFromLeague(league._id, user._id)">
-                            <img src="../../assets/icons/trash.png" alt="Delete User">
-                        </div>
-                    </td>
-                    <td class="league__user">
-                        <div class="league__user--profile">
-                            <div class="league__user--name">{{ leagueUser.name }}</div>
-                            <img src="../../assets/icons/trophy-gold.png" alt="Previous League Winner" *ngIf="leagueUser.tags.pastWinner">
-                            <img src="../../assets/icons/trophy-silver.png" alt="Previous League Runner Up" *ngIf="leagueUser.tags.pastRunnerUp">
-                        </div>
-                        <div class="league__user--status">
-                            <div class="league__user--tag" *ngIf="leagueUser.tags.admin">Admin</div>
+                <td class="league__user-admin" *ngIf="isLeagueAdmin(league._id)">
+                    <div class="league__control league__control--notext league__control--darkyellow" (click)="removeUserFromLeague(league._id, leagueUser._id)" *ngIf="user._id !== leagueUser._id">
+                        <img src="../../assets/icons/trash.png" alt="Delete User">
+                    </div>
+                </td>
+                <td class="league__user">
+                    <div class="league__user--profile">
+                        <div class="league__user--name">{{ leagueUser.name }}</div>
+                        <img src="../../assets/icons/trophy-gold.png" alt="Previous League Winner" *ngIf="leagueUser.tags.pastWinner">
+                        <img src="../../assets/icons/trophy-silver.png" alt="Previous League Runner Up" *ngIf="leagueUser.tags.pastRunnerUp">
+                    </div>
+                    <div class="league__user--status">
+                        <div class="league__user--tag" *ngIf="leagueUser.tags.admin">Admin</div>
                     </div>
                 </td>
                 <td class="nomobile"><div [class.league__today]="leagueUser.today === 1">{{ leagueUser.score[1] }}</div></td>
@@ -101,7 +109,7 @@
                 <td class="nomobile"><div [class.league__today]="leagueUser.today === 5">{{ leagueUser.score[5] }}</div></td>
                 <td class="nomobile"><div [class.league__today]="leagueUser.today === 6">{{ leagueUser.score[6] }}</div></td>
                 <td class="nomobile"><div [class.league__today]="leagueUser.today === 0">{{ leagueUser.score.fail }}</div></td>
-                <td class="mobileonly"><div class="league__today">{{ leagueUser.today || "N/A" }}</div></td>
+                <td class="mobile"><div class="league__today">{{ leagueUser.today || "N/A" }}</div></td>
                 <td>{{ calculateMemberPoints(leagueUser) }}</td>
             </tr>
         </table>

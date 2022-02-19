@@ -382,5 +382,52 @@ router.get(
         })
 })
 
+router.delete(
+    '/removeuser'
+    , checkAuth
+    , (req, res, next) => {
+        const adminId = methods.getUserDataFromToken(req).id;
+        const leagueId = req.query.leagueId;
+        const userToDelete = req.query.userToDelete;
+        const adminName = req.query.adminName;
+
+        league.findOne({ _id: leagueId, admins: { $in : [adminId] }, members: { $in: [userToDelete]} }).then(leagueReturned => {
+            // league found, which means the user is a valid admin
+            league.updateOne({ _id: leagueId }, { $pull: { members : userToDelete }}).then(result => {
+                // if this is find then return a message...
+                if(result.modifiedCount === 1) {
+                    // success, send a mesage to the removed user and return true
+                    const messageToUser = new message({
+                        type: 21, time: new Date().getTime(), users: [userToDelete],
+                        title: `You were removed from the '${leagueReturned.name}' league!`,
+                        content: `You were just removed from the ongoing '${leagueReturned.name}' league by ${adminName}.`
+                    });
+
+                    messageToUser.save().then(messageResult => {
+                        res.status(200).json({
+                            success: true
+                        })
+                    }).catch(err => {
+                        // if the message doesnt send log int he console here...
+                        console.log("Local DB fail (L/D/removeuser1): Message failed to add to the db.")
+                    })
+
+                } else {
+                    // failure
+                    res.status(401).json({
+                        success: false,
+                        message: 'User was not removed: ' + result
+                    })
+                }
+            })
+        }).catch(error => {
+            res.status(401).json({
+                success: false,
+                message: 'User was not removed as you either have no permission to remove them from the league, the league doesnt exist, or they have already been removed from the league'
+            })
+        })
+    }
+)
+
 
 module.exports = router;

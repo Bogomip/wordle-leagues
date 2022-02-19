@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
         next();
     } catch (error) {
         res.status(401).json({
-            error: "Authentication Failed - No Token"
+            message: `Authentication Failed - No Token: ${error}`
         })
     }
 }

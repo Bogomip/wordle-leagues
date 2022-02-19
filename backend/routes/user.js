@@ -148,4 +148,14 @@ router.post(
     }
 )
 
+router.get(
+        '/checktoken',
+        checkAuth,
+        (req, res, next) => {
+            res.status(200).json({
+                success: true
+            })
+        }
+)
+
 module.exports = router;

@@ -125,12 +125,32 @@ router.get('/all/:userId', checkAuth, (req, res, next) => {
 /**
  * Get all league data for the user...
  */
-router.get('/league/:id', (req, res, next) => {
-    console.log("get all data in a specific league..." + req.params.id);
+router.get(
+    '/league/:id',
+    checkAuth,
+    (req, res, next) => {
+        const userId = methods.getUserDataFromToken(req).id;
+        const leagueId = req.query.leagueId;
 
-    res.status(200).json({
-        data: 'here is the data...'
-    })
+        league.findOne({ _id: leagueId, members: { $in : [userId] }}).then(result => {
+            if(result) {
+                // found the league, return it!
+                res.status(200).json({
+                    success: true,
+                    data: result
+                })
+            } else {
+                res.status(400).json({
+                    success: false,
+                    message: `Error, league not found`
+                })
+            }
+        }).catch(error => {
+            res.status(400).json({
+                success: false,
+                error: error
+            })
+        })
 })
 
 /**

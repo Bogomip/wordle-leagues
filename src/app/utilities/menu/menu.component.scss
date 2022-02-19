@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .menu {
     position: relative;
     opacity: 0;
@@ -94,4 +96,12 @@
     &__noanimation {
         opacity: 1;
     }
+
+
+    &__mobileonly {
+        @media screen and (min-width: $breakpoint-small) {
+            display: none;
+        }
+    }
+
 }

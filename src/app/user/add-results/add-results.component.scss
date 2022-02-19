@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .add-results {
 
     position: relative;
@@ -13,6 +15,14 @@
 
     z-index: 1000000; // always on top
 
+    @media screen and (max-width: $breakpoint-small) {
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        margin: 0;
+        transform: scale(1.2);
+    }
+
     &__header {
         display: flex;
         justify-content: space-between;
@@ -20,6 +30,10 @@
         padding-bottom: .5rem;
         border-bottom: .3rem solid var(--main-green);
         margin-bottom: 1rem;
+
+        @media screen and (max-width: $breakpoint-small) {
+            display: none;
+        }
     }
 
     &__title {
@@ -109,33 +123,3 @@
         text-align: right;
     }
 }
-
-
-// .wordle-lettering__custom {
-
-//     text-align: center;
-
-//     & > * {
-//         width: 1.5rem;
-//     }
-
-//     &:hover {
-//         cursor: pointer;
-
-//         .letter_1 { animation-delay: 0s; }
-//         .letter_2 { animation-delay: .2s; }
-//         .letter_3 { animation-delay: .4s; }
-//         .letter_4 { animation-delay: .6s; }
-//         .letter_5 { animation-delay: .8s; }
-//         .letter_6 { animation-delay: 1s; }
-
-//         & > * {
-//             background-color: var(--main-darkyellow);
-//             animation: scalePulse .8s ease-in-out;
-//             animation-iteration-count: 1;
-//             animation-direction: forwards;
-//         }
-
-//     }
-// }
-
