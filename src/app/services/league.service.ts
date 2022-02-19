@@ -78,11 +78,11 @@ export class LeagueService implements OnInit, OnDestroy {
      * @param id
      * @returns
      */
-     getLeagueData(id: string, leagueId: string): void {
+     getLeagueData(leagueId: string): void {
         // alert components this league is being updated...
         this.leagueUpdating.next(leagueId);
         // add the subscription to the subscriptions object
-        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League}>(`http://localhost:3000/api/data/league/userId=${id}&leagueId=${leagueId}`).subscribe({
+        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League}>(`http://localhost:3000/api/data/league/leagueId=${leagueId}`).subscribe({
             next: (result: {success: boolean, data: League}) => {
                 // find the league from the local array and replace it.
                 const leagueIndex: number = this.leaguesLocal.findIndex((temp: League) => temp._id === leagueId);
@@ -152,6 +152,24 @@ export class LeagueService implements OnInit, OnDestroy {
         },  error: (error: any) => {
                 return false;
         }}));
+    }
+
+    deleteUser(leagueId: string, userToDelete: string): Observable<any> {
+        return this.http.delete<{ success: boolean }>(`http://localhost:3000/api/league/removeuser?userToDelete=${userToDelete}&leagueId=${leagueId}&adminName=${this.user.name}`).pipe(take(1), tap({
+            next: (result: { success: boolean }) => {
+                // success, now remove the user locally.
+                let newLeagues: League[] = [...this.leaguesLocal];
+                const leagueIndex: number = newLeagues.findIndex((temp: League) => temp._id.toString() === leagueId.toString());
+                const userIndex: number = newLeagues[leagueIndex].members.findIndex((temp: LeagueMember) => temp._id.toString() === userToDelete.toString());
+                newLeagues[leagueIndex].members.splice(userIndex, 1);
+                // and update the app.
+                this.leaguesLocal = [...newLeagues];
+                this.leagues.next(newLeagues);
+            },
+            error: (error: any) => {
+
+            }
+        }))
     }
 
 }

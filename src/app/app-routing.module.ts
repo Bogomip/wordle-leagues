@@ -6,19 +6,23 @@ import { AddResultsComponent } from './user/add-results/add-results.component';
 import { JoinFromCodeComponent } from './utilities/join-from-code/join-from-code.component';
 import { LoginComponent } from './utilities/login/login.component';
 import { MenuComponent } from './utilities/menu/menu.component';
+import { MessagesComponent } from './utilities/messages/messages.component';
 import { NotfoundComponent } from './utilities/notfound/notfound.component';
 import { RulesComponent } from './utilities/rules/rules.component';
 import { SignupComponent } from './utilities/signup/signup.component';
 
+const titlePrefix: string = 'Wordle League'
+
 const routes: Routes = [
-    { path: '', component: RulesComponent, pathMatch:'full' },
-    { path: 'leagues', component: LeaguesComponent},
-    { path: 'signup', component: SignupComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'create', component: CreateComponent },
-    { path: 'rules', component: RulesComponent },
-    { path: 'joinleague/:id', component: JoinFromCodeComponent },
-    { path: '**', component: NotfoundComponent}
+    { path: '', component: RulesComponent, pathMatch:'full', data: { title: `${titlePrefix}`} },
+    { path: 'leagues', component: LeaguesComponent, data: { title: `${titlePrefix} - Leagues`}},
+    { path: 'signup', component: SignupComponent, data: { title: `${titlePrefix} - Register`}},
+    { path: 'login', component: LoginComponent, data: { title: `${titlePrefix} - Login`}},
+    // { path: 'create', component: CreateComponent, data: { title: `${titlePrefix}`}},
+    { path: 'rules', component: RulesComponent, data: { title: `${titlePrefix} - How to Play`}},
+    { path: 'messages', component: MessagesComponent, data: { title: `${titlePrefix} - Messages`}},
+    { path: 'joinleague/:id', component: JoinFromCodeComponent, data: { title: `${titlePrefix} - Joining League...`}},
+    { path: '**', component: NotfoundComponent, data: { title: `${titlePrefix} - Nope, not found!`}}
 ];
 
 @NgModule({

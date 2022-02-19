@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .notification {
 
     border: .2rem solid rgba(black, .1);
@@ -9,6 +11,10 @@
     background-color: white;
 
     z-index: 1000000; // always on top
+
+    @media screen and (max-width: $breakpoint-small) {
+        display: none;
+    }
 
     &__league {
 

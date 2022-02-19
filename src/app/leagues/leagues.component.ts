@@ -25,6 +25,8 @@ export class LeaguesComponent implements OnInit {
     errorMessage: string = '';
     copiedToClipboard: boolean = false;
     createNewLeague: boolean = false;
+    isLoading: boolean = false;
+    code: string = '';
 
     // users...
     user: User;
@@ -142,10 +144,11 @@ export class LeaguesComponent implements OnInit {
     addLeaguecodeToClipboard(leagueCode: string): void {
         navigator.clipboard.writeText(`http://localhost:4200/#/joinleague/${leagueCode}`).then(result => {
             this.copiedToClipboard = true;
+            this.code = leagueCode;
             // show the alert for 3 seconds then fade out.
             setTimeout(() => {
                 this.copiedToClipboard = false;
-            }, 3000);
+            }, 100000);
         })
     }
 
@@ -188,8 +191,12 @@ export class LeaguesComponent implements OnInit {
         })
     }
 
-    removeUserFromLeague(leagueCode: string, userIdToDelete: string): void {
-
+    removeUserFromLeague(leagueId: string, userIdToDelete: string): void {
+        this.leagueService.deleteUser(leagueId, userIdToDelete).subscribe({
+            next: (result: any) => {
+                console.log(result);
+            }
+        })
     }
 
     /**
