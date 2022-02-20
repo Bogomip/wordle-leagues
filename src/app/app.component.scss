@@ -19,6 +19,8 @@
 
 .layout-left {
 
+    z-index: 1000;
+
     &__parent {
         position: relative;
         display: flex;

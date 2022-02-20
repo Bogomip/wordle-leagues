@@ -24,7 +24,7 @@ export interface LeagueMember {
 @Injectable({
   providedIn: 'root'
 })
-export class LeagueService implements OnInit, OnDestroy {
+export class LeagueService implements OnDestroy {
 
     user: User;
     private subscriptions: { [key: string] : Subscription } = {};
@@ -38,19 +38,17 @@ export class LeagueService implements OnInit, OnDestroy {
     constructor(
         private auth: AuthenticationService,
         private http: HttpClient
-    ) { }
-
-    ngOnInit(): void {
+    ) {
         // subscribe to and collect user data as it is changed or modified...
         this.auth.user.subscribe((user: User) => {
-            this.user = user;
-            this.getLeaguesData(user._id);
+            if(user) {
+                this.user = user;
+                this.getLeaguesData(user._id);
+            }
         })
-
     }
 
     ngOnDestroy(): void {
-        console.log("destroy!");
         // unsubscribe to everything!
         for(let [key, subscription] of Object.entries(this.subscriptions)) {
             subscription.unsubscribe();

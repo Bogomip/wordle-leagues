@@ -1,66 +1,134 @@
-.rules {
+.howtoplay {
 
+    position: relative;
+    width: 300%;
+    animation: scrollRules 6s ease-in-out 2s 1 forwards, widthTo100 1s ease-in-out 7s 1 forwards;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
+
+    overflow: hidden;
     height: 100%;
 
-    &__step {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-size: large;
-
-        &--arrow {
-            width: 3rem;
-            height: 5rem;
-            background-color: blue;
-            clip-path: polygon(30% 0%, 75% 0%, 75% 50%, 100% 50%, 52.5% 100%, 0% 50%, 30% 50%);
-        }
-
+    &__top, &__middle, &__bottom {
+        flex: 1;
     }
-}
-
-.howtoplay {
-    display: grid;
-    grid-template: repeat(3, 1fr) / 1fr;
-    align-items: center;
-    justify-content: center;
-
-    margin: 10vh 15rem 10vh 15rem;
-    color: blue;
-
-    height: 80vh;
 
     &__top {
-        perspective: 180px;
-        perspective-origin: 56% 50%;
-        transition: all 2s;
 
-        animation: gentleWibble 5s ease-in-out 0s infinite ;
+        animation: opacity100to0 1s ease-in-out 1.75s 1 forwards, opacity0to100 1s ease-in-out 7s 1 forwards;
 
         .league {
             user-select: none;
             position: relative;
             width: 50rem;
-            transform: scale(1.1) rotateX(18deg) rotateY(-18deg) rotateZ(-15deg) translateX(-7rem) translateY(0px) translateZ(0px) skewX(1deg) skewY(0deg);
+        }
+    }
+
+    &__middle {
+
+        animation: opacity100to0 1s ease-in-out 3.75s 1 forwards, opacity0to100 1s ease-in-out 7s 1 forwards, scaleToPt8 1s ease-in-out 7s 1 forwards;
+
+        .wordle-lettering {
+            justify-content: center;
+            user-select: none;
+
+            &:not(:last-of-type) {
+                margin-bottom: .5rem;
+            }
+
+            &__letter {
+                width: 4rem;
+                height: 4rem;
+                font-size: 3rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-right: .5rem;
+                box-shadow: 0 .3rem .5rem rgba(black, .5);
+                transition: all .2s;
+
+                &:hover {
+                    filter: brightness(1.2);
+                }
+            }
+        }
+    }
+
+    &__bottom {
+
+        animation: opacity100to0 1s ease-in-out 5.75s 1 forwards, opacity0to100 1s ease-in-out 7s 1 forwards;
+        user-select: none;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .add-results {
+            z-index: 1;
         }
 
-        &:hover {
-            perspective: 1000px;
-
-            .league {
-                backface-visibility: hidden;
-                transform: scale(1) rotateX(0) rotateY(0) rotateZ(0) translateX(0) translateY(0px) translateZ(0px) skewX(0) skewY(0);
+        .wordle-lettering__letter {
+            &--1 {
+                background-color: var(--main-yellow);
+                animation: greenToYellow .4s ease-in-out 1.2s 1 forwards;
+            }
+            &--2 {
+                background-color: var(--main-yellow);
+                animation:  greenToYellow .4s ease-in-out .4s 1 forwards,
+                            greenToYellow .4s ease-in-out 2.8s 1 forwards
+            }
+            &--3 {
+                background-color: var(--main-yellow);
+                animation: greenToYellow .4s ease-in-out .8s 1 forwards;
+            }
+            &--4 {
+                background-color: var(--main-yellow);
+                animation:  greenToYellow .4s ease-in-out 0s 1 forwards,
+                            yellowToGreen .4s ease-in-out 2.8s 1 forwards;
+            }
+            &--5 {
+                background-color: var(--main-yellow);
+                animation: greenToYellow .4s ease-in-out 1.6s 1 forwards;
+            }
+            &--6 {
+                background-color: var(--main-yellow);
+                animation: greenToYellow .4s ease-in-out 2s 1 forwards;
+            }
+            &--X {
+                background-color: var(--main-yellow);
+                animation: greenToYellow .4s ease-in-out 2.4s 1 forwards;
             }
         }
     }
 }
 
-@keyframes gentleWibble {
-    0% { perspective: 180px; }
-    50% { perspective: 360px; }
-    100% { perspective: 180px; }
+@keyframes greenToYellow {
+    0% { background-color: var(--main-green);}
+    99% { background-color: var(--main-green);}
+    100% { background-color: var(--main-yellow);}
+}
+
+@keyframes yellowToGreen {
+    0% { background-color: var(--main-yellow);}
+    99% { background-color: var(--main-yellow);}
+    100% { background-color: var(--main-green);}
+}
+
+@keyframes scrollRules {
+    0% { transform: translateX(0);}
+    10% { transform: translateX(-33%);}
+    33% { transform: translateX(-33%);}
+    43% { transform: translateX(-66%);}
+    66% { transform: translateX(-66%);}
+    76% { transform: translateX(-100%);}
+    100% { transform: translateX(-100%);}
+}
+
+@keyframes widthTo100 {
+    100% { width: 100%; transform: translateX(0); }
+}
+
+@keyframes scaleToPt8 {
+    100% { transform: scale(.8); }
 }

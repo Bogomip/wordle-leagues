@@ -40,7 +40,8 @@ export class MessagesComponent implements OnInit, AfterViewInit {
         { type: 2, style: 'created', icon: 'table2.png', image: 'gold-trophy.png', alt: 'Winner!' },
         { type: 11, style: 'won', icon: 'trophy-gold.png', image: 'gold-trophy.png', alt: 'Winner!' },
         { type: 12, style: 'runnerup', icon: 'trophy-silver.png', image: 'gold-trophy.png', alt: 'Runner Up!' },
-        { type: 20, style: 'left', icon: 'exit.png', image: 'gold-trophy.png', alt: 'Winner!' }
+        { type: 20, style: 'left', icon: 'exit.png', image: 'gold-trophy.png', alt: 'Winner!' },
+        { type: 21, style: 'left', icon: 'exit.png', image: 'gold-trophy.png', alt: 'Removed from league!' }
     ]
 
     constructor(

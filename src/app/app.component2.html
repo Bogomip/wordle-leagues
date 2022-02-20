@@ -10,12 +10,18 @@
     <div class="wordle-logo" [class.wordle-logo__scale-animation]="runAnimation"  [class.wordle-logo__scale-noanimation]="!runAnimation">
 
         <div class="wordle-logo__word wordle-logo__word--wordle">
-            <div class="wordle-logo__word--letter wordle-logo__word--letter--green">W</div>
-            <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">O</div>
-            <div class="wordle-logo__word--letter wordle-logo__word--letter--green">R</div>
-            <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">D</div>
-            <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
-            <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">E</div>
+
+            <div class="wordle-logo__word--letter wordle-logo__word--letter--green wordle-logo__word--colors">W</div>
+            <div class="wordle-logo__word--letter wordle-logo__word--letter--gray wordle-logo__word--fire">O</div>
+            <div class="wordle-logo__word--letter wordle-logo__word--letter--green wordle-logo__word--cursor" contenteditable="true">R</div>
+            <div class="wordle-logo__word--letter wordle-logo__word--backside">
+                <div class="wordle-logo__word--flip">
+                    <div class="wordle-logo__word--front wordle-logo__word--letter--yellow">D</div>
+                    <div class="wordle-logo__word--back  wordle-logo__word--letter--yellow">A</div>
+                </div>
+            </div>
+            <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow wordle-logo__word--rightround">L</div>
+            <div class="wordle-logo__word--letter wordle-logo__word--letter--gray wordle-logo__word--wiggle1">E</div>
         </div>
 
         <div class="wordle-logo__close-animated" [class.wordle-logo__close-notanimated]="!runAnimation">
