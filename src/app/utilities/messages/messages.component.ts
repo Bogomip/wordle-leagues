@@ -122,7 +122,7 @@ export class MessagesComponent implements OnInit, AfterViewInit {
     paginationRecalculation(): void {
         try {
             const containerHeight: number = this.resizeElement.offsetParent?.clientHeight || 0;
-            const messageQuantity: number = Math.round(containerHeight / 80) - 1  >= 0 ? Math.round(containerHeight / 80) - 1 : 3;
+            const messageQuantity: number = Math.round(containerHeight / 80) - 1  >= 0 ? Math.round(containerHeight / 80) - 1 : 6;
 
             this.messageDisplayQuantity = messageQuantity;
             this.messagePages = Math.ceil(this.messages.length / this.messageDisplayQuantity)

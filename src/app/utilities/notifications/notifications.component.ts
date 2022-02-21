@@ -100,26 +100,6 @@ export class NotificationsComponent implements OnInit {
     }
 
     /**
-     * Retrive notifications from the database.
-     */
-    // getNotifications(): void {
-    //     this.isLoading = true;
-    //     const userId: string = '12345'; // why does this.user.id not work?
-
-    //     this.http.get<WordleNotification[]>('http://localhost:3000/api/notifications?id=' + userId).subscribe(
-    //     {
-    //         next: (data: WordleNotification[]) => {
-
-    //             this.isLoading = false;
-    //         },
-    //         error: (error: any) => {
-    //             this.errorMessage = 'Your notifications failed to load... give it a minute then try again by clicking here!';
-    //             this.isLoading = false;
-    //         }
-    //     })
-    // }
-
-    /**
      * Gets all members of a league in the notifications...
      * @param leagueName
      * @returns

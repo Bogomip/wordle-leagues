@@ -20,7 +20,12 @@
         box-shadow: none;
         border: none;
         margin: 0;
+        margin-right: 10rem;
         transform: scale(1.2);
+    }
+
+    @media screen and (max-width: $breakpoint-mobile) {
+        margin: 0 0 1rem 0;
     }
 
     &__header {
@@ -94,32 +99,5 @@
         background-color: var(--main-green);
         box-shadow: 0 .4rem .6rem rgba(black, .7);
         transform: translateY(-.2rem) scale(1.1);
-    }
-}
-
-// img {
-//     height: 6rem;
-//     margin-bottom: 1rem;
-// }
-
-.form {
-
-    width: 100%;
-
-    &__row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.4rem;
-        margin-bottom: 1.2rem;
-    }
-
-    &__text {
-        text-align: left;
-        margin-right: 2rem;
-    }
-
-    &__input {
-        text-align: right;
     }
 }

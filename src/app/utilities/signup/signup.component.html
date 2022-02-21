@@ -36,8 +36,8 @@
             <div class="form__input">
                 <input type="password" class="input__text" name="password" formControlName="password" placeholder="Password" [class.input__text--error]="form.controls['password'].invalid">
 
-                <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('minlength') ? 'form__passworderror--warn' : 'form__passworderror--good'">Seven characters long</div>
-                <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('hasNumber') ? 'form__passworderror--warn' : 'form__passworderror--good'">Has a number</div>
+                <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('minlength') ? 'form__passworderror--warn' : 'form__passworderror--good'">Six+ characters long</div>
+                <!-- <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('hasNumber') ? 'form__passworderror--warn' : 'form__passworderror--good'">Has a number</div> -->
                 <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('hasCapitalCase') ? 'form__passworderror--warn' : 'form__passworderror--good'">An uppercase letter</div>
                 <div class="form__passworderror" [ngClass]="form.controls['password'].hasError('hasSmallCase') ? 'form__passworderror--warn' : 'form__passworderror--good'">A lowercase letter</div>
             </div>
