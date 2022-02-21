@@ -1,7 +1,9 @@
+@import "../../../styles.scss";
+
 .howtoplay {
 
     position: relative;
-    width: 270%;
+    width: 300%;
     animation:  scrollRules 6s ease-in-out 2s 1 forwards,
                 fastChangeAnimation .1s linear 7s 1 forwards,
                 widthTo100 1s ease-in-out 7s 1 forwards;
@@ -10,24 +12,59 @@
     align-items: center;
 
     overflow: hidden;
-    height: 90%;
-    margin: 0 5%;
+    height: 100%;
+
+    @media screen and (max-width: $breakpoint-mobile) {
+        margin: 0;
+        padding: 0;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
 
     &__top, &__middle, &__bottom {
         flex: 1;
 
+        @media screen and (max-width: $breakpoint-mobile) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
         &--title {
-            margin: 0 5rem;
-            font-size: 4rem;
+            margin: 0 3rem;
+            font-size: 3rem;
             font-weight: bold;
             color: var(--main-green);
             text-shadow: 0 .2rem .4rem rgba(black, .5);
+            white-space: nowrap;
+
+            @media screen and (min-width: 1530px) { font-size: 4rem; }
+            @media screen and (max-width: 1450px) { white-space: normal; }
+
+            @media screen and (max-width: $breakpoint-mobile) {
+                margin-bottom: 2rem;
+                margin-top: 3rem;
+            }
+        }
+    }
+
+    &__top, &__bottom {
+        @media screen and (max-width: $breakpoint-mobile) {
+            flex-direction: column-reverse;
+        }
+    }
+
+    &__middle &__middle--title {
+        text-align: right;
+        @media screen and (max-width: $breakpoint-mobile) {
+            text-align: center;
         }
     }
 
     &__top {
-
-        margin: 0 10rem;
 
         animation:  opacity100to0 1s ease-in-out 1.75s 1 forwards,
                     opacity0to100 1s ease-in-out 7s 1 forwards,
@@ -42,6 +79,7 @@
             position: relative;
             width: 40rem;
             margin-left: 2rem;
+            margin-right: 2rem;
         }
     }
 
@@ -49,7 +87,7 @@
 
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
 
         animation:  opacity100to0 1s ease-in-out 3.75s 1 forwards,
                     opacity0to100 1s ease-in-out 7s 1 forwards;
@@ -133,6 +171,24 @@
     }
 }
 
+// make sur emedia queries dont wreck the style of this at small sizes!
+.add-results__rules {
+    @media screen and (max-width: $breakpoint-small) {
+        background-color: white;
+        border: .2rem solid rgba(black, .1);
+        border-radius: 1rem;
+        box-shadow: 0 .3rem .6rem rgba(black, .5);
+        margin-bottom: 2rem;
+        transform: scale(1);
+    }
+
+    &__header {
+        @media screen and (max-width: $breakpoint-small) {
+            display: flex;
+        }
+    }
+}
+
 @keyframes greenToYellow {
     0% { background-color: var(--main-green);}
     99% { background-color: var(--main-green);}
@@ -156,7 +212,7 @@
 }
 
 @keyframes widthTo100 {
-    100% { width: 80%; transform: translateX(0); }
+    100% { width: 100%; transform: translateX(0); }
 }
 
 @keyframes scaleToPt8 {

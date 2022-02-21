@@ -1,12 +1,11 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 const User = require('../models/user');
 const Result = require('../models/result');
 const checkAuth = require('../middleware/check-auth');
-const { rejects } = require('assert');
 
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 const generateToken = (email, id, remainLoggedIn) => {
@@ -58,6 +57,9 @@ router.post('/register', (req, res, next) => {
 router.post('/login', (req, res, next) => {
 
     let fetchedUser;
+
+    console.log(req.body);
+
     // get the user...
     User.findOne({ email: req.body.email }).then((user) => {
         // user not found...
@@ -103,11 +105,14 @@ router.post(
     checkAuth,
     (req, res, next) => {
 
-        Result.findOne({ wordleId: req.body.wordleId, user: req.body.userId }).then((result) => {
+        // can remove user id from the call
+        const userId = methods.getUserDataFromToken(req).id;
+
+        Result.findOne({ wordleId: req.body.wordleId, user: userId }).then((result) => {
             if(!result) {
                 // insert
                 const newPost = new Result({
-                    user: req.body.userId,
+                    user: userId,
                     wordleId: req.body.wordleId,
                     score: req.body.score
                 })

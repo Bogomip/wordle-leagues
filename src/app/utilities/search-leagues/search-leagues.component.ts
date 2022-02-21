@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService, User } from 'src/app/services/authentication.service';
 import { LeagueService } from 'src/app/services/league.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-search-leagues',
@@ -30,7 +31,7 @@ export class SearchLeaguesComponent implements OnInit {
         const leagueId: string = (document.getElementById('league-code') as HTMLInputElement).value;
         this.isSearching = true;
         // find the league stuff
-        this.http.get<{success: boolean, data: {code: string, name: string, members: number}}>(`http://localhost:3000/api/league/search/leagueId=${leagueId}`).subscribe({
+        this.http.get<{success: boolean, data: {code: string, name: string, members: number}}>(environment.apiUrl+`api/league/search/leagueId=${leagueId}`).subscribe({
             next: (league: {success: boolean, data: {code: string, name: string, members: number}}) => {
                 this.foundLeague = {code: league.data.code, name: league.data.name, members: league.data.members};
                 this.isSearching = false;

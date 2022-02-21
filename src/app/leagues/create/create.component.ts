@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService, User } from 'src/app/services/authentication.service';
 import { LeagueService } from 'src/app/services/league.service';
 import { Message, MessagesService } from 'src/app/services/messages.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create',
@@ -38,7 +39,7 @@ export class CreateComponent implements OnInit {
         const leagueName: string = (document.getElementById('league-name') as HTMLInputElement).value;
 
         if(leagueName.length >= 3 && leagueName.length <= 30) {
-            this.http.post<{ message: string, data: Message[] }>('http://localhost:3000/api/league/create', { name: leagueName }).subscribe({
+            this.http.post<{ message: string, data: Message[] }>(environment.apiUrl+'api/league/create', { name: leagueName }).subscribe({
                 next: (result: { message: string, data: Message[] }) => {
                     this.leagueService.getLeaguesData(this.user._id);
                     this.messageService.addMessage(result.data);

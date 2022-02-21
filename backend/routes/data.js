@@ -11,8 +11,12 @@ const league = require('../models/league');
 /**
  * Get all league data for all leagues for the user..
  */
-router.get('/all/:userId', checkAuth, (req, res, next) => {
-    const userId = req.params.userId.split('=')[1];
+router.get(
+    '/all/:userId',
+    checkAuth,
+    (req, res, next) => {
+    // can remove user id from the call
+    const userId = methods.getUserDataFromToken(req).id;
     let leagues = [];
 
     // it takes three queries to get all of the users leagues...
@@ -154,27 +158,16 @@ router.get(
 })
 
 /**
- * Gtes all relevant notifications for the user...
- */
-router.get('/notifications', (req, res, next) => {
-    console.log("get all notifications..." + req.params.id);
-
-    res.status(200).json({
-        data: 'here is the data...'
-    })
-})
-
-/**
  * Posts the daily wordle score to the database
  */
 router.post(
     '/daily',
     checkAuth,
     (req, res, next) => {
-
         const gameId = req.body.gameId;
+        const userId = methods.getUserDataFromToken(req).id;
 
-        Results.find({ user: req.body.userId, wordleId: { $lte: gameId, $gte: (gameId - 1) }}).then((result) => {
+        Results.find({ user: userId, wordleId: { $lte: gameId, $gte: (gameId - 1) }}).then((result) => {
             if(result) {
                 res.status(201).json({
                     success: true,

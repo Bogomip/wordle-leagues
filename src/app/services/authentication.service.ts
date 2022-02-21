@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, take, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessagesService } from './messages.service';
+import { environment } from 'src/environments/environment';
 
 export interface AuthData {
     email: string;
@@ -46,7 +47,7 @@ export class AuthenticationService {
         const user: AuthData = { email: email, username: username, password: password, remainLoggedIn: false };
 
         // change this any to something...
-        return this.http.post<User>('http://localhost:3000/api/user/register', user)
+        return this.http.post<User>(environment.apiUrl+'api/user/register', user)
         .pipe(take(1), tap({
             next: (user: User) => {
                 this.saveCredentialsLocally(user);
@@ -70,7 +71,9 @@ export class AuthenticationService {
     loginWithUsernameAndPassword(email: string, password: string, remainLoggedIn: boolean): Observable<User> {
         const user: AuthData = { email: email, password: password, remainLoggedIn: remainLoggedIn };
 
-        return this.http.post<User>('http://localhost:3000/api/user/login', { email: email, password: password, remainLoggedIn: remainLoggedIn })
+        console.log(`Logging in: ${environment.apiUrl+'api/user/login'}`);
+
+        return this.http.post<User>(environment.apiUrl+'api/user/login', { email: email, password: password, remainLoggedIn: remainLoggedIn })
         .pipe(take(1), tap({
             next: (user: User) => {
                 this.saveCredentialsLocally(user);
@@ -100,7 +103,7 @@ export class AuthenticationService {
         if(!localUserData) return;
         this.handleUserLoggedIn(localUserData);
         // check the user session is still active and if not, log the user out.
-        this.http.get('http://localhost:3000/api/user/checktoken').subscribe({
+        this.http.get(environment.apiUrl+'api/user/checktoken').subscribe({
             next: (result: any) => {
                 // do nothing in the case of success :)
                 console.log(`Success: ${result}`);

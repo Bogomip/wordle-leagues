@@ -33,10 +33,10 @@ export class SignupComponent implements OnInit, OnDestroy {
             'name': new FormControl(null, { validators: [Validators.minLength(3), Validators.required]}),
             'password': new FormControl(null, { validators: [
                                                                 Validators.required,
-                                                                PasswordValidator.patternValidator(/\d/, { hasNumber: true }),
+                                                                // PasswordValidator.patternValidator(/\d/, { hasNumber: true }),
                                                                 PasswordValidator.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
                                                                 PasswordValidator.patternValidator(/[a-z]/, { hasSmallCase: true }),
-                                                                Validators.minLength(7)
+                                                                Validators.minLength(6)
                                                             ]}),
             'passwordRepeat': new FormControl(null, { validators: [Validators.required, ]})
         },

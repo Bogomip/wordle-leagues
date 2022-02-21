@@ -9,12 +9,12 @@
     height: 100%;
 
     display: grid;
-    grid-template: max-content 12rem 1fr max-content / 50rem 1fr;
+    grid-template: max-content 12rem 1fr / 50rem 1fr;
 
     overflow: hidden;
 
     @media screen and (max-width: $breakpoint-small) {
-        grid-template: max-content 12rem 1fr max-content / 1fr 1fr;
+        grid-template: max-content 12rem 1fr max-content / 1fr max-content;
     }
 
     @media screen and (max-width: $breakpoint-mobile) {

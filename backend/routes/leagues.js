@@ -7,7 +7,6 @@ const user = require('../models/user');
 const message = require('../models/messages');
 const result = require('../models/result');
 const leagues = require('../models/league');
-const { runner } = require('karma');
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 
 /**
