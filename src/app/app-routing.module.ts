@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 import { CreateComponent } from './leagues/create/create.component';
 import { LeaguesComponent } from './leagues/leagues.component';
 import { AddResultsComponent } from './user/add-results/add-results.component';
@@ -14,7 +15,7 @@ import { SignupComponent } from './utilities/signup/signup.component';
 const titlePrefix: string = 'Wordle League'
 
 const routes: Routes = [
-    { path: '', component: RulesComponent, pathMatch:'full', data: { title: `${titlePrefix}`} },
+    { path: '', component: HomeComponent, pathMatch:'full', data: { title: `${titlePrefix}`} },
     { path: 'leagues', component: LeaguesComponent, data: { title: `${titlePrefix} - Leagues`}},
     { path: 'signup', component: SignupComponent, data: { title: `${titlePrefix} - Register`}},
     { path: 'login', component: LoginComponent, data: { title: `${titlePrefix} - Login`}},

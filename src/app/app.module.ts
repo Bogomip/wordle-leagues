@@ -19,6 +19,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { SearchLeaguesComponent } from './utilities/search-leagues/search-leagues.component';
 import { JoinFromCodeComponent } from './utilities/join-from-code/join-from-code.component';
 import { MessagesComponent } from './utilities/messages/messages.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MessagesComponent } from './utilities/messages/messages.component';
     SpinnerComponent,
     SearchLeaguesComponent,
     JoinFromCodeComponent,
-    MessagesComponent
+    MessagesComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
