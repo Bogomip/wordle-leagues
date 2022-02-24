@@ -3,14 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "server:start": "nodemon --trace-warnings backend/server.js",
-    "start": "node backend/server.js"
+    "server:start": "nodemon --trace-warnings backend/server.js"
   },
   "private": true,
   "dependencies": {
+    "express": "^4.17.1",
     "@angular/animations": "~13.0.0",
     "@angular/common": "~13.0.0",
     "@angular/compiler": "~13.0.0",
