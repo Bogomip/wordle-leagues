@@ -5,7 +5,7 @@
 export const environment = {
   production: true,
 //   apiUrl: 'http://localhost:3000/'
-  apiUrl: 'http://wordleleagues-env.eba-cygrd3mp.us-east-1.elasticbeanstalk.com/'
+  apiUrl: 'https://wordleleague.herokuapp.com/'
 };
 
 /*
