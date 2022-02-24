@@ -99,6 +99,7 @@
     @media screen and (max-width: $breakpoint-mobile) {
         grid-row: 3 / 4;
         overflow: auto;
+        overflow-y: hidden;
     }
 }
 

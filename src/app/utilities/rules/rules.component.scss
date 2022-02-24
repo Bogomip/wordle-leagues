@@ -14,9 +14,11 @@
     overflow: hidden;
     height: 100%;
 
-    @media screen and (max-width: $breakpoint-mobile) {
+    @media screen and (max-width: $breakpoint-small) {
         margin: 0;
         padding: 0;
+        overflow: hidden;
+        height: auto;
 
         &::-webkit-scrollbar {
             display: none;
@@ -26,7 +28,7 @@
     &__top, &__middle, &__bottom {
         flex: 1;
 
-        @media screen and (max-width: $breakpoint-mobile) {
+        @media screen and (max-width: $breakpoint-small) {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -44,7 +46,7 @@
             @media screen and (min-width: 1530px) { font-size: 4rem; }
             @media screen and (max-width: 1450px) { white-space: normal; }
 
-            @media screen and (max-width: $breakpoint-mobile) {
+            @media screen and (max-width: $breakpoint-small) {
                 margin-bottom: 2rem;
                 margin-top: 3rem;
             }
@@ -52,14 +54,14 @@
     }
 
     &__top, &__bottom {
-        @media screen and (max-width: $breakpoint-mobile) {
+        @media screen and (max-width: $breakpoint-small) {
             flex-direction: column-reverse;
         }
     }
 
     &__middle &__middle--title {
         text-align: right;
-        @media screen and (max-width: $breakpoint-mobile) {
+        @media screen and (max-width: $breakpoint-small) {
             text-align: center;
         }
     }

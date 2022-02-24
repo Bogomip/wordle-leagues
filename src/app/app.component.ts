@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './services/authentication.service';
 import { GeneralService } from './services/general.service';
 
@@ -18,7 +20,8 @@ export class AppComponent implements OnInit {
         private auth: AuthenticationService,
         private title: Title,
         private activeRoute: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private http: HttpClient
         )
     {
         // subscribe and react to route events...
@@ -30,9 +33,27 @@ export class AppComponent implements OnInit {
         })
     }
 
+    testAPIInterface(): void {
+
+        this.http.get(environment.apiUrl+'/api/data/test').subscribe((result) => {
+            console.log(`data test: ${result.toString()}`);
+        })
+        this.http.get(environment.apiUrl+'/api/user/test').subscribe((result) => {
+            console.log(`user test: ${result.toString()}`);
+        })
+        this.http.get(environment.apiUrl+'/api/messages/test').subscribe((result) => {
+            console.log(`messages test: ${result.toString()}`);
+        })
+        this.http.get(environment.apiUrl+'/api/league/test').subscribe((result) => {
+            console.log(`league test: ${result.toString()}`);
+        })
+
+    }
+
     ngOnInit(): void {
         this.auth.checkLoginStatusOnLoad();
         this.runAnimation = this.generalService.getMenuAnimationStatus();
+        this.testAPIInterface();
     }
 
     /**
