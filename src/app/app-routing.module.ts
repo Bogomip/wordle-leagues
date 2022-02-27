@@ -19,7 +19,6 @@ const routes: Routes = [
     { path: 'leagues', component: LeaguesComponent, data: { title: `${titlePrefix} - Leagues`}},
     { path: 'signup', component: SignupComponent, data: { title: `${titlePrefix} - Register`}},
     { path: 'login', component: LoginComponent, data: { title: `${titlePrefix} - Login`}},
-    // { path: 'create', component: CreateComponent, data: { title: `${titlePrefix}`}},
     { path: 'rules', component: RulesComponent, data: { title: `${titlePrefix} - How to Play`}},
     { path: 'messages', component: MessagesComponent, data: { title: `${titlePrefix} - Messages`}},
     { path: 'joinleague/:id', component: JoinFromCodeComponent, data: { title: `${titlePrefix} - Joining League...`}},
