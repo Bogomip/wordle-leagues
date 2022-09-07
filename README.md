@@ -1,4 +1,4 @@
-# WordleLeagues (<a href="http://www.wordleleagues.org/">Click here for the live site!</a>)
+# WordleLeagues (<a href="http://www.wordleleague.org/">Click here for the live site!</a>)
 
 Wordle Leagues is a web based league app for the popular word game, <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a>.
 
