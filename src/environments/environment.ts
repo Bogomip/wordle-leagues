@@ -3,9 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
-//   apiUrl: 'http://localhost:3000/'
-  apiUrl: 'https://wordleleague.herokuapp.com/'
+  production: false,
+  apiUrl: 'http://109.74.204.100:3001/'
+//   apiUrl: 'https://wordleleague.herokuapp.com/'
+//   apiUrl: 'http://89.211.109.144:3001/'
 };
 
 /*
