@@ -12,7 +12,16 @@ const app = express();
 
 app.use("/", express.static(path.join(__dirname, "dist")));
 
-mongoose.connect("mongodb+srv://wordleleagueadmin:yv7YfcnAl8Qt3c2K@cluster0.vuxdp.mongodb.net/wordle-league?retryWrites=true&w=majority")
+// ROOT
+// th1s1Sth3P455W0RD**!
+
+// MONGO
+// m0ng0DBp455w0rd**!
+
+// alexbunting
+// al3x5P455W0RD**!
+
+mongoose.connect("mongodb://wordleleagueadmin:m0ng0DBp455w0rd**!@localhost/wordle-leagues?retryWrites=true&w=majority")
 .then(() => {
   console.log('Connected to DB');
 })
