@@ -143,7 +143,7 @@ export class LeaguesComponent implements OnInit {
      * @param leagueCode
      */
     addLeaguecodeToClipboard(leagueCode: string): void {
-        navigator.clipboard.writeText(`https://www.wordleleague.org/#/joinleague/${leagueCode}`).then(result => {
+        navigator.clipboard.writeText(`https://wordleleague.sweeto.co.uk/#/joinleague/${leagueCode}`).then(result => {
             this.copiedToClipboard = true;
             this.code = leagueCode;
             // show the alert for 3 seconds then fade out.
