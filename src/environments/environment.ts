@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://109.74.204.100:3001/'
+  apiUrl: 'http://localhost:3001/'
+  // apiUrl: 'http://109.74.204.100:3001/'
 //   apiUrl: 'https://wordleleague.herokuapp.com/'
 //   apiUrl: 'http://89.211.109.144:3001/'
 };
