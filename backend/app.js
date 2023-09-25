@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const dataRoutes = require('./routes/data');
 const userRoutes = require('./routes/user');
@@ -20,11 +21,18 @@ mongoose.connect("mongodb+srv://wordleleagueadmin:yv7YfcnAl8Qt3c2K@cluster0.vuxd
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*"); //"https://www.wordleleague.org");
+//   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//   next();
+// })
+
+app.use(cors());
+
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); //"https://www.wordleleague.org");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  next();
+    console.log(`here`);
+    next();
 })
 
 app.use("/api/data", dataRoutes);

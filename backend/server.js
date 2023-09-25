@@ -1,5 +1,6 @@
 const app = require("./app");
-const http = require("http");
+const https = require("https");
+const fs = require("fs");
 
 const normalizePort = val => {
   var port = parseInt(val, 10);
@@ -37,15 +38,19 @@ const onError = error => {
 };
 
 const onListening = () => {
-  const addr = server.address();
   const bind = typeof port === "string" ? "pipe " + port : "port " + port;
   console.log("Listening on " + bind);
 };
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.PORT || "3001");
 app.set("port", port);
 
-const server = http.createServer(app);
+const httpsOptions = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+
+const server = https.createServer(app, httpsOptions);
 server.on("error", onError);
 server.on("listening", onListening);
 server.listen(port);
