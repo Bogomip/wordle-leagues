@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/'
+  apiUrl: 'https://localhost:3001/'
+//   apiUrl: 'https://192.168.10.49:3001/'
+//   apiUrl: 'http://bogomipddns.mynetgear.com:3001/'
 };
 
 /*
