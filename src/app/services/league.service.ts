@@ -65,7 +65,7 @@ export class LeagueService implements OnDestroy {
         // alert all the currently active leagues they are going to be updated...
         this.leaguesLocal.forEach((league: League) => this.leagueUpdating.next(league._id));
         // add the subscription to the subscriptions object
-        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League[]}>(environment.apiUrl+'api/data/all/userId=' + id).subscribe({
+        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League[]}>(environment.apiUrl+'/api/data/all/userId=' + id).subscribe({
             next: (result: {success: boolean, data: League[]}) => {
                 this.leaguesLocal = [...result.data];   // store a local version
                 this.leagues.next([...this.leaguesLocal]);    // emit the full version to subscribers
@@ -81,7 +81,7 @@ export class LeagueService implements OnDestroy {
         // alert components this league is being updated...
         this.leagueUpdating.next(leagueId);
         // add the subscription to the subscriptions object
-        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League}>(environment.apiUrl+`api/data/league/leagueId=${leagueId}`).subscribe({
+        this.subscriptions['leaguesub'] = this.http.get<{success: boolean, data: League}>(environment.apiUrl+`/api/data/league/leagueId=${leagueId}`).subscribe({
             next: (result: {success: boolean, data: League}) => {
                 // find the league from the local array and replace it.
                 const leagueIndex: number = this.leaguesLocal.findIndex((temp: League) => temp._id === leagueId);
@@ -100,7 +100,7 @@ export class LeagueService implements OnDestroy {
      * @returns
      */
     joinLeague(userId: string, leagueCode: string): Observable<any> {
-        return this.http.post(environment.apiUrl+'api/league/join', { userId: userId, leagueCode: leagueCode }).pipe(take(1), tap({
+        return this.http.post(environment.apiUrl+'/api/league/join', { userId: userId, leagueCode: leagueCode }).pipe(take(1), tap({
             next: (result: any) => {
                 return true;
         },  error: (error: any) => {
@@ -115,7 +115,7 @@ export class LeagueService implements OnDestroy {
      * @returns
      */
     leaveLeague(leagueId: string): Observable<any> {
-        return this.http.post(environment.apiUrl+'api/league/leave', { leagueId: leagueId }).pipe(take(1), tap({
+        return this.http.post(environment.apiUrl+'/api/league/leave', { leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
                 return true;
         },  error: (error: any) => {
@@ -130,7 +130,7 @@ export class LeagueService implements OnDestroy {
      * @returns
      */
     deleteLeague(leagueId: string): Observable<any> {
-        return this.http.post<any>(environment.apiUrl+'api/league/delete', { leagueId: leagueId }).pipe(take(1), tap({
+        return this.http.post<any>(environment.apiUrl+'/api/league/delete', { leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
                 console.log(result);
         },  error: (error: any) => {
@@ -145,7 +145,7 @@ export class LeagueService implements OnDestroy {
      * @returns
      */
     restartLeague(leagueId: string): Observable<any> {
-        return this.http.post(environment.apiUrl+'api/league/restart', { leagueId: leagueId }).pipe(take(1), tap({
+        return this.http.post(environment.apiUrl+'/api/league/restart', { leagueId: leagueId }).pipe(take(1), tap({
             next: (result: any) => {
                 return true;
         },  error: (error: any) => {
@@ -154,7 +154,7 @@ export class LeagueService implements OnDestroy {
     }
 
     deleteUser(leagueId: string, userToDelete: string): Observable<any> {
-        return this.http.delete<{ success: boolean }>(environment.apiUrl+`api/league/removeuser?userToDelete=${userToDelete}&leagueId=${leagueId}&adminName=${this.user.name}`).pipe(take(1), tap({
+        return this.http.delete<{ success: boolean }>(environment.apiUrl+`/api/league/removeuser?userToDelete=${userToDelete}&leagueId=${leagueId}&adminName=${this.user.name}`).pipe(take(1), tap({
             next: (result: { success: boolean }) => {
                 // success, now remove the user locally.
                 let newLeagues: League[] = [...this.leaguesLocal];

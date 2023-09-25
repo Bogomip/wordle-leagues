@@ -39,7 +39,7 @@ export class CreateComponent implements OnInit {
         const leagueName: string = (document.getElementById('league-name') as HTMLInputElement).value;
 
         if(leagueName.length >= 3 && leagueName.length <= 30) {
-            this.http.post<{ message: string, data: Message[] }>(environment.apiUrl+'api/league/create', { name: leagueName }).subscribe({
+            this.http.post<{ message: string, data: Message[] }>(environment.apiUrl+'/api/league/create', { name: leagueName }).subscribe({
                 next: (result: { message: string, data: Message[] }) => {
                     this.leagueService.getLeaguesData(this.user._id);
                     this.messageService.addMessage(result.data);

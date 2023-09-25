@@ -46,7 +46,7 @@ export class MessagesService implements OnInit, OnDestroy {
      */
     getMessages(): Observable<{ data: Message[], success: boolean }> {
         return this.http
-        .get<{ data: Message[], success: boolean }>(environment.apiUrl+'api/messages/all')
+        .get<{ data: Message[], success: boolean }>(environment.apiUrl+'/api/messages/all')
         .pipe(tap({
             next: (result: { data: Message[], success: boolean }) => {
                 this.messages = [...result.data];
@@ -83,7 +83,7 @@ export class MessagesService implements OnInit, OnDestroy {
      */
     dismissMessage(messageId: string): Observable<boolean> {
         return this.http
-        .delete<boolean>(environment.apiUrl+'api/messages/delete/'+messageId)
+        .delete<boolean>(environment.apiUrl+'/api/messages/delete/'+messageId)
         .pipe(take(1), tap({
             next: (result: any) => {
                 // put a delay on set interval so that the animation can occur on the item.
