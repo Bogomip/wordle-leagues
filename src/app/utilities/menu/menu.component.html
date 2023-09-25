@@ -3,7 +3,7 @@
         <img src="../../../assets/icons/question.png" alt="How to play">
         <div class="menu__tooltip menu__tooltip--left">How to play</div>
     </a>
-    <a class="menu__link menu__mobileonly" routerLink="messages/" routerLinkActive="menu__link--active">
+    <a class="menu__link menu__mobileonly" routerLink="messages/" routerLinkActive="menu__link--active" *ngIf="user">
         <img src="../../../assets/icons/envelop.png" alt="Messages">
         <div class="menu__tooltip menu__tooltip--left">Messages</div>
     </a>
@@ -19,15 +19,11 @@
         <img src="../../../assets/icons/enter.png" alt="Login">
         <div class="menu__tooltip">Login</div>
     </a>
-    <!-- <a class="menu__link" routerLink="" *ngIf="user">
-        <img src="../../../assets/icons/plus.png" alt="Create League">
-        <div class="menu__tooltip">Create New League</div>
-    </a> -->
     <a class="menu__link" (click)="logout()" *ngIf="user">
         <img src="../../../assets/icons/exit-large.png" alt="Logout">
         <div class="menu__tooltip">Logout</div>
     </a>
-    <a class="menu__link" href="https://www.powerlanguage.co.uk/wordle/" target="_new">
+    <a class="menu__link" href="https://www.nytimes.com/games/wordle/index.html" target="_new">
         <p>Wordle</p>
         <div class="menu__tooltip menu__tooltip--right">Play Wordle</div>
     </a>

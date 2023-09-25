@@ -7,6 +7,8 @@ const User = require('../models/user');
 const Result = require('../models/result');
 const checkAuth = require('../middleware/check-auth');
 
+const methods = require('../methods/methods');
+
 // NEED TO ADD MODELS FOR THIS DATA TO THE TOP OF HERE...
 const generateToken = (email, id, remainLoggedIn) => {
     return jwt.sign({
@@ -61,10 +63,11 @@ router.post('/login', (req, res, next) => {
     console.log(req.body);
 
     // get the user...
-    User.findOne({ email: req.body.email }).then((user) => {
+    User.findOne({ email: req.body.email })
+    .then((user) => {
         // user not found...
         if(!user) {
-            reject();
+            console.log(user);
         } else {
             // store user data;
             fetchedUser = user;
@@ -74,7 +77,7 @@ router.post('/login', (req, res, next) => {
     }).then((result) => {
         if(!result) {
             // if the passwords no not match throw an error
-            reject();
+            console.log(`User result is null, but catch?!?!`);
         } else {
             console.log('User logged in: ' + req.body.email);
             // password is valid...
@@ -89,6 +92,7 @@ router.post('/login', (req, res, next) => {
             })
         }
     }).catch((error) => {
+        console.log(error);
         return res.status(401).json({
             message: 'Auth Failed  - There was an issue with some of your credentials.',
             error: error

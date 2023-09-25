@@ -1,0 +1,33 @@
+<div class="home" id="home">
+    <div class="home__overlay"></div>
+    <div class="home__background">
+        <div class="wordle-lettering__letter wordle-lettering__letter--{{ getRandomColor(i) }}" *ngFor="let o of getBackgroundElements(); let i = index">
+            {{ getRandomLetter(i % 26) }}
+        </div>
+    </div>
+
+    <div class="wordle-league-logo">
+        <div class="wordle-logo wordle-logo__scale-noanimation">
+
+            <div class="wordle-logo__word wordle-logo__word--wordle">
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">W</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">O</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">R</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">D</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--yellow">L</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--gray">E</div>
+            </div>
+
+            <div class="wordle-logo__word wordle-logo__word--not-animated">
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">L</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">E</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">A</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">G</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">U</div>
+                <div class="wordle-logo__word--letter wordle-logo__word--letter--green">E</div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

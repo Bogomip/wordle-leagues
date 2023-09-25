@@ -97,7 +97,7 @@ router.get(
                             6: scores[6],
                             fail: scores[0]
                         },
-                        today: userScores.find(temp => temp.wordleId === todaysGame)?.score
+                        today: userScores.find(temp => temp.wordleId === todaysGame).score
                     }
                     newLeague.members.push(leagueMember);
                 }
