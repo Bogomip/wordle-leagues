@@ -54,7 +54,7 @@ export class AddResultsComponent implements OnInit, OnDestroy {
             { id: todaysGame, date: this.generalService.gameToDate(todaysGame), submitting: false, value: -1 }
         ]
         // get the data from the database...
-        this.http.post<{ success: boolean, data: any}>(environment.apiUrl+'api/data/daily', { userId: this.user._id, gameId: todaysGame}).subscribe({
+        this.http.post<{ success: boolean, data: any}>(environment.apiUrl+'/api/data/daily', { userId: this.user._id, gameId: todaysGame}).subscribe({
             next: (result: { success: boolean, data: any[] }) => {
                 // iterate over all data points and see if any exist that we have submitted...
                 for(let dataPoint of result.data) {
@@ -80,7 +80,7 @@ export class AddResultsComponent implements OnInit, OnDestroy {
             accessGame.submitting = true;
 
             // and call the backend...
-            this.http.post<{ message: string }>(environment.apiUrl+'api/user/score', { userId: this.user._id, wordleId: wordleId, score: score}).subscribe({
+            this.http.post<{ message: string }>(environment.apiUrl+'/api/user/score', { userId: this.user._id, wordleId: wordleId, score: score}).subscribe({
                 next: (result: { message: string }) => {
                     // update all leagues...
                     this.leagueService.getLeaguesData(this.user._id);
