@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://wordleapi.sweeto.col.uk/'
+  apiUrl: 'https://wordleapi.sweeto.co.uk:3001/'
 };
+

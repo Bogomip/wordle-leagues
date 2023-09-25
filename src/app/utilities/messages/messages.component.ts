@@ -62,14 +62,14 @@ export class MessagesComponent implements OnInit, AfterViewInit {
                 // trigger a message update
                 this.messageService.getMessages().subscribe((messages: { data: Message[], success: boolean }) => {
                     // once the messages are returned observe the changes in the message size...
-                    this.observeSimulationSizeChange();
+                    this.observeElementSizeChange();
                 });
             }
         });
     }
 
     ngAfterViewInit(): void {
-        this.observeSimulationSizeChange();
+        this.observeElementSizeChange();
     }
 
     /**
@@ -108,7 +108,7 @@ export class MessagesComponent implements OnInit, AfterViewInit {
     /**
      * Set up an observer on the mesaages div to reclaucltae the posts that can be displayed.
      */
-    observeSimulationSizeChange(): void {
+    observeElementSizeChange(): void {
         this.resizeElement =  document.getElementById('messages') as HTMLElement;
         this.resizeObserver = new ResizeObserver(() => {
             this.paginationRecalculation();

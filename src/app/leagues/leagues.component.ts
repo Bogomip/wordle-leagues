@@ -3,6 +3,7 @@ import { AuthenticationService, User } from '../services/authentication.service'
 import { League, LeagueMember, LeagueService } from '../services/league.service';
 import { GeneralService } from '../services/general.service';
 import { Message, MessagesService } from '../services/messages.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-leagues',
@@ -142,7 +143,7 @@ export class LeaguesComponent implements OnInit {
      * @param leagueCode
      */
     addLeaguecodeToClipboard(leagueCode: string): void {
-        navigator.clipboard.writeText(`http://localhost:4200/#/joinleague/${leagueCode}`).then(result => {
+        navigator.clipboard.writeText(`https://wordleleague.sweeto.co.uk/#/joinleague/${leagueCode}`).then(result => {
             this.copiedToClipboard = true;
             this.code = leagueCode;
             // show the alert for 3 seconds then fade out.
